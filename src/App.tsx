@@ -10,12 +10,17 @@ import {
   FileDown,
   Globe2,
   KeyRound,
+  ListChecks,
   LockKeyhole,
+  Monitor,
+  MousePointerClick,
   Radar,
+  Router,
   Search,
   ShieldCheck,
   SlidersHorizontal,
   Sparkles,
+  Smartphone,
   ToggleLeft,
   ToggleRight,
   WifiOff,
@@ -46,6 +51,60 @@ const categoryIcons: Record<string, typeof Sparkles> = {
 
 const formats: ExportFormat[] = ['adguard', 'hosts', 'dnsmasq', 'plain', 'safari']
 
+type DeviceId = 'iphone' | 'computer' | 'router'
+
+type DeviceGuide = {
+  id: DeviceId
+  label: string
+  shortLabel: string
+  Icon: typeof Smartphone
+  format: ExportFormat
+  actionLabel: string
+  steps: string[]
+}
+
+const deviceGuides: DeviceGuide[] = [
+  {
+    id: 'iphone',
+    label: 'iPhone or iPad',
+    shortLabel: 'Best for Apple devices',
+    Icon: Smartphone,
+    format: 'safari',
+    actionLabel: 'Download iOS setup notes',
+    steps: [
+      'Sign in with your email.',
+      'Buy lifetime access once.',
+      'Download the iOS setup notes and add the domains to your DNS blocker.',
+    ],
+  },
+  {
+    id: 'computer',
+    label: 'Computer browser',
+    shortLabel: 'Best for Chrome, Edge, Safari, and Firefox',
+    Icon: Monitor,
+    format: 'adguard',
+    actionLabel: 'Download browser rules',
+    steps: [
+      'Sign in with your email.',
+      'Buy lifetime access once.',
+      'Import the downloaded rules into AdGuard, uBlock, or your browser blocker.',
+    ],
+  },
+  {
+    id: 'router',
+    label: 'Home router',
+    shortLabel: 'Best for the whole household',
+    Icon: Router,
+    format: 'dnsmasq',
+    actionLabel: 'Download router rules',
+    steps: [
+      'Sign in with your email.',
+      'Buy lifetime access once.',
+      'Add the router rules to your DNS or router blocking page.',
+    ],
+  },
+]
+
 const sampleEvents = [
   { domain: 'chatgpt.com', category: 'AI Chat', app: 'Safari', time: '14:42' },
   { domain: 'api.githubcopilot.com', category: 'AI Coding', app: 'VS Code', time: '14:37' },
@@ -67,6 +126,7 @@ function App() {
   const [enabledCategories, setEnabledCategories] = useState<Record<string, boolean>>(defaultEnabled)
   const [strictMode, setStrictMode] = useState(false)
   const [exportFormat, setExportFormat] = useState<ExportFormat>('adguard')
+  const [selectedDeviceId, setSelectedDeviceId] = useState<DeviceId>('iphone')
   const [testUrl, setTestUrl] = useState('claude.ai')
   const [session, setSession] = useState<SaaSSession | null>(null)
   const [email, setEmail] = useState('')
@@ -88,6 +148,10 @@ function App() {
     [activeDomains, exportFormat],
   )
   const testResult = useMemo(() => isDomainBlocked(testUrl, activeDomains), [activeDomains, testUrl])
+  const selectedDevice = useMemo(
+    () => deviceGuides.find((device) => device.id === selectedDeviceId) ?? deviceGuides[0]!,
+    [selectedDeviceId],
+  )
   const canExport = Boolean(entitlement?.licensed)
   const userEmail = session?.user.email ?? ''
 
@@ -238,17 +302,19 @@ function App() {
     URL.revokeObjectURL(url)
   }
 
-  const downloadRules = () => {
+  const downloadRulesForFormat = (format: ExportFormat) => {
     if (!requireLicense()) {
       return
     }
 
     downloadText(
-      `aegis-ai-blocker-${exportFormat}.${extensionForFormat(exportFormat)}`,
-      buildExport(exportFormat, activeDomains),
+      `aegis-ai-blocker-${format}.${extensionForFormat(format)}`,
+      buildExport(format, activeDomains),
     )
     showToast('Rules downloaded')
   }
+
+  const downloadRules = () => downloadRulesForFormat(exportFormat)
 
   const downloadProfile = () => {
     if (!requireLicense()) {
@@ -257,6 +323,26 @@ function App() {
 
     downloadText('aegis-ios-profile-notes.txt', buildIosProfileGuide(activeDomains))
     showToast('iOS notes downloaded')
+  }
+
+  const chooseDevice = (device: DeviceGuide) => {
+    setSelectedDeviceId(device.id)
+    setExportFormat(device.format)
+  }
+
+  const startEasySetup = () => {
+    setExportFormat(selectedDevice.format)
+
+    if (selectedDevice.id === 'iphone') {
+      downloadProfile()
+      return
+    }
+
+    downloadRulesForFormat(selectedDevice.format)
+  }
+
+  const scrollToAdvancedTools = () => {
+    document.getElementById('advanced-tools')?.scrollIntoView({ behavior: 'smooth' })
   }
 
   const toggleCategory = (id: string) => {
@@ -277,7 +363,11 @@ function App() {
         </div>
 
         <nav className="nav-list" aria-label="Sections">
-          <a className="nav-item active" href="#protection">
+          <a className="nav-item active" href="#easy-setup">
+            <MousePointerClick size={18} />
+            Setup
+          </a>
+          <a className="nav-item" href="#protection">
             <ShieldCheck size={18} />
             Protection
           </a>
@@ -306,8 +396,8 @@ function App() {
       <section className="workspace">
         <header className="topbar">
           <div>
-            <h1>Protection live</h1>
-            <p className="topbar-copy">Known limitation: new AI services need rule updates.</p>
+            <h1>Pick a device, then protect it</h1>
+            <p className="topbar-copy">Buy once, download the right setup file, and keep the rule pack updated.</p>
           </div>
           <div className="topbar-actions">
             <button className="icon-button" type="button" onClick={copyRules} aria-label="Copy DNS rules" title="Copy DNS rules">
@@ -360,6 +450,67 @@ function App() {
         </section>
 
         <section className="content-grid">
+          <section className="panel easy-setup-panel" id="easy-setup">
+            <div className="panel-heading">
+              <div>
+                <p className="eyebrow">Easy setup</p>
+                <h2>Choose what you want to protect</h2>
+              </div>
+              <ListChecks size={20} />
+            </div>
+
+            <div className="easy-layout">
+              <div className="device-picker" aria-label="Device type">
+                {deviceGuides.map((device) => {
+                  const Icon = device.Icon
+                  const selected = device.id === selectedDevice.id
+
+                  return (
+                    <button
+                      key={device.id}
+                      className={`device-option ${selected ? 'selected' : ''}`}
+                      type="button"
+                      onClick={() => chooseDevice(device)}
+                    >
+                      <Icon size={21} />
+                      <span>
+                        <strong>{device.label}</strong>
+                        <small>{device.shortLabel}</small>
+                      </span>
+                    </button>
+                  )
+                })}
+              </div>
+
+              <div className="guided-detail">
+                <div className="recommended-format">
+                  <span>Recommended file</span>
+                  <strong>{exportLabels[selectedDevice.format]}</strong>
+                </div>
+
+                <ol className="setup-steps">
+                  {selectedDevice.steps.map((step, index) => (
+                    <li key={step}>
+                      <span>{index + 1}</span>
+                      <p>{step}</p>
+                    </li>
+                  ))}
+                </ol>
+
+                <div className="button-row easy-actions">
+                  <button className="primary-button" type="button" onClick={startEasySetup}>
+                    {canExport ? <Download size={18} /> : <KeyRound size={18} />}
+                    {canExport ? selectedDevice.actionLabel : checkoutLoading ? 'Starting...' : 'Buy once, then download'}
+                  </button>
+                  <button className="secondary-button" type="button" onClick={scrollToAdvancedTools}>
+                    <SlidersHorizontal size={17} />
+                    Advanced tools
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+
           <section className="panel blocklist-panel" id="blocklists">
             <div className="panel-heading">
               <div>
@@ -404,10 +555,10 @@ function App() {
             </div>
           </section>
 
-          <section className="panel export-panel">
+          <section className="panel export-panel" id="advanced-tools">
             <div className="panel-heading">
               <div>
-                <p className="eyebrow">Export rules</p>
+                <p className="eyebrow">Advanced tools</p>
                 <h2>{exportLabels[exportFormat]}</h2>
               </div>
               <FileDown size={20} />
@@ -454,7 +605,7 @@ function App() {
             {!isSupabaseConfigured ? (
               <div className="setup-warning">
                 <AlertTriangle size={18} />
-                <span>Add Supabase and Stripe environment variables to enable paid accounts.</span>
+                <span>Paid accounts are not connected in this local preview yet.</span>
               </div>
             ) : session ? (
               <div className="account-stack">

@@ -52,6 +52,8 @@ Generated files are written to `rules/generated/`.
 
 Create a Supabase project and run `supabase/schema.sql` in the SQL editor. Create a one-time Stripe Price for lifetime access, then configure the environment variables from `.env.example`.
 
+For a plain launch path, follow [docs/launch-checklist.md](docs/launch-checklist.md).
+
 Required server-side variables:
 
 ```text
