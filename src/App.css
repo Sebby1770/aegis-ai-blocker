@@ -167,7 +167,8 @@ button {
 .primary-button,
 .secondary-button,
 .soft-button,
-.icon-button {
+.icon-button,
+.strict-chip {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -187,7 +188,8 @@ button {
 
 .secondary-button,
 .soft-button,
-.icon-button {
+.icon-button,
+.strict-chip {
   color: var(--ink);
   background: #f3f6f5;
   border: 1px solid var(--line);
@@ -212,7 +214,8 @@ button {
 .primary-button:hover,
 .secondary-button:hover,
 .soft-button:hover,
-.icon-button:hover {
+.icon-button:hover,
+.strict-chip:hover {
   transform: translateY(-1px);
 }
 
@@ -390,6 +393,13 @@ button {
   background: #e5f7f4;
 }
 
+.strict-chip {
+  min-height: 34px;
+  padding: 0 10px;
+  color: #0f766e;
+  font-size: 13px;
+}
+
 .export-preview {
   min-height: 260px;
   overflow: auto;
@@ -406,6 +416,46 @@ button {
 .button-row {
   flex-wrap: wrap;
   gap: 9px;
+}
+
+.setup-warning,
+.license-badge,
+.signed-in-copy {
+  font-size: 14px;
+}
+
+.setup-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  border-radius: 8px;
+  padding: 12px;
+  color: #8a5a0a;
+  background: #fff7e6;
+}
+
+.account-stack,
+.auth-form {
+  display: grid;
+  gap: 12px;
+}
+
+.signed-in-copy {
+  color: var(--muted);
+}
+
+.license-badge {
+  width: fit-content;
+  border-radius: 999px;
+  padding: 7px 11px;
+  color: #8f2f2f;
+  background: #fff0ed;
+  font-weight: 800;
+}
+
+.license-badge.active {
+  color: #0f766e;
+  background: #e8f7f4;
 }
 
 .tester-input {

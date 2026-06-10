@@ -7,6 +7,7 @@ create table if not exists public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   email text,
   display_name text,
+  stripe_customer_id text unique,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -16,10 +17,17 @@ create table if not exists public.lifetime_licenses (
   user_id uuid not null references public.profiles(id) on delete cascade,
   provider text not null check (provider in ('stripe', 'apple', 'manual')),
   provider_reference text not null,
+  stripe_customer_id text,
   status text not null default 'active' check (status in ('active', 'refunded', 'revoked')),
   purchased_at timestamptz not null default now(),
   created_at timestamptz not null default now(),
   unique (provider, provider_reference)
+);
+
+create table if not exists public.payment_events (
+  event_id text primary key,
+  event_type text not null,
+  processed_at timestamptz not null default now()
 );
 
 create table if not exists public.devices (
@@ -41,6 +49,9 @@ create table if not exists public.rule_snapshots (
   created_at timestamptz not null default now()
 );
 
+alter table public.profiles add column if not exists stripe_customer_id text;
+alter table public.lifetime_licenses add column if not exists stripe_customer_id text;
+
 create or replace function public.touch_updated_at()
 returns trigger
 language plpgsql
@@ -58,6 +69,7 @@ for each row execute function public.touch_updated_at();
 
 alter table public.profiles enable row level security;
 alter table public.lifetime_licenses enable row level security;
+alter table public.payment_events enable row level security;
 alter table public.devices enable row level security;
 alter table public.rule_snapshots enable row level security;
 
@@ -118,9 +130,17 @@ to authenticated
 with check ((select auth.uid()) = user_id);
 
 create index if not exists lifetime_licenses_user_id_idx on public.lifetime_licenses(user_id);
+create index if not exists lifetime_licenses_stripe_customer_id_idx on public.lifetime_licenses(stripe_customer_id);
+create unique index if not exists profiles_stripe_customer_id_key
+on public.profiles(stripe_customer_id)
+where stripe_customer_id is not null;
 create index if not exists devices_user_id_idx on public.devices(user_id);
 create index if not exists rule_snapshots_user_id_created_at_idx on public.rule_snapshots(user_id, created_at desc);
 
--- Stripe/App Store webhook handlers should use a server-side service role key
+-- No policies are created for payment_events. It is writable only from trusted
+-- server-side webhook code using the Supabase secret key after Stripe signature
+-- verification.
+--
+-- Stripe/App Store webhook handlers should use a server-side Supabase secret key
 -- to insert lifetime_licenses after verifying the signed payment event.
--- Never expose that service role key in Vite or iOS clients.
+-- Never expose that key in Vite or iOS clients.

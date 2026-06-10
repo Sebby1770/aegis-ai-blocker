@@ -8,13 +8,17 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "typecheck:api": "tsc -p tsconfig.api.json",
     "generate:rules": "node scripts/generate-blocklists.mjs",
-    "verify": "npm run generate:rules && npm run lint && npm run build"
+    "verify": "npm run generate:rules && npm run lint && npm run typecheck:api && npm run build"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.108.1",
     "lucide-react": "^1.17.0",
     "react": "^19.2.6",
-    "react-dom": "^19.2.6"
+    "react-dom": "^19.2.6",
+    "stripe": "^22.2.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
