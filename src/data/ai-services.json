@@ -1,0 +1,168 @@
+{
+  "version": "2026.06.10",
+  "updatedAt": "2026-06-10",
+  "disclaimer": "Aegis blocks known AI services from this curated rule set. It cannot guarantee future or embedded AI surfaces until rules are updated.",
+  "categories": [
+    {
+      "id": "chat",
+      "name": "AI Chat",
+      "description": "Consumer chatbot destinations and shared hosting assets.",
+      "color": "#0f9f8f",
+      "services": [
+        {
+          "name": "OpenAI ChatGPT",
+          "domains": ["chatgpt.com", "chat.openai.com", "openai.com", "oaistatic.com", "oaiusercontent.com"]
+        },
+        {
+          "name": "Anthropic Claude",
+          "domains": ["claude.ai", "console.anthropic.com", "anthropic.com"]
+        },
+        {
+          "name": "Google Gemini",
+          "domains": ["gemini.google.com", "bard.google.com", "aistudio.google.com"]
+        },
+        {
+          "name": "Meta AI",
+          "domains": ["meta.ai", "ai.meta.com"]
+        },
+        {
+          "name": "Poe",
+          "domains": ["poe.com"]
+        },
+        {
+          "name": "Character.AI",
+          "domains": ["character.ai", "beta.character.ai"]
+        }
+      ]
+    },
+    {
+      "id": "search",
+      "name": "AI Search",
+      "description": "Answer engines and AI-first search surfaces.",
+      "color": "#e49b29",
+      "services": [
+        {
+          "name": "Perplexity",
+          "domains": ["perplexity.ai", "www.perplexity.ai"]
+        },
+        {
+          "name": "Microsoft Copilot",
+          "domains": ["copilot.microsoft.com", "bing.com", "edgeservices.bing.com"]
+        },
+        {
+          "name": "You.com",
+          "domains": ["you.com", "youcdn.io"]
+        },
+        {
+          "name": "Phind",
+          "domains": ["phind.com"]
+        },
+        {
+          "name": "Grok",
+          "domains": ["grok.com", "x.ai"]
+        }
+      ]
+    },
+    {
+      "id": "coding",
+      "name": "AI Coding",
+      "description": "Code assistants, coding chat, and editor AI services.",
+      "color": "#5967d8",
+      "services": [
+        {
+          "name": "GitHub Copilot",
+          "domains": ["githubcopilot.com", "api.githubcopilot.com", "copilot-proxy.githubusercontent.com"]
+        },
+        {
+          "name": "Cursor",
+          "domains": ["cursor.com", "api2.cursor.sh", "cursor.sh"]
+        },
+        {
+          "name": "Replit AI",
+          "domains": ["replit.com", "replit.ai"]
+        },
+        {
+          "name": "Blackbox AI",
+          "domains": ["blackbox.ai", "www.blackbox.ai"]
+        },
+        {
+          "name": "Codeium",
+          "domains": ["codeium.com", "windsurf.com"]
+        }
+      ]
+    },
+    {
+      "id": "creative",
+      "name": "Image/Video AI",
+      "description": "Image, video, voice, music, and asset generation services.",
+      "color": "#ce4f4f",
+      "services": [
+        {
+          "name": "Midjourney",
+          "domains": ["midjourney.com", "www.midjourney.com"]
+        },
+        {
+          "name": "Runway",
+          "domains": ["runwayml.com", "app.runwayml.com"]
+        },
+        {
+          "name": "Stability AI",
+          "domains": ["stability.ai", "platform.stability.ai"]
+        },
+        {
+          "name": "Leonardo AI",
+          "domains": ["leonardo.ai", "app.leonardo.ai"]
+        },
+        {
+          "name": "Ideogram",
+          "domains": ["ideogram.ai"]
+        },
+        {
+          "name": "Suno",
+          "domains": ["suno.com", "suno.ai"]
+        },
+        {
+          "name": "Udio",
+          "domains": ["udio.com"]
+        },
+        {
+          "name": "ElevenLabs",
+          "domains": ["elevenlabs.io", "api.elevenlabs.io"]
+        }
+      ]
+    },
+    {
+      "id": "api",
+      "name": "AI APIs",
+      "description": "Developer APIs for model access and hosted inference.",
+      "color": "#1482a5",
+      "services": [
+        {
+          "name": "OpenAI API",
+          "domains": ["api.openai.com", "platform.openai.com"]
+        },
+        {
+          "name": "Anthropic API",
+          "domains": ["api.anthropic.com"]
+        },
+        {
+          "name": "Google AI API",
+          "domains": ["generativelanguage.googleapis.com", "ai.google.dev"]
+        },
+        {
+          "name": "Mistral AI",
+          "domains": ["mistral.ai", "chat.mistral.ai", "api.mistral.ai", "console.mistral.ai"]
+        },
+        {
+          "name": "Replicate",
+          "domains": ["replicate.com", "api.replicate.com"]
+        },
+        {
+          "name": "Hugging Face",
+          "domains": ["huggingface.co", "api-inference.huggingface.co"],
+          "strictOnly": true
+        }
+      ]
+    }
+  ]
+}
