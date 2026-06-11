@@ -1,7 +1,9 @@
+import { useMemo, useState } from 'react'
 import {
   ArrowRight,
   BadgeCheck,
   Ban,
+  CheckCircle2,
   Code2,
   Download,
   FileDown,
@@ -18,15 +20,51 @@ import {
   Smartphone,
   Sparkles,
 } from 'lucide-react'
-import { getActiveDomains, rulePack } from '../lib/blocklists'
+import { getActiveDomains, isDomainBlocked, rulePack } from '../lib/blocklists'
 import { priceDisplay, useSaas } from '../lib/saas-context'
 import { Link } from '../components/Link'
 import { navigate } from '../router'
 
 const allCategoriesEnabled = Object.fromEntries(rulePack.categories.map((category) => [category.id, true]))
-const defaultDomainCount = getActiveDomains(allCategoriesEnabled, false).length
+const defaultDomains = getActiveDomains(allCategoriesEnabled, false)
+const defaultDomainCount = defaultDomains.length
 const strictDomainCount = getActiveDomains(allCategoriesEnabled, true).length
 const serviceCount = rulePack.categories.reduce((total, category) => total + category.services.length, 0)
+
+function LiveDomainCheck() {
+  const [value, setValue] = useState('chatgpt.com')
+  const result = useMemo(() => isDomainBlocked(value, defaultDomains), [value])
+  const hasInput = value.trim().length > 0
+
+  return (
+    <div className="landing-tester">
+      <label className="tester-input">
+        <span>Try it now — paste any AI site or API</span>
+        <input
+          value={value}
+          onChange={(event) => setValue(event.target.value)}
+          placeholder="chatgpt.com"
+          autoComplete="off"
+          spellCheck={false}
+        />
+      </label>
+      {hasInput && (
+        <div className={`test-result ${result.blocked ? 'allowed' : 'blocked'}`}>
+          {result.blocked ? <CheckCircle2 size={18} /> : <Ban size={18} />}
+          <span>
+            {result.blocked
+              ? `Covered — blocked by the ${result.matchedDomain} rule`
+              : 'Not in the default pack — try strict mode in the dashboard, or request it'}
+          </span>
+        </div>
+      )}
+      <p className="landing-tester-note">
+        Checked against the default rule pack, live in your browser. Nothing you type is sent
+        anywhere.
+      </p>
+    </div>
+  )
+}
 
 const featureCards = [
   {
@@ -145,6 +183,7 @@ export function Landing() {
             <ArrowRight size={16} />
           </Link>
         </div>
+        <LiveDomainCheck />
         <div className="hero-stats" aria-label="Coverage statistics">
           <div>
             <strong>{defaultDomainCount}</strong>

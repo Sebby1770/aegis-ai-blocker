@@ -48,6 +48,13 @@ export function Footer() {
               Security policy
             </a>
             <a
+              href="https://github.com/Sebby1770/aegis-ai-blocker/blob/main/CHANGELOG.md"
+              rel="noreferrer"
+              target="_blank"
+            >
+              Changelog
+            </a>
+            <a
               href="https://github.com/Sebby1770/aegis-ai-blocker/issues"
               rel="noreferrer"
               target="_blank"

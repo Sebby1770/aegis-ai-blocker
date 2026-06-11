@@ -1,0 +1,40 @@
+# Changelog
+
+All notable changes to the product and the rule pack.
+
+## 1.1.0 — 2026-06-11
+
+### Added
+- iOS rule data is now generated from the shared rule pack (`RulePackData.generated.swift`),
+  so web and iOS can never drift apart.
+- Live domain checker on the landing page — runs entirely in the browser.
+- `/.well-known/security.txt` (RFC 9116) and this changelog.
+
+## 1.0.0 — 2026-06-11
+
+### Rule pack 2026.06.11
+- Expanded from 45 to 73 services (118 default domains, 126 strict): added DeepSeek, Qwen, Kimi,
+  Pi, Manus, Janitor AI, QuillBot, Grammarly (strict), Genspark, Andi, iAsk, Komo, Lovable, Bolt,
+  v0, Devin, Tabnine, Augment, Sourcegraph (strict), Sora, Luma, Pika, Kling, Hailuo, HeyGen,
+  Black Forest Labs, Krea, Recraft, Civitai, Adobe Firefly, Google Labs, NotebookLM, Azure OpenAI,
+  xAI API, Cohere, Groq, Together, Fireworks, Cerebras, OpenRouter, Vertex AI (strict),
+  Ollama (strict), LM Studio (strict).
+
+### Added
+- Marketing landing page with pricing, FAQ, and live coverage stats.
+- Privacy Policy, Terms of Service, and Refund Policy pages.
+- Checkout return flow that polls entitlement until the Stripe webhook lands.
+- Automatic license revocation on Stripe refunds and disputes.
+- Durable cross-instance rate limiting backed by Postgres.
+- Server-only audit log of license activations, refunds, and revocations.
+- Structured JSON API logging with secret/PII redaction and request IDs.
+- `/api/health` liveness endpoint for uptime monitoring.
+- Content-Security-Policy and HSTS headers on all responses.
+- Vitest test suite (39 tests) and GitHub Actions CI with npm audit and gitleaks.
+- Dependabot updates for npm and GitHub Actions.
+- SEO metadata, robots.txt, SPA routing, immutable CDN caching for assets.
+- Source-available LICENSE.
+
+### Security
+- Webhook idempotency hardened against duplicate-delivery races.
+- Payment intents recorded on licenses so refunds map without trusting client input.

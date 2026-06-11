@@ -1,0 +1,4 @@
+Contact: https://github.com/Sebby1770/aegis-ai-blocker/security/advisories/new
+Policy: https://github.com/Sebby1770/aegis-ai-blocker/blob/main/SECURITY.md
+Preferred-Languages: en
+Expires: 2027-06-11T00:00:00.000Z

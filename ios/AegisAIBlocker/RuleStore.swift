@@ -15,81 +15,12 @@ struct RuleService: Identifiable, Hashable {
     var strictOnly: Bool = false
 }
 
+// Rule data lives in RulePackData.generated.swift, emitted from
+// src/data/ai-services.json by scripts/generate-blocklists.mjs.
 enum RuleStore {
-    static let version = "2026.06.10"
+    static let version = RulePackData.version
 
-    static let categories: [RuleCategory] = [
-        RuleCategory(
-            id: "chat",
-            name: "AI Chat",
-            symbol: "sparkles",
-            colorHex: 0x0f9f8f,
-            services: [
-                RuleService(name: "OpenAI ChatGPT", domains: ["chatgpt.com", "chat.openai.com", "openai.com", "oaistatic.com", "oaiusercontent.com"]),
-                RuleService(name: "Anthropic Claude", domains: ["claude.ai", "console.anthropic.com", "anthropic.com"]),
-                RuleService(name: "Google Gemini", domains: ["gemini.google.com", "bard.google.com", "aistudio.google.com"]),
-                RuleService(name: "Meta AI", domains: ["meta.ai", "ai.meta.com"]),
-                RuleService(name: "Poe", domains: ["poe.com"]),
-                RuleService(name: "Character.AI", domains: ["character.ai", "beta.character.ai"])
-            ]
-        ),
-        RuleCategory(
-            id: "search",
-            name: "AI Search",
-            symbol: "magnifyingglass",
-            colorHex: 0xe49b29,
-            services: [
-                RuleService(name: "Perplexity", domains: ["perplexity.ai", "www.perplexity.ai"]),
-                RuleService(name: "Microsoft Copilot", domains: ["copilot.microsoft.com", "bing.com", "edgeservices.bing.com"]),
-                RuleService(name: "You.com", domains: ["you.com", "youcdn.io"]),
-                RuleService(name: "Phind", domains: ["phind.com"]),
-                RuleService(name: "Grok", domains: ["grok.com", "x.ai"])
-            ]
-        ),
-        RuleCategory(
-            id: "coding",
-            name: "AI Coding",
-            symbol: "curlybraces",
-            colorHex: 0x5967d8,
-            services: [
-                RuleService(name: "GitHub Copilot", domains: ["githubcopilot.com", "api.githubcopilot.com", "copilot-proxy.githubusercontent.com"]),
-                RuleService(name: "Cursor", domains: ["cursor.com", "api2.cursor.sh", "cursor.sh"]),
-                RuleService(name: "Replit AI", domains: ["replit.com", "replit.ai"]),
-                RuleService(name: "Blackbox AI", domains: ["blackbox.ai", "www.blackbox.ai"]),
-                RuleService(name: "Codeium", domains: ["codeium.com", "windsurf.com"])
-            ]
-        ),
-        RuleCategory(
-            id: "creative",
-            name: "Image/Video AI",
-            symbol: "wand.and.stars",
-            colorHex: 0xce4f4f,
-            services: [
-                RuleService(name: "Midjourney", domains: ["midjourney.com", "www.midjourney.com"]),
-                RuleService(name: "Runway", domains: ["runwayml.com", "app.runwayml.com"]),
-                RuleService(name: "Stability AI", domains: ["stability.ai", "platform.stability.ai"]),
-                RuleService(name: "Leonardo AI", domains: ["leonardo.ai", "app.leonardo.ai"]),
-                RuleService(name: "Ideogram", domains: ["ideogram.ai"]),
-                RuleService(name: "Suno", domains: ["suno.com", "suno.ai"]),
-                RuleService(name: "Udio", domains: ["udio.com"]),
-                RuleService(name: "ElevenLabs", domains: ["elevenlabs.io", "api.elevenlabs.io"])
-            ]
-        ),
-        RuleCategory(
-            id: "api",
-            name: "AI APIs",
-            symbol: "globe",
-            colorHex: 0x1482a5,
-            services: [
-                RuleService(name: "OpenAI API", domains: ["api.openai.com", "platform.openai.com"]),
-                RuleService(name: "Anthropic API", domains: ["api.anthropic.com"]),
-                RuleService(name: "Google AI API", domains: ["generativelanguage.googleapis.com", "ai.google.dev"]),
-                RuleService(name: "Mistral AI", domains: ["mistral.ai", "chat.mistral.ai", "api.mistral.ai", "console.mistral.ai"]),
-                RuleService(name: "Replicate", domains: ["replicate.com", "api.replicate.com"]),
-                RuleService(name: "Hugging Face", domains: ["huggingface.co", "api-inference.huggingface.co"], strictOnly: true)
-            ]
-        )
-    ]
+    static let categories: [RuleCategory] = RulePackData.categories
 
     static func activeDomains(enabledCategories: Set<String>, strictMode: Bool) -> [String] {
         let domains = categories
