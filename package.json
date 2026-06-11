@@ -1,16 +1,19 @@
 {
   "name": "aegis-ai-blocker",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "typecheck:api": "tsc -p tsconfig.api.json",
     "generate:rules": "node scripts/generate-blocklists.mjs",
-    "verify": "npm run generate:rules && npm run lint && npm run typecheck:api && npm run build"
+    "audit:deps": "npm audit --audit-level=high",
+    "verify": "npm run generate:rules && npm run lint && npm run typecheck:api && npm run test && npm run build"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.108.1",
@@ -32,6 +35,7 @@
     "globals": "^17.6.0",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.59.2",
-    "vite": "^8.0.12"
+    "vite": "^8.0.12",
+    "vitest": "^4.1.8"
   }
 }

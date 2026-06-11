@@ -1,0 +1,22 @@
+Copyright (c) 2026 Sebby1770. All rights reserved.
+
+This repository is source-available for review and evaluation.
+
+Permission is granted to view the source code and to run it locally for
+personal evaluation and development purposes.
+
+The following require prior written permission from the copyright holder:
+
+- using the software or the rule pack to operate a commercial service
+- redistributing, sublicensing, or republishing the source code or rule pack
+- selling products derived from this repository
+
+The Aegis rule pack (src/data/ai-services.json and files generated from it)
+is part of the commercial product and may not be redistributed as a blocklist
+under another name.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY ARISING
+FROM THE USE OF THE SOFTWARE.

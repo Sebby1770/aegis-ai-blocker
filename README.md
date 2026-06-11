@@ -1,136 +1,149 @@
 # Aegis AI Blocker
 
-Aegis AI Blocker is a one-time-purchase blocker prototype for known AI services. It ships as:
+[![CI](https://github.com/Sebby1770/aegis-ai-blocker/actions/workflows/ci.yml/badge.svg)](https://github.com/Sebby1770/aegis-ai-blocker/actions/workflows/ci.yml)
 
-- a React/Vite web dashboard
-- a SwiftUI iOS app
-- Vercel serverless API routes for Stripe and entitlement checks
-- generated DNS/blocklist exports
-- Supabase schema for lifetime license ownership
+Aegis turns a curated, versioned catalogue of AI services into ready-to-use blocklists for phones,
+desktop browsers, and home routers. It is sold as a one-time lifetime purchase.
 
-Important: no static app can honestly block “all AI” forever. Aegis blocks the curated services in its rule pack and is designed to update that pack as new AI services appear.
+It ships as:
+
+- a React/Vite marketing site + web dashboard (landing page, pricing, legal pages, rule builder)
+- Vercel serverless API routes for Stripe Checkout, signed webhooks, entitlements, and health checks
+- a Supabase Postgres schema with row-level security, audit logs, and durable rate limiting
+- generated DNS/blocklist exports (AdGuard/uBlock, hosts, dnsmasq, plain, Safari content blocker)
+- a SwiftUI iOS companion app
+
+Honesty is part of the product: no static app can block "all AI" forever. Aegis blocks the curated
+services in its rule pack and updates that pack as new AI services appear.
 
 ![Dashboard concept](design/aegis-dashboard-concept.png)
 
-## Features
+## Architecture
 
-- Category toggles for AI Chat, AI Search, AI Coding, Image/Video AI, and AI APIs
-- Strict mode for broader hosted-model providers
-- Domain tester
-- Export formats:
-  - AdGuard/uBlock DNS filters
-  - hosts file
-  - dnsmasq
-  - plain domain list
-  - Safari content blocker JSON
-- iOS SwiftUI app with the same category model and share/copy export flow
-- Supabase Auth, tables, and RLS policies for profiles, devices, rule snapshots, payment events, and lifetime licenses
-- Stripe Checkout for a one-time lifetime purchase
+```text
+Browser (React SPA)                 Vercel serverless API            Third parties
+┌───────────────────────┐          ┌──────────────────────────┐     ┌──────────────┐
+│ /        landing      │  bearer  │ POST /api/create-        │────▶│ Stripe       │
+│ /app     dashboard    │  token   │       checkout-session   │     │ Checkout     │
+│ /privacy /terms       │─────────▶│ GET  /api/entitlement    │     └──────┬───────┘
+│ /refunds legal        │          │ GET  /api/health         │            │ signed
+└──────────┬────────────┘          │ POST /api/stripe-webhook │◀───────────┘ webhook
+           │ magic link            └────────────┬─────────────┘
+           ▼                                    │ service role (server-only)
+┌───────────────────────┐                       ▼
+│ Supabase Auth         │          ┌──────────────────────────┐
+└───────────────────────┘          │ Postgres + RLS           │
+                                   │ profiles, licenses,      │
+                                   │ payment_events,          │
+                                   │ audit_logs, rate_limits  │
+                                   └──────────────────────────┘
+```
 
-## Web App
+Trust boundaries:
+
+- The browser can sign in, start Checkout, and read its own entitlement. Nothing else.
+- Licenses are written only by the webhook handler after Stripe signature verification.
+- Refunds and disputes revoke licenses automatically through the same signed webhook.
+- The Supabase service-role key, Stripe secret key, and webhook secret are server-only and never
+  carry a `VITE_` prefix.
+
+Full details: [docs/architecture.md](docs/architecture.md).
+
+## Development
 
 ```bash
 npm install
 npm run dev
 ```
 
-Build and verify:
+Full verification (rules, lint, typecheck, tests, build):
 
 ```bash
 npm run verify
 ```
 
-Generate blocklist artifacts:
+Other scripts:
 
-```bash
-npm run generate:rules
-```
+| Script | Purpose |
+| --- | --- |
+| `npm test` | Run the Vitest suite |
+| `npm run generate:rules` | Regenerate `rules/generated/` from the rule pack |
+| `npm run typecheck:api` | Typecheck the serverless API |
+| `npm run audit:deps` | Fail on high-severity dependency vulnerabilities |
 
-Generated files are written to `rules/generated/`.
+CI runs all of the above plus a gitleaks secret scan on every push and pull request, and Dependabot
+keeps dependencies current.
 
-## SaaS Setup
+## Production setup
 
-Create a Supabase project and run `supabase/schema.sql` in the SQL editor. Create a one-time Stripe Price for lifetime access, then configure the environment variables from `.env.example`.
+Follow [docs/launch-checklist.md](docs/launch-checklist.md). Summary:
 
-For a plain launch path, follow [docs/launch-checklist.md](docs/launch-checklist.md).
+1. Create a Supabase project and apply `supabase/schema.sql` (or `supabase db push` with the
+   migrations in `supabase/migrations/`).
+2. Create a one-time Stripe Price for lifetime access.
+3. Set the variables from `.env.example` in Vercel — server secrets must not use `VITE_`.
+4. Point a Stripe webhook at `/api/stripe-webhook` listening for:
+   - `checkout.session.completed`
+   - `checkout.session.async_payment_succeeded`
+   - `charge.refunded`
+   - `charge.dispute.created`
+5. Test the full purchase → entitlement → refund → revocation loop with Stripe test cards before
+   going live.
 
-Required server-side variables:
+The app never trusts frontend payment state. The browser starts Checkout, Stripe redirects the
+customer, and only the signed webhook writes or revokes `lifetime_licenses` rows using the
+server-only Supabase secret key.
 
-```text
-APP_ORIGIN=
-SUPABASE_URL=
-SUPABASE_PUBLISHABLE_KEY=
-SUPABASE_SECRET_KEY=
-STRIPE_SECRET_KEY=
-STRIPE_WEBHOOK_SECRET=
-STRIPE_LIFETIME_PRICE_ID=
-```
+## Security
 
-Required browser variables:
+Controls implemented in this repository:
 
-```text
-VITE_SUPABASE_URL=
-VITE_SUPABASE_PUBLISHABLE_KEY=
-VITE_APP_ORIGIN=
-```
+- Stripe webhook signature verification with idempotent event processing
+- Server-side entitlement checks; exports gate on the server, not the client
+- Supabase RLS on every table; `payment_events`, `audit_logs`, and `rate_limits` are service-role-only
+- Durable cross-instance rate limiting (Postgres-backed, hashed keys, in-memory fallback)
+- Zod input validation, bounded request bodies, and generic error responses with request IDs
+- Structured JSON logs with secret/PII redaction — tokens and emails never reach logs
+- CSP, HSTS, nosniff, frame denial, referrer and permissions policies on every response
+- No source maps in production, no secrets in git history, gitleaks in CI
 
-Stripe webhook endpoint:
+Vulnerability reporting and the full 50-risk checklist mapping:
+[SECURITY.md](SECURITY.md) · [docs/security-checklist.md](docs/security-checklist.md)
 
-```text
-https://your-domain.example/api/stripe-webhook
-```
+## Monitoring & operations
 
-Listen for:
+- `GET /api/health` — liveness endpoint for UptimeRobot/Pingdom/Vercel checks
+- Vercel function logs are structured JSON with request IDs (`x-request-id` is returned to clients)
+- `audit_logs` records every license activation, refund, and dispute revocation
+- Recommended: Vercel log drains + alerts, Supabase advisors, and Stripe Radar (see
+  [docs/architecture.md](docs/architecture.md#monitoring--alerts))
 
-```text
-checkout.session.completed
-```
+## iOS app
 
-The app never trusts frontend payment state. The browser starts Checkout, Stripe redirects the customer, and only the signed webhook writes `lifetime_licenses` using the server-only Supabase secret key.
-
-## iOS App
-
-The iOS project is generated with XcodeGen.
+The iOS project is generated with XcodeGen:
 
 ```bash
 xcodegen generate --spec ios/project.yml
 open ios/AegisAIBlocker.xcodeproj
 ```
 
-The app builds for iOS Simulator. For true device-wide iOS blocking, a production app needs Apple Network Extension capabilities or a managed DNS provider. Without those entitlements, iOS can still manage and share rule exports.
+For true device-wide iOS blocking, a production build needs Apple Network Extension entitlements or
+a managed DNS provider; without them the app manages and shares rule exports.
 
-## Lifetime Purchase Path
-
-The intended paid model is one purchase, lifetime access:
-
-- Web: Stripe Checkout with a lifetime price via `api/create-checkout-session.ts`.
-- iOS: StoreKit non-consumable product `ai_blocker_lifetime`.
-- Backend: Supabase `lifetime_licenses` table after signed Stripe webhook verification.
-
-Never let the client create its own license row. Stripe/App Store webhook handlers should verify payment server-side before inserting license state.
-
-## Deployment
-
-The web app includes `vercel.json` and can be deployed as a static Vite project.
-
-```bash
-vercel
-```
-
-Required production env vars depend on which backend/payment pieces you enable. Start from `.env.example`.
-
-Before launching, review [docs/security-checklist.md](docs/security-checklist.md).
-
-## Repository Layout
+## Repository layout
 
 ```text
-src/                  Web app source
-api/                  Server-side Vercel API functions
-src/data/             Shared AI service rule pack
-rules/generated/      Generated blocklists
-ios/                  SwiftUI iOS project source and XcodeGen spec
-supabase/schema.sql   Backend tables and RLS policies
-docs/architecture.md  Product architecture notes
-docs/security-checklist.md  SaaS security checklist mapped to the screenshot risks
-design/               Generated visual concept reference
+src/                   Web app: pages, router, SaaS context, rule pack data
+api/                   Vercel serverless functions + shared _lib (guards, logging, Stripe, Supabase)
+supabase/              schema.sql, migrations, config
+rules/generated/       Generated blocklists (kept in sync by CI)
+scripts/               Blocklist generator
+ios/                   SwiftUI iOS project + XcodeGen spec
+docs/                  Architecture, launch checklist, security checklist
+.github/               CI workflow, Dependabot config
 ```
+
+## License
+
+Source-available, all rights reserved — see [LICENSE](LICENSE). The rule pack is part of the
+commercial product and may not be redistributed.

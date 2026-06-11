@@ -1,11 +1,15 @@
-import { enforceOrigin, rateLimit, requireMethod, sendError, setSecurityHeaders } from './_lib/http.js'
+import { guardRequest, requestId, sendError } from './_lib/http.js'
+import { logEvent } from './_lib/log.js'
 import { authenticateBearer, ensureProfile, supabaseAdmin } from './_lib/supabase.js'
 import type { ApiRequest, ApiResponse } from './_lib/types.js'
 
 export default async function handler(req: ApiRequest, res: ApiResponse) {
-  setSecurityHeaders(res)
-
-  if (!requireMethod(req, res, 'GET') || !enforceOrigin(req, res) || !rateLimit(req, res, { limit: 60, windowMs: 60_000 })) {
+  if (
+    !(await guardRequest(req, res, {
+      method: 'GET',
+      rateLimit: { name: 'entitlement', limit: 60, windowMs: 60_000 },
+    }))
+  ) {
     return
   }
 
@@ -36,7 +40,7 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
       license: data ?? null,
     })
   } catch {
-    console.error('entitlement_lookup_failed')
+    logEvent('error', 'entitlement_lookup_failed', { requestId: requestId(res) })
     return sendError(res, 500, 'entitlement_lookup_failed')
   }
 }

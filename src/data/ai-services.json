@@ -1,6 +1,6 @@
 {
-  "version": "2026.06.10",
-  "updatedAt": "2026-06-10",
+  "version": "2026.06.11",
+  "updatedAt": "2026-06-11",
   "disclaimer": "Aegis blocks known AI services from this curated rule set. It cannot guarantee future or embedded AI surfaces until rules are updated.",
   "categories": [
     {
@@ -19,11 +19,23 @@
         },
         {
           "name": "Google Gemini",
-          "domains": ["gemini.google.com", "bard.google.com", "aistudio.google.com"]
+          "domains": ["gemini.google.com", "bard.google.com", "aistudio.google.com", "notebooklm.google.com"]
         },
         {
           "name": "Meta AI",
           "domains": ["meta.ai", "ai.meta.com"]
+        },
+        {
+          "name": "DeepSeek",
+          "domains": ["deepseek.com", "chat.deepseek.com"]
+        },
+        {
+          "name": "Qwen",
+          "domains": ["qwen.ai", "chat.qwen.ai"]
+        },
+        {
+          "name": "Kimi",
+          "domains": ["kimi.com", "moonshot.ai"]
         },
         {
           "name": "Poe",
@@ -32,6 +44,27 @@
         {
           "name": "Character.AI",
           "domains": ["character.ai", "beta.character.ai"]
+        },
+        {
+          "name": "Pi",
+          "domains": ["pi.ai", "inflection.ai"]
+        },
+        {
+          "name": "Manus",
+          "domains": ["manus.im"]
+        },
+        {
+          "name": "Janitor AI",
+          "domains": ["janitorai.com"]
+        },
+        {
+          "name": "QuillBot",
+          "domains": ["quillbot.com"]
+        },
+        {
+          "name": "Grammarly",
+          "domains": ["grammarly.com", "app.grammarly.com"],
+          "strictOnly": true
         }
       ]
     },
@@ -60,6 +93,22 @@
         {
           "name": "Grok",
           "domains": ["grok.com", "x.ai"]
+        },
+        {
+          "name": "Genspark",
+          "domains": ["genspark.ai"]
+        },
+        {
+          "name": "Andi",
+          "domains": ["andisearch.com"]
+        },
+        {
+          "name": "iAsk",
+          "domains": ["iask.ai"]
+        },
+        {
+          "name": "Komo",
+          "domains": ["komo.ai"]
         }
       ]
     },
@@ -86,8 +135,37 @@
           "domains": ["blackbox.ai", "www.blackbox.ai"]
         },
         {
-          "name": "Codeium",
+          "name": "Codeium Windsurf",
           "domains": ["codeium.com", "windsurf.com"]
+        },
+        {
+          "name": "Lovable",
+          "domains": ["lovable.dev", "lovable.app"]
+        },
+        {
+          "name": "Bolt",
+          "domains": ["bolt.new"]
+        },
+        {
+          "name": "v0",
+          "domains": ["v0.dev", "v0.app"]
+        },
+        {
+          "name": "Devin",
+          "domains": ["devin.ai", "cognition.ai"]
+        },
+        {
+          "name": "Tabnine",
+          "domains": ["tabnine.com", "api.tabnine.com"]
+        },
+        {
+          "name": "Augment Code",
+          "domains": ["augmentcode.com"]
+        },
+        {
+          "name": "Sourcegraph Cody",
+          "domains": ["sourcegraph.com"],
+          "strictOnly": true
         }
       ]
     },
@@ -102,12 +180,40 @@
           "domains": ["midjourney.com", "www.midjourney.com"]
         },
         {
+          "name": "OpenAI Sora",
+          "domains": ["sora.com"]
+        },
+        {
           "name": "Runway",
           "domains": ["runwayml.com", "app.runwayml.com"]
         },
         {
+          "name": "Luma",
+          "domains": ["lumalabs.ai"]
+        },
+        {
+          "name": "Pika",
+          "domains": ["pika.art"]
+        },
+        {
+          "name": "Kling",
+          "domains": ["klingai.com"]
+        },
+        {
+          "name": "Hailuo",
+          "domains": ["hailuoai.video", "minimax.io"]
+        },
+        {
+          "name": "HeyGen",
+          "domains": ["heygen.com", "app.heygen.com"]
+        },
+        {
           "name": "Stability AI",
           "domains": ["stability.ai", "platform.stability.ai"]
+        },
+        {
+          "name": "Black Forest Labs",
+          "domains": ["bfl.ai"]
         },
         {
           "name": "Leonardo AI",
@@ -116,6 +222,26 @@
         {
           "name": "Ideogram",
           "domains": ["ideogram.ai"]
+        },
+        {
+          "name": "Krea",
+          "domains": ["krea.ai"]
+        },
+        {
+          "name": "Recraft",
+          "domains": ["recraft.ai"]
+        },
+        {
+          "name": "Civitai",
+          "domains": ["civitai.com"]
+        },
+        {
+          "name": "Adobe Firefly",
+          "domains": ["firefly.adobe.com"]
+        },
+        {
+          "name": "Google Labs",
+          "domains": ["labs.google"]
         },
         {
           "name": "Suno",
@@ -150,16 +276,67 @@
           "domains": ["generativelanguage.googleapis.com", "ai.google.dev"]
         },
         {
+          "name": "Azure OpenAI",
+          "domains": ["openai.azure.com"]
+        },
+        {
+          "name": "xAI API",
+          "domains": ["api.x.ai"]
+        },
+        {
+          "name": "DeepSeek API",
+          "domains": ["api.deepseek.com", "platform.deepseek.com"]
+        },
+        {
           "name": "Mistral AI",
           "domains": ["mistral.ai", "chat.mistral.ai", "api.mistral.ai", "console.mistral.ai"]
+        },
+        {
+          "name": "Cohere",
+          "domains": ["cohere.com", "api.cohere.com"]
+        },
+        {
+          "name": "Groq",
+          "domains": ["groq.com", "api.groq.com"]
+        },
+        {
+          "name": "Together AI",
+          "domains": ["together.ai", "api.together.xyz"]
+        },
+        {
+          "name": "Fireworks AI",
+          "domains": ["fireworks.ai", "api.fireworks.ai"]
+        },
+        {
+          "name": "Cerebras",
+          "domains": ["cerebras.ai", "api.cerebras.ai"]
+        },
+        {
+          "name": "OpenRouter",
+          "domains": ["openrouter.ai"]
         },
         {
           "name": "Replicate",
           "domains": ["replicate.com", "api.replicate.com"]
         },
         {
+          "name": "Google Vertex AI",
+          "domains": ["aiplatform.googleapis.com"],
+          "strictOnly": true
+        },
+        {
           "name": "Hugging Face",
           "domains": ["huggingface.co", "api-inference.huggingface.co"],
+          "strictOnly": true
+        },
+        {
+          "name": "Ollama",
+          "domains": ["ollama.com"],
+          "strictOnly": true
+        },
+        {
+          "name": "LM Studio",
+          "domains": ["lmstudio.ai"],
           "strictOnly": true
         }
       ]
