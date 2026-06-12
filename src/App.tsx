@@ -23,6 +23,20 @@ const pageTitles: Record<string, string> = {
   '/refunds': 'Refund Policy — Aegis AI Blocker',
 }
 
+const pageDescriptions: Record<string, string> = {
+  '/':
+    'Aegis turns a curated, versioned catalogue of AI services into ready-to-use blocklists for iPhone, desktop browsers, and home routers. One payment, lifetime access, no tracking.',
+  '/features':
+    'Category toggles, strict mode, a live domain tester, and five export formats: AdGuard/uBlock, hosts file, dnsmasq, plain domains, and Safari content blocker.',
+  '/pricing':
+    'One payment, lifetime access to every AI blocklist format and every future rule pack update. 14-day refund policy, payments by Stripe.',
+  '/faq':
+    'Honest answers about what Aegis blocks, which devices it works on, refunds, and the data we do and do not collect.',
+  '/privacy': 'What Aegis collects (account email, license records) and what it never collects (your browsing).',
+  '/terms': 'The terms that govern Aegis AI Blocker accounts and lifetime licenses.',
+  '/refunds': 'Request a refund within 14 days of purchase — refunds deactivate the license automatically.',
+}
+
 function Routes() {
   const pathname = usePathname()
   const { toast } = useSaas()
@@ -30,6 +44,13 @@ function Routes() {
 
   useEffect(() => {
     document.title = pageTitles[route] ?? 'Aegis AI Blocker'
+
+    const description = pageDescriptions[route]
+    const meta = document.querySelector('meta[name="description"]')
+
+    if (description && meta) {
+      meta.setAttribute('content', description)
+    }
   }, [route])
 
   let page: React.ReactNode

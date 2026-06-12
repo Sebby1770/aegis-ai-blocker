@@ -2,6 +2,20 @@
 
 All notable changes to the product and the rule pack.
 
+## 1.2.0 — 2026-06-12
+
+### Added
+- Installable PWA: web app manifest plus an offline service worker, so the
+  dashboard installs to a home screen and loads without a connection.
+- `GET /api/export` — authenticated, audit-logged rule downloads for licensed
+  accounts, built for automation (curl, router cron jobs, Shortcuts).
+- The marketing site is now multi-page: a compact home plus dedicated
+  /features, /pricing, and /faq pages with per-route titles and descriptions.
+
+### Changed
+- Domain matching now uses a suffix trie (O(labels) per lookup instead of a
+  linear rule scan), keeping the tester and exports instant at any pack size.
+
 ## 1.1.0 — 2026-06-11
 
 ### Added

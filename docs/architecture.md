@@ -44,7 +44,11 @@ Five layers:
 
 ## 3. Frontend
 
-- React 19 + TypeScript, no router dependency (30-line history router in `src/router.tsx`).
+- React 19 + TypeScript, no router dependency (30-line history router in `src/router.ts`).
+- Installable PWA: web app manifest plus a hand-rolled service worker (cache-first hashed assets,
+  network-first navigations, `/api` never intercepted) registered in production builds only.
+- Domain matching uses a suffix trie (`src/lib/domain-trie.ts`) — O(labels) per lookup, so the
+  tester stays instant regardless of rule pack size.
 - `SaasProvider` (`src/lib/saas.tsx`) owns session, entitlement, checkout, and toasts.
 - Pages: landing (hero/pricing/FAQ), dashboard (rule builder, exports, account), legal
   (privacy/terms/refunds), 404.
@@ -58,6 +62,7 @@ Five layers:
 | --- | --- | --- | --- |
 | `/api/create-checkout-session` | POST | Bearer | Start Stripe Checkout for the lifetime price |
 | `/api/entitlement` | GET | Bearer | Read the caller's license state |
+| `/api/export` | GET | Bearer + license | Canonical rule downloads for automation (curl, router cron) |
 | `/api/stripe-webhook` | POST | Stripe signature | Fulfill, refund, and revoke licenses |
 | `/api/health` | GET | none | Liveness for uptime monitors |
 

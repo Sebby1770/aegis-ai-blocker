@@ -7,11 +7,13 @@ desktop browsers, and home routers. It is sold as a one-time lifetime purchase.
 
 It ships as:
 
-- a React/Vite marketing site + web dashboard (landing page, pricing, legal pages, rule builder)
-- Vercel serverless API routes for Stripe Checkout, signed webhooks, entitlements, and health checks
+- a React/Vite marketing site + web dashboard (home, features, pricing, FAQ, legal pages, rule builder)
+- an installable PWA: offline-capable dashboard via a web app manifest and service worker
+- Vercel serverless API routes for Stripe Checkout, signed webhooks, entitlements, authenticated
+  rule exports, and health checks
 - a Supabase Postgres schema with row-level security, audit logs, and durable rate limiting
 - generated DNS/blocklist exports (AdGuard/uBlock, hosts, dnsmasq, plain, Safari content blocker)
-- a SwiftUI iOS companion app
+- a SwiftUI iOS companion app whose rule data is generated from the same pack as the web app
 
 Honesty is part of the product: no static app can block "all AI" forever. Aegis blocks the curated
 services in its rule pack and updates that pack as new AI services appear.
@@ -23,13 +25,15 @@ services in its rule pack and updates that pack as new AI services appear.
 ```text
 Browser (React SPA)                 Vercel serverless API            Third parties
 ┌───────────────────────┐          ┌──────────────────────────┐     ┌──────────────┐
-│ /        landing      │  bearer  │ POST /api/create-        │────▶│ Stripe       │
-│ /app     dashboard    │  token   │       checkout-session   │     │ Checkout     │
-│ /privacy /terms       │─────────▶│ GET  /api/entitlement    │     └──────┬───────┘
-│ /refunds legal        │          │ GET  /api/health         │            │ signed
-└──────────┬────────────┘          │ POST /api/stripe-webhook │◀───────────┘ webhook
-           │ magic link            └────────────┬─────────────┘
-           ▼                                    │ service role (server-only)
+│ /        home         │  bearer  │ POST /api/create-        │────▶│ Stripe       │
+│ /features /pricing    │  token   │       checkout-session   │     │ Checkout     │
+│ /faq     marketing    │─────────▶│ GET  /api/entitlement    │     └──────┬───────┘
+│ /app     dashboard    │          │ GET  /api/export         │            │ signed
+│ /privacy /terms       │          │ GET  /api/health         │            │
+│ /refunds legal        │          │ POST /api/stripe-webhook │◀───────────┘ webhook
+└──────────┬────────────┘          └────────────┬─────────────┘
+           │ magic link                         │ service role (server-only)
+           ▼                                    │
 ┌───────────────────────┐                       ▼
 │ Supabase Auth         │          ┌──────────────────────────┐
 └───────────────────────┘          │ Postgres + RLS           │

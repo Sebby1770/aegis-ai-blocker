@@ -1,4 +1,5 @@
 import rulesData from '../data/ai-services.json'
+import { matchDomainTrie, trieFor } from './domain-trie'
 
 export type RuleService = {
   name: string
@@ -74,8 +75,7 @@ export function isDomainBlocked(input: string, domains: string[]) {
     return { blocked: false, matchedDomain: '' }
   }
 
-  const matchedDomain =
-    domains.find((domain) => normalized === domain || normalized.endsWith(`.${domain}`)) ?? ''
+  const matchedDomain = matchDomainTrie(trieFor(domains), normalized)
 
   return { blocked: Boolean(matchedDomain), matchedDomain }
 }

@@ -1,0 +1,19 @@
+{
+  "name": "Aegis AI Blocker",
+  "short_name": "Aegis",
+  "description": "Curated AI blocklists for every device you own. One payment, lifetime access, no tracking.",
+  "id": "/app",
+  "start_url": "/app",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0d8f83",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
