@@ -26,8 +26,9 @@ export function Footer() {
           <div>
             <p className="footer-heading">Product</p>
             <Link to="/app">Dashboard</Link>
-            <Link to="/#pricing">Pricing</Link>
-            <Link to="/#faq">FAQ</Link>
+            <Link to="/features">Features</Link>
+            <Link to="/pricing">Pricing</Link>
+            <Link to="/faq">FAQ</Link>
           </div>
           <div>
             <p className="footer-heading">Legal</p>

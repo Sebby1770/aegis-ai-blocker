@@ -1,25 +1,10 @@
-import { ShieldCheck } from 'lucide-react'
 import { Link } from '../components/Link'
+import { MarketingHeader } from '../components/MarketingHeader'
 
 function LegalShell({ title, updated, children }: { title: string; updated: string; children: React.ReactNode }) {
   return (
     <div className="legal-page">
-      <header className="landing-header">
-        <Link to="/" className="brand-lockup brand-link">
-          <div className="brand-mark" aria-hidden="true">
-            <ShieldCheck size={25} strokeWidth={2.25} />
-          </div>
-          <div>
-            <p className="brand-name">Aegis AI Blocker</p>
-            <p className="brand-subtitle">Legal</p>
-          </div>
-        </Link>
-        <nav className="landing-nav" aria-label="Primary">
-          <Link to="/app" className="secondary-button landing-nav-cta">
-            Open dashboard
-          </Link>
-        </nav>
-      </header>
+      <MarketingHeader />
       <article className="legal-body">
         <h1>{title}</h1>
         <p className="legal-updated">Last updated: {updated}</p>
