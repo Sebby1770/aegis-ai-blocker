@@ -38,29 +38,11 @@ export function Footer() {
           </div>
           <div>
             <p className="footer-heading">Resources</p>
+            <Link to="/support">Support</Link>
+            <Link to="/changelog">Changelog</Link>
+            <Link to="/security">Security</Link>
             <a href="https://github.com/Sebby1770/aegis-ai-blocker" rel="noreferrer" target="_blank">
               GitHub
-            </a>
-            <a
-              href="https://github.com/Sebby1770/aegis-ai-blocker/blob/main/SECURITY.md"
-              rel="noreferrer"
-              target="_blank"
-            >
-              Security policy
-            </a>
-            <a
-              href="https://github.com/Sebby1770/aegis-ai-blocker/blob/main/CHANGELOG.md"
-              rel="noreferrer"
-              target="_blank"
-            >
-              Changelog
-            </a>
-            <a
-              href="https://github.com/Sebby1770/aegis-ai-blocker/issues"
-              rel="noreferrer"
-              target="_blank"
-            >
-              Support
             </a>
           </div>
         </nav>

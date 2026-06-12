@@ -1,16 +1,11 @@
 import { Link } from '../components/Link'
-import { MarketingHeader } from '../components/MarketingHeader'
+import { PageShell } from '../components/PageShell'
 
 function LegalShell({ title, updated, children }: { title: string; updated: string; children: React.ReactNode }) {
   return (
-    <div className="legal-page">
-      <MarketingHeader />
-      <article className="legal-body">
-        <h1>{title}</h1>
-        <p className="legal-updated">Last updated: {updated}</p>
-        {children}
-      </article>
-    </div>
+    <PageShell title={title} intro={`Last updated: ${updated}`}>
+      {children}
+    </PageShell>
   )
 }
 

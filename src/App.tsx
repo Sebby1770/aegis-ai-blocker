@@ -3,6 +3,7 @@ import './App.css'
 import { Footer } from './components/Footer'
 import { SaasProvider } from './lib/saas'
 import { useSaas } from './lib/saas-context'
+import { Changelog } from './pages/Changelog'
 import { Dashboard } from './pages/Dashboard'
 import { Faq } from './pages/Faq'
 import { Features } from './pages/Features'
@@ -10,6 +11,8 @@ import { Landing } from './pages/Landing'
 import { Privacy, Refunds, Terms } from './pages/Legal'
 import { NotFound } from './pages/NotFound'
 import { Pricing } from './pages/Pricing'
+import { SecurityPolicy } from './pages/SecurityPolicy'
+import { Support } from './pages/Support'
 import { usePathname } from './router'
 
 const pageTitles: Record<string, string> = {
@@ -21,6 +24,9 @@ const pageTitles: Record<string, string> = {
   '/privacy': 'Privacy Policy — Aegis AI Blocker',
   '/terms': 'Terms of Service — Aegis AI Blocker',
   '/refunds': 'Refund Policy — Aegis AI Blocker',
+  '/support': 'Support — Aegis AI Blocker',
+  '/changelog': 'Changelog — Aegis AI Blocker',
+  '/security': 'Security — Aegis AI Blocker',
 }
 
 const pageDescriptions: Record<string, string> = {
@@ -35,6 +41,9 @@ const pageDescriptions: Record<string, string> = {
   '/privacy': 'What Aegis collects (account email, license records) and what it never collects (your browsing).',
   '/terms': 'The terms that govern Aegis AI Blocker accounts and lifetime licenses.',
   '/refunds': 'Request a refund within 14 days of purchase — refunds deactivate the license automatically.',
+  '/support': 'Get help with sign-in, licenses, and exports — or request a new AI service for the rule pack.',
+  '/changelog': 'Every Aegis product and rule pack release, newest first.',
+  '/security': 'How to report a vulnerability privately, and the security controls Aegis runs in production.',
 }
 
 function Routes() {
@@ -79,6 +88,15 @@ function Routes() {
       break
     case '/refunds':
       page = <Refunds />
+      break
+    case '/support':
+      page = <Support />
+      break
+    case '/changelog':
+      page = <Changelog />
+      break
+    case '/security':
+      page = <SecurityPolicy />
       break
     default:
       page = <NotFound />

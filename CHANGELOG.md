@@ -2,6 +2,13 @@
 
 All notable changes to the product and the rule pack.
 
+## 1.3.0 — 2026-06-12
+
+### Added
+- Support, Changelog, and Security are now pages on the site itself instead of
+  GitHub links; the changelog page renders this file directly.
+- Wider desktop layout so the site fills modern screens.
+
 ## 1.2.0 — 2026-06-12
 
 ### Added
