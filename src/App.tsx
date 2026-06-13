@@ -1,10 +1,15 @@
 import { useEffect } from 'react'
 import './App.css'
+import { DashboardShell } from './components/DashboardShell'
 import { Footer } from './components/Footer'
+import { RulesProvider } from './lib/rules'
 import { SaasProvider } from './lib/saas'
 import { useSaas } from './lib/saas-context'
 import { Changelog } from './pages/Changelog'
-import { Dashboard } from './pages/Dashboard'
+import { Account } from './pages/dashboard/Account'
+import { Blocklists } from './pages/dashboard/Blocklists'
+import { Protection } from './pages/dashboard/Protection'
+import { Setup } from './pages/dashboard/Setup'
 import { Faq } from './pages/Faq'
 import { Features } from './pages/Features'
 import { Landing } from './pages/Landing'
@@ -20,7 +25,10 @@ const pageTitles: Record<string, string> = {
   '/features': 'Features — Aegis AI Blocker',
   '/pricing': 'Pricing — Aegis AI Blocker',
   '/faq': 'FAQ — Aegis AI Blocker',
-  '/app': 'Dashboard — Aegis AI Blocker',
+  '/app': 'Setup — Aegis AI Blocker',
+  '/app/protection': 'Protection — Aegis AI Blocker',
+  '/app/blocklists': 'Blocklists — Aegis AI Blocker',
+  '/app/account': 'Account — Aegis AI Blocker',
   '/privacy': 'Privacy Policy — Aegis AI Blocker',
   '/terms': 'Terms of Service — Aegis AI Blocker',
   '/refunds': 'Refund Policy — Aegis AI Blocker',
@@ -46,10 +54,18 @@ const pageDescriptions: Record<string, string> = {
   '/security': 'How to report a vulnerability privately, and the security controls Aegis runs in production.',
 }
 
+const dashboardPages: Record<string, React.ComponentType> = {
+  '/app': Setup,
+  '/app/protection': Protection,
+  '/app/blocklists': Blocklists,
+  '/app/account': Account,
+}
+
 function Routes() {
   const pathname = usePathname()
   const { toast } = useSaas()
   const route = pathname.replace(/\/$/, '') || '/'
+  const isDashboard = route === '/app' || route.startsWith('/app/')
 
   useEffect(() => {
     document.title = pageTitles[route] ?? 'Aegis AI Blocker'
@@ -64,48 +80,55 @@ function Routes() {
 
   let page: React.ReactNode
 
-  switch (route) {
-    case '/':
-      page = <Landing />
-      break
-    case '/features':
-      page = <Features />
-      break
-    case '/pricing':
-      page = <Pricing />
-      break
-    case '/faq':
-      page = <Faq />
-      break
-    case '/app':
-      page = <Dashboard />
-      break
-    case '/privacy':
-      page = <Privacy />
-      break
-    case '/terms':
-      page = <Terms />
-      break
-    case '/refunds':
-      page = <Refunds />
-      break
-    case '/support':
-      page = <Support />
-      break
-    case '/changelog':
-      page = <Changelog />
-      break
-    case '/security':
-      page = <SecurityPolicy />
-      break
-    default:
-      page = <NotFound />
+  if (isDashboard) {
+    const DashboardPage = dashboardPages[route] ?? NotFound
+
+    page = (
+      <DashboardShell>
+        <DashboardPage />
+      </DashboardShell>
+    )
+  } else {
+    switch (route) {
+      case '/':
+        page = <Landing />
+        break
+      case '/features':
+        page = <Features />
+        break
+      case '/pricing':
+        page = <Pricing />
+        break
+      case '/faq':
+        page = <Faq />
+        break
+      case '/privacy':
+        page = <Privacy />
+        break
+      case '/terms':
+        page = <Terms />
+        break
+      case '/refunds':
+        page = <Refunds />
+        break
+      case '/support':
+        page = <Support />
+        break
+      case '/changelog':
+        page = <Changelog />
+        break
+      case '/security':
+        page = <SecurityPolicy />
+        break
+      default:
+        page = <NotFound />
+    }
   }
 
   return (
     <>
       {page}
-      <Footer />
+      {!isDashboard && <Footer />}
       <div className={`toast ${toast ? 'show' : ''}`} role="status" aria-live="polite">
         {toast}
       </div>
@@ -116,7 +139,9 @@ function Routes() {
 function App() {
   return (
     <SaasProvider>
-      <Routes />
+      <RulesProvider>
+        <Routes />
+      </RulesProvider>
     </SaasProvider>
   )
 }

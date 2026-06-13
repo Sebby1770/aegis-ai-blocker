@@ -2,6 +2,20 @@
 
 All notable changes to the product and the rule pack.
 
+## 1.4.0 — 2026-06-13
+
+### Changed
+- The dashboard is now four focused pages with working sidebar navigation:
+  Setup (guided three-step onboarding with inline sign-in), Protection
+  (category toggles with expandable service lists and the rule tester),
+  Blocklists (export formats with per-format guidance), and Account.
+- Each dashboard page fits a single screen; the marketing footer no longer
+  renders inside the app.
+- Your category, strict mode, and format choices now persist across visits.
+
+### Removed
+- The illustrative "example activity" panel — real controls only.
+
 ## 1.3.0 — 2026-06-12
 
 ### Added
