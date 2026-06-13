@@ -11,59 +11,133 @@
       "services": [
         {
           "name": "OpenAI ChatGPT",
-          "domains": ["chatgpt.com", "chat.openai.com", "openai.com", "oaistatic.com", "oaiusercontent.com"]
+          "domains": [
+            "chatgpt.com",
+            "chat.openai.com",
+            "openai.com",
+            "oaistatic.com",
+            "oaiusercontent.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Anthropic Claude",
-          "domains": ["claude.ai", "console.anthropic.com", "anthropic.com"]
+          "domains": [
+            "claude.ai",
+            "console.anthropic.com",
+            "anthropic.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Google Gemini",
-          "domains": ["gemini.google.com", "bard.google.com", "aistudio.google.com", "notebooklm.google.com"]
+          "domains": [
+            "gemini.google.com",
+            "bard.google.com",
+            "aistudio.google.com",
+            "notebooklm.google.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11",
+          "note": "Targets Gemini/AI Studio/NotebookLM subdomains, not Google Search or Gmail."
         },
         {
           "name": "Meta AI",
-          "domains": ["meta.ai", "ai.meta.com"]
+          "domains": [
+            "meta.ai",
+            "ai.meta.com"
+          ],
+          "breakageRisk": "medium",
+          "verified": "2026-06-11",
+          "note": "ai.meta.com is Meta AI-specific; meta.ai is a dedicated surface."
         },
         {
           "name": "DeepSeek",
-          "domains": ["deepseek.com", "chat.deepseek.com"]
+          "domains": [
+            "deepseek.com",
+            "chat.deepseek.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Qwen",
-          "domains": ["qwen.ai", "chat.qwen.ai"]
+          "domains": [
+            "qwen.ai",
+            "chat.qwen.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Kimi",
-          "domains": ["kimi.com", "moonshot.ai"]
+          "domains": [
+            "kimi.com",
+            "moonshot.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Poe",
-          "domains": ["poe.com"]
+          "domains": [
+            "poe.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Character.AI",
-          "domains": ["character.ai", "beta.character.ai"]
+          "domains": [
+            "character.ai",
+            "beta.character.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Pi",
-          "domains": ["pi.ai", "inflection.ai"]
+          "domains": [
+            "pi.ai",
+            "inflection.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Manus",
-          "domains": ["manus.im"]
+          "domains": [
+            "manus.im"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Janitor AI",
-          "domains": ["janitorai.com"]
+          "domains": [
+            "janitorai.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "QuillBot",
-          "domains": ["quillbot.com"]
+          "domains": [
+            "quillbot.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Grammarly",
-          "domains": ["grammarly.com", "app.grammarly.com"],
+          "domains": [
+            "grammarly.com",
+            "app.grammarly.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11",
           "strictOnly": true
         }
       ]
@@ -76,39 +150,82 @@
       "services": [
         {
           "name": "Perplexity",
-          "domains": ["perplexity.ai", "www.perplexity.ai"]
+          "domains": [
+            "perplexity.ai",
+            "www.perplexity.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Microsoft Copilot",
-          "domains": ["copilot.microsoft.com", "bing.com", "edgeservices.bing.com"]
+          "domains": [
+            "copilot.microsoft.com",
+            "bing.com",
+            "edgeservices.bing.com"
+          ],
+          "breakageRisk": "high",
+          "verified": "2026-06-11",
+          "note": "bing.com also serves Microsoft Bing web search and maps — blocking it removes more than Copilot."
         },
         {
           "name": "You.com",
-          "domains": ["you.com", "youcdn.io"]
+          "domains": [
+            "you.com",
+            "youcdn.io"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Phind",
-          "domains": ["phind.com"]
+          "domains": [
+            "phind.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Grok",
-          "domains": ["grok.com", "x.ai"]
+          "domains": [
+            "grok.com",
+            "x.ai"
+          ],
+          "breakageRisk": "medium",
+          "verified": "2026-06-11",
+          "note": "x.ai is xAI's corporate domain; grok.com is Grok-specific."
         },
         {
           "name": "Genspark",
-          "domains": ["genspark.ai"]
+          "domains": [
+            "genspark.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Andi",
-          "domains": ["andisearch.com"]
+          "domains": [
+            "andisearch.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "iAsk",
-          "domains": ["iask.ai"]
+          "domains": [
+            "iask.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Komo",
-          "domains": ["komo.ai"]
+          "domains": [
+            "komo.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         }
       ]
     },
@@ -120,51 +237,113 @@
       "services": [
         {
           "name": "GitHub Copilot",
-          "domains": ["githubcopilot.com", "api.githubcopilot.com", "copilot-proxy.githubusercontent.com"]
+          "domains": [
+            "githubcopilot.com",
+            "api.githubcopilot.com",
+            "copilot-proxy.githubusercontent.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11",
+          "note": "Uses dedicated Copilot subdomains, so general GitHub keeps working."
         },
         {
           "name": "Cursor",
-          "domains": ["cursor.com", "api2.cursor.sh", "cursor.sh"]
+          "domains": [
+            "cursor.com",
+            "api2.cursor.sh",
+            "cursor.sh"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Replit AI",
-          "domains": ["replit.com", "replit.ai"]
+          "domains": [
+            "replit.com",
+            "replit.ai"
+          ],
+          "breakageRisk": "medium",
+          "verified": "2026-06-11",
+          "note": "replit.com is a general coding IDE and host; blocking it affects non-AI projects too."
         },
         {
           "name": "Blackbox AI",
-          "domains": ["blackbox.ai", "www.blackbox.ai"]
+          "domains": [
+            "blackbox.ai",
+            "www.blackbox.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Codeium Windsurf",
-          "domains": ["codeium.com", "windsurf.com"]
+          "domains": [
+            "codeium.com",
+            "windsurf.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Lovable",
-          "domains": ["lovable.dev", "lovable.app"]
+          "domains": [
+            "lovable.dev",
+            "lovable.app"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Bolt",
-          "domains": ["bolt.new"]
+          "domains": [
+            "bolt.new"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "v0",
-          "domains": ["v0.dev", "v0.app"]
+          "domains": [
+            "v0.dev",
+            "v0.app"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Devin",
-          "domains": ["devin.ai", "cognition.ai"]
+          "domains": [
+            "devin.ai",
+            "cognition.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Tabnine",
-          "domains": ["tabnine.com", "api.tabnine.com"]
+          "domains": [
+            "tabnine.com",
+            "api.tabnine.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Augment Code",
-          "domains": ["augmentcode.com"]
+          "domains": [
+            "augmentcode.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Sourcegraph Cody",
-          "domains": ["sourcegraph.com"],
+          "domains": [
+            "sourcegraph.com"
+          ],
+          "breakageRisk": "medium",
+          "verified": "2026-06-11",
+          "note": "sourcegraph.com is also a general code-search product, not only the Cody AI assistant.",
           "strictOnly": true
         }
       ]
@@ -177,83 +356,171 @@
       "services": [
         {
           "name": "Midjourney",
-          "domains": ["midjourney.com", "www.midjourney.com"]
+          "domains": [
+            "midjourney.com",
+            "www.midjourney.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "OpenAI Sora",
-          "domains": ["sora.com"]
+          "domains": [
+            "sora.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Runway",
-          "domains": ["runwayml.com", "app.runwayml.com"]
+          "domains": [
+            "runwayml.com",
+            "app.runwayml.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Luma",
-          "domains": ["lumalabs.ai"]
+          "domains": [
+            "lumalabs.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Pika",
-          "domains": ["pika.art"]
+          "domains": [
+            "pika.art"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Kling",
-          "domains": ["klingai.com"]
+          "domains": [
+            "klingai.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Hailuo",
-          "domains": ["hailuoai.video", "minimax.io"]
+          "domains": [
+            "hailuoai.video",
+            "minimax.io"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "HeyGen",
-          "domains": ["heygen.com", "app.heygen.com"]
+          "domains": [
+            "heygen.com",
+            "app.heygen.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Stability AI",
-          "domains": ["stability.ai", "platform.stability.ai"]
+          "domains": [
+            "stability.ai",
+            "platform.stability.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Black Forest Labs",
-          "domains": ["bfl.ai"]
+          "domains": [
+            "bfl.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Leonardo AI",
-          "domains": ["leonardo.ai", "app.leonardo.ai"]
+          "domains": [
+            "leonardo.ai",
+            "app.leonardo.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Ideogram",
-          "domains": ["ideogram.ai"]
+          "domains": [
+            "ideogram.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Krea",
-          "domains": ["krea.ai"]
+          "domains": [
+            "krea.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Recraft",
-          "domains": ["recraft.ai"]
+          "domains": [
+            "recraft.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Civitai",
-          "domains": ["civitai.com"]
+          "domains": [
+            "civitai.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Adobe Firefly",
-          "domains": ["firefly.adobe.com"]
+          "domains": [
+            "firefly.adobe.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Google Labs",
-          "domains": ["labs.google"]
+          "domains": [
+            "labs.google"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Suno",
-          "domains": ["suno.com", "suno.ai"]
+          "domains": [
+            "suno.com",
+            "suno.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Udio",
-          "domains": ["udio.com"]
+          "domains": [
+            "udio.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "ElevenLabs",
-          "domains": ["elevenlabs.io", "api.elevenlabs.io"]
+          "domains": [
+            "elevenlabs.io",
+            "api.elevenlabs.io"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         }
       ]
     },
@@ -265,81 +532,266 @@
       "services": [
         {
           "name": "OpenAI API",
-          "domains": ["api.openai.com", "platform.openai.com"]
+          "domains": [
+            "api.openai.com",
+            "platform.openai.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Anthropic API",
-          "domains": ["api.anthropic.com"]
+          "domains": [
+            "api.anthropic.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Google AI API",
-          "domains": ["generativelanguage.googleapis.com", "ai.google.dev"]
+          "domains": [
+            "generativelanguage.googleapis.com",
+            "ai.google.dev"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11",
+          "note": "generativelanguage.googleapis.com is the dedicated Gemini API endpoint."
         },
         {
           "name": "Azure OpenAI",
-          "domains": ["openai.azure.com"]
+          "domains": [
+            "openai.azure.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "xAI API",
-          "domains": ["api.x.ai"]
+          "domains": [
+            "api.x.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "DeepSeek API",
-          "domains": ["api.deepseek.com", "platform.deepseek.com"]
+          "domains": [
+            "api.deepseek.com",
+            "platform.deepseek.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Mistral AI",
-          "domains": ["mistral.ai", "chat.mistral.ai", "api.mistral.ai", "console.mistral.ai"]
+          "domains": [
+            "mistral.ai",
+            "chat.mistral.ai",
+            "api.mistral.ai",
+            "console.mistral.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Cohere",
-          "domains": ["cohere.com", "api.cohere.com"]
+          "domains": [
+            "cohere.com",
+            "api.cohere.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Groq",
-          "domains": ["groq.com", "api.groq.com"]
+          "domains": [
+            "groq.com",
+            "api.groq.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Together AI",
-          "domains": ["together.ai", "api.together.xyz"]
+          "domains": [
+            "together.ai",
+            "api.together.xyz"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Fireworks AI",
-          "domains": ["fireworks.ai", "api.fireworks.ai"]
+          "domains": [
+            "fireworks.ai",
+            "api.fireworks.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Cerebras",
-          "domains": ["cerebras.ai", "api.cerebras.ai"]
+          "domains": [
+            "cerebras.ai",
+            "api.cerebras.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "OpenRouter",
-          "domains": ["openrouter.ai"]
+          "domains": [
+            "openrouter.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Replicate",
-          "domains": ["replicate.com", "api.replicate.com"]
+          "domains": [
+            "replicate.com",
+            "api.replicate.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11"
         },
         {
           "name": "Google Vertex AI",
-          "domains": ["aiplatform.googleapis.com"],
+          "domains": [
+            "aiplatform.googleapis.com"
+          ],
+          "breakageRisk": "medium",
+          "verified": "2026-06-11",
+          "note": "aiplatform.googleapis.com is shared Google Cloud infrastructure — may affect other GCP apps.",
           "strictOnly": true
         },
         {
           "name": "Hugging Face",
-          "domains": ["huggingface.co", "api-inference.huggingface.co"],
+          "domains": [
+            "huggingface.co",
+            "api-inference.huggingface.co"
+          ],
+          "breakageRisk": "medium",
+          "verified": "2026-06-11",
+          "note": "huggingface.co also hosts many non-AI datasets, Spaces, and open-source projects.",
           "strictOnly": true
         },
         {
           "name": "Ollama",
-          "domains": ["ollama.com"],
+          "domains": [
+            "ollama.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11",
+          "note": "Local model runner — blocking only affects model downloads from ollama.com.",
           "strictOnly": true
         },
         {
           "name": "LM Studio",
-          "domains": ["lmstudio.ai"],
+          "domains": [
+            "lmstudio.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-06-11",
+          "note": "Local model runner — blocking only affects lmstudio.ai downloads/updates.",
           "strictOnly": true
         }
       ]
+    }
+  ],
+  "policies": [
+    {
+      "id": "strict-no-ai",
+      "name": "Strict no-AI",
+      "tagline": "Block every AI surface we track",
+      "space": "Maximum boundary",
+      "recommendedFor": "People who want AI fully out of their attention.",
+      "block": [
+        "chat",
+        "search",
+        "coding",
+        "creative",
+        "api"
+      ],
+      "strict": true
+    },
+    {
+      "id": "focus",
+      "name": "Focus",
+      "tagline": "Silence AI chat, search, and generators — keep your dev tools",
+      "space": "Writing room · deep work",
+      "recommendedFor": "Workers and writers who want focus without losing coding assistants.",
+      "block": [
+        "chat",
+        "search",
+        "creative"
+      ],
+      "strict": false
+    },
+    {
+      "id": "child-safe",
+      "name": "Child-safe",
+      "tagline": "Block chatbots, image/video generators, and answer engines",
+      "space": "Kid's iPad · family devices",
+      "recommendedFor": "Families choosing what AI tools children can reach.",
+      "block": [
+        "chat",
+        "search",
+        "creative"
+      ],
+      "strict": true
+    },
+    {
+      "id": "school-exam",
+      "name": "School exam",
+      "tagline": "Block everything that could count as unfair assistance",
+      "space": "School network · exams",
+      "recommendedFor": "Schools deciding what counts as fair assistance during assessment.",
+      "block": [
+        "chat",
+        "search",
+        "coding",
+        "creative",
+        "api"
+      ],
+      "strict": true
+    },
+    {
+      "id": "workplace",
+      "name": "Workplace compliance",
+      "tagline": "Block consumer chatbots and generators, leave search and APIs to policy",
+      "space": "Work laptop",
+      "recommendedFor": "Workplaces keeping unsanctioned AI off managed devices.",
+      "block": [
+        "chat",
+        "creative"
+      ],
+      "strict": false
+    },
+    {
+      "id": "creative-allowed",
+      "name": "Creative tools allowed",
+      "tagline": "Allow image, video, and coding AI — block chat and search",
+      "space": "Design studio",
+      "recommendedFor": "Makers who use generative tools but want chatbots out of the way.",
+      "block": [
+        "chat",
+        "search",
+        "api"
+      ],
+      "strict": false
+    },
+    {
+      "id": "research-no-chat",
+      "name": "Research allowed, chat blocked",
+      "tagline": "Allow AI search and APIs for research — block chatbots and generators",
+      "space": "Research desk",
+      "recommendedFor": "Researchers who allow assistive search but block conversational AI.",
+      "block": [
+        "chat",
+        "creative"
+      ],
+      "strict": false
     }
   ]
 }

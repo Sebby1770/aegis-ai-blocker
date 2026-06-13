@@ -5,6 +5,7 @@ import { Footer } from './components/Footer'
 import { RulesProvider } from './lib/rules'
 import { SaasProvider } from './lib/saas'
 import { useSaas } from './lib/saas-context'
+import { Catalog } from './pages/Catalog'
 import { Changelog } from './pages/Changelog'
 import { Account } from './pages/dashboard/Account'
 import { Blocklists } from './pages/dashboard/Blocklists'
@@ -15,13 +16,16 @@ import { Features } from './pages/Features'
 import { Landing } from './pages/Landing'
 import { Privacy, Refunds, Terms } from './pages/Legal'
 import { NotFound } from './pages/NotFound'
+import { Philosophy } from './pages/Philosophy'
 import { Pricing } from './pages/Pricing'
 import { SecurityPolicy } from './pages/SecurityPolicy'
 import { Support } from './pages/Support'
 import { usePathname } from './router'
 
 const pageTitles: Record<string, string> = {
-  '/': 'Aegis AI Blocker — Block AI tools on every device',
+  '/': 'Aegis — Decide where AI is allowed in your life',
+  '/philosophy': 'Philosophy — Aegis AI Blocker',
+  '/catalog': 'Catalog — Aegis AI Blocker',
   '/features': 'Features — Aegis AI Blocker',
   '/pricing': 'Pricing — Aegis AI Blocker',
   '/faq': 'FAQ — Aegis AI Blocker',
@@ -39,7 +43,11 @@ const pageTitles: Record<string, string> = {
 
 const pageDescriptions: Record<string, string> = {
   '/':
-    'Aegis turns a curated, versioned catalogue of AI services into ready-to-use blocklists for iPhone, desktop browsers, and home routers. One payment, lifetime access, no tracking.',
+    'Aegis is a policy engine for AI exposure: choose a value — Focus, Child-safe, School exam, Workplace — and it becomes ready-to-use rules for every device. One payment, lifetime access, no tracking.',
+  '/philosophy':
+    'Aegis is about intentional digital boundaries — choosing, maintaining, and enforcing where AI tools are allowed in your digital life.',
+  '/catalog':
+    'Every AI service Aegis tracks, with last-verified dates, breakage-risk labels, and the domains behind each rule. No black box.',
   '/features':
     'Category toggles, strict mode, a live domain tester, and five export formats: AdGuard/uBlock, hosts file, dnsmasq, plain domains, and Safari content blocker.',
   '/pricing':
@@ -92,6 +100,12 @@ function Routes() {
     switch (route) {
       case '/':
         page = <Landing />
+        break
+      case '/philosophy':
+        page = <Philosophy />
+        break
+      case '/catalog':
+        page = <Catalog />
         break
       case '/features':
         page = <Features />

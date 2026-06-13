@@ -2,12 +2,19 @@
 
 [![CI](https://github.com/Sebby1770/aegis-ai-blocker/actions/workflows/ci.yml/badge.svg)](https://github.com/Sebby1770/aegis-ai-blocker/actions/workflows/ci.yml)
 
-Aegis turns a curated, versioned catalogue of AI services into ready-to-use blocklists for phones,
+Aegis is a policy engine for intentional digital boundaries: choose a value — Focus, Child-safe,
+School exam, Workplace compliance — and Aegis turns it into ready-to-use AI blocklists for phones,
 desktop browsers, and home routers. It is sold as a one-time lifetime purchase.
+
+Every block explains itself (which service, which category, exact vs. parent-domain match), every
+service carries a breakage-risk label and a last-verified date, and the whole catalog is public —
+trust is a visible feature, not a promise. Today Aegis enforces **block**; softer friction (warn,
+delay, schedule) and rituals are on the roadmap behind an always-on agent.
 
 It ships as:
 
-- a React/Vite marketing site + web dashboard (home, features, pricing, FAQ, legal pages, rule builder)
+- a React/Vite marketing site + web dashboard (home, philosophy, catalog, features, pricing, FAQ,
+  legal pages, and a four-page policy dashboard)
 - an installable PWA: offline-capable dashboard via a web app manifest and service worker
 - Vercel serverless API routes for Stripe Checkout, signed webhooks, entitlements, authenticated
   rule exports, and health checks

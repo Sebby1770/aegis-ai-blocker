@@ -8,6 +8,7 @@ export type RulesContextValue = RulesSettings & {
   toggleCategory: (id: string) => void
   setStrictMode: (value: boolean) => void
   setExportFormat: (format: ExportFormat) => void
+  applyPolicy: (policyId: string) => void
 }
 
 export const RulesContext = createContext<RulesContextValue | null>(null)

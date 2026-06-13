@@ -1,9 +1,14 @@
 import rulesData from '../data/ai-services.json'
 import { matchDomainTrie, trieFor } from './domain-trie'
 
+export type BreakageRisk = 'low' | 'medium' | 'high'
+
 export type RuleService = {
   name: string
   domains: string[]
+  breakageRisk: BreakageRisk
+  verified: string
+  note?: string
   strictOnly?: boolean
 }
 
@@ -15,11 +20,22 @@ export type RuleCategory = {
   services: RuleService[]
 }
 
+export type Policy = {
+  id: string
+  name: string
+  tagline: string
+  space: string
+  recommendedFor: string
+  block: string[]
+  strict: boolean
+}
+
 export type RulePack = {
   version: string
   updatedAt: string
   disclaimer: string
   categories: RuleCategory[]
+  policies: Policy[]
 }
 
 export type ExportFormat = 'adguard' | 'hosts' | 'dnsmasq' | 'plain' | 'safari'

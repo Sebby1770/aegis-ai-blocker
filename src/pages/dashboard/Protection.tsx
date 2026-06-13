@@ -1,19 +1,22 @@
 import { useMemo, useState } from 'react'
 import {
-  Activity,
   Ban,
   CheckCircle2,
   ChevronDown,
   Code2,
   Globe2,
+  Info,
   Radar,
   Search,
+  ShieldQuestion,
   SlidersHorizontal,
   Sparkles,
   ToggleLeft,
   ToggleRight,
 } from 'lucide-react'
-import { isDomainBlocked, rulePack } from '../../lib/blocklists'
+import { rulePack, type BreakageRisk } from '../../lib/blocklists'
+import { breakageLabels, explainDomain } from '../../lib/explain'
+import { CUSTOM_POLICY_ID, policies } from '../../lib/policies'
 import { useRules } from '../../lib/rules-context'
 
 const categoryIcons: Record<string, typeof Sparkles> = {
@@ -24,21 +27,37 @@ const categoryIcons: Record<string, typeof Sparkles> = {
   api: Globe2,
 }
 
+const riskClass: Record<BreakageRisk, string> = {
+  low: 'risk-low',
+  medium: 'risk-medium',
+  high: 'risk-high',
+}
+
 export function Protection() {
-  const { enabledCategories, strictMode, activeDomains, activeServiceCount, toggleCategory, setStrictMode } =
-    useRules()
+  const {
+    enabledCategories,
+    strictMode,
+    activeDomains,
+    activeServiceCount,
+    activePolicyId,
+    toggleCategory,
+    setStrictMode,
+    applyPolicy,
+  } = useRules()
   const [testUrl, setTestUrl] = useState('claude.ai')
   const [expanded, setExpanded] = useState<string | null>(null)
 
-  const testResult = useMemo(() => isDomainBlocked(testUrl, activeDomains), [activeDomains, testUrl])
+  const explanation = useMemo(() => explainDomain(testUrl, strictMode), [strictMode, testUrl])
+  const activePolicy = policies.find((policy) => policy.id === activePolicyId)
 
   return (
     <>
       <header className="topbar">
         <div>
-          <h1>Choose what gets blocked</h1>
+          <h1>Choose your AI policy</h1>
           <p className="topbar-copy">
-            Flip a category on or off — every export you download uses these choices.
+            Pick the boundary that matches the moment — or fine-tune categories below. Every export
+            you download follows this policy.
           </p>
         </div>
         <button className="strict-chip" type="button" onClick={() => setStrictMode(!strictMode)}>
@@ -46,6 +65,44 @@ export function Protection() {
           Strict mode {strictMode ? 'on' : 'off'}
         </button>
       </header>
+
+      <section className="panel policy-panel" aria-label="Policy modes">
+        <div className="panel-heading">
+          <div>
+            <p className="eyebrow">Modes</p>
+            <h2>Choose a value, not a domain list</h2>
+          </div>
+          <span className={`policy-status ${activePolicyId === CUSTOM_POLICY_ID ? 'custom' : ''}`}>
+            {activePolicy ? activePolicy.name : 'Custom policy'}
+          </span>
+        </div>
+
+        <div className="policy-grid">
+          {policies.map((policy) => {
+            const selected = policy.id === activePolicyId
+            return (
+              <button
+                key={policy.id}
+                type="button"
+                className={`policy-card ${selected ? 'selected' : ''}`}
+                onClick={() => applyPolicy(policy.id)}
+                aria-pressed={selected}
+              >
+                <span className="policy-space">{policy.space}</span>
+                <strong>{policy.name}</strong>
+                <small>{policy.tagline}</small>
+                <span className="policy-recommended">{policy.recommendedFor}</span>
+              </button>
+            )
+          })}
+        </div>
+        {activePolicyId === CUSTOM_POLICY_ID && (
+          <p className="policy-custom-note">
+            <Info size={14} />
+            You&apos;ve tuned categories by hand — this is a custom policy. Pick a mode above to reset.
+          </p>
+        )}
+      </section>
 
       <section className="summary-grid">
         <article className="status-card protection-card">
@@ -88,8 +145,8 @@ export function Protection() {
         <section className="panel" aria-label="Categories">
           <div className="panel-heading">
             <div>
-              <p className="eyebrow">Categories</p>
-              <h2>Tap a category to switch it</h2>
+              <p className="eyebrow">Fine-tune</p>
+              <h2>Categories</h2>
             </div>
           </div>
 
@@ -135,13 +192,20 @@ export function Protection() {
                   </div>
 
                   {isExpanded && (
-                    <div className="service-chips" aria-label={`${category.name} services`}>
+                    <ul className="service-rows" aria-label={`${category.name} services`}>
                       {services.map((service) => (
-                        <span key={service.name} className="service-chip">
-                          {service.name}
-                        </span>
+                        <li key={service.name} className="service-row">
+                          <span className="service-name">{service.name}</span>
+                          <span className="service-meta">
+                            <span className={`risk-badge ${riskClass[service.breakageRisk]}`} title={breakageLabels[service.breakageRisk]}>
+                              {service.breakageRisk}
+                            </span>
+                            {service.strictOnly && <span className="strict-badge">strict only</span>}
+                          </span>
+                          {service.note && <span className="service-note">{service.note}</span>}
+                        </li>
                       ))}
-                    </div>
+                    </ul>
                   )}
                 </div>
               )
@@ -152,24 +216,35 @@ export function Protection() {
         <section className="panel tester-panel" aria-label="Rule tester">
           <div className="panel-heading">
             <div>
-              <p className="eyebrow">Rule tester</p>
-              <h2>Would this site be blocked?</h2>
+              <p className="eyebrow">Why is it blocked?</p>
+              <h2>Explain any domain</h2>
             </div>
-            <Activity size={20} />
+            <ShieldQuestion size={20} />
           </div>
           <label className="tester-input">
             <span>URL or domain</span>
             <input value={testUrl} onChange={(event) => setTestUrl(event.target.value)} placeholder="chatgpt.com" />
           </label>
-          <div className={`test-result ${testResult.blocked ? 'blocked' : 'allowed'}`}>
-            {testResult.blocked ? <Ban size={18} /> : <CheckCircle2 size={18} />}
-            <span>
-              {testResult.blocked ? `Blocked by the ${testResult.matchedDomain} rule` : 'Allowed by your current rules'}
-            </span>
+
+          <div className={`explain-result explain-${explanation.status}`}>
+            <strong>
+              {explanation.status === 'blocked' && 'Blocked'}
+              {explanation.status === 'strict-only' && 'Allowed (strict mode off)'}
+              {explanation.status === 'allowed' && 'Allowed'}
+            </strong>
+            <p>{explanation.reason}</p>
+            {explanation.owner && (
+              <div className="explain-tags">
+                <span className={`risk-badge ${riskClass[explanation.owner.breakageRisk]}`}>
+                  {breakageLabels[explanation.owner.breakageRisk]}
+                </span>
+                {explanation.owner.strictOnly && <span className="strict-badge">strict only</span>}
+                {explanation.matchType === 'parent' && <span className="match-badge">parent-domain match</span>}
+              </div>
+            )}
+            {explanation.owner?.note && <p className="explain-note">{explanation.owner.note}</p>}
           </div>
-          <p className="tester-note">
-            Tested against your category choices above, live in your browser.
-          </p>
+          <p className="tester-note">Explained live in your browser against your current policy.</p>
         </section>
       </section>
     </>

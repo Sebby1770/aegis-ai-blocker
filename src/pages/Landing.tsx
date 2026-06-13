@@ -7,7 +7,7 @@ import {
   Download,
   KeyRound,
 } from 'lucide-react'
-import { isDomainBlocked } from '../lib/blocklists'
+import { isDomainBlocked, rulePack } from '../lib/blocklists'
 import { defaultDomainCount, defaultDomains, serviceCount, strictDomainCount } from '../lib/marketing'
 import { priceDisplay, useSaas } from '../lib/saas-context'
 import { Link } from '../components/Link'
@@ -68,23 +68,31 @@ export function Landing() {
       <section className="hero">
         <p className="hero-eyebrow">
           <BadgeCheck size={16} />
-          One payment. Lifetime access. No tracking.
+          Intentional digital boundaries · one payment · no tracking
         </p>
-        <h1>Block AI tools on every device you own</h1>
+        <h1>Decide where AI is allowed in your life</h1>
         <p className="hero-copy">
-          Aegis turns a curated, always-updated catalogue of AI services into ready-to-use
-          blocklists for your phone, your browser, and your whole home network. Take back your
-          focus — or your family&apos;s — in minutes.
+          Aegis is a policy engine for AI exposure. Choose a value — Focus, Child-safe, School exam,
+          Workplace — and Aegis turns it into ready-to-use rules for your phone, your browser, and
+          your whole home network. Choose, maintain, and enforce where AI tools belong.
         </p>
         <div className="hero-actions">
           <button className="primary-button hero-cta" type="button" onClick={buyNow}>
             {licensed ? <Download size={18} /> : <KeyRound size={18} />}
             {licensed ? 'Open your dashboard' : checkoutLoading ? 'Starting…' : `Get lifetime access · ${priceDisplay}`}
           </button>
-          <Link to="/app" className="secondary-button hero-secondary">
-            Try the rule builder free
+          <Link to="/philosophy" className="secondary-button hero-secondary">
+            Why Aegis exists
             <ArrowRight size={16} />
           </Link>
+        </div>
+
+        <div className="mode-strip" aria-label="Policy modes">
+          {rulePack.policies.slice(0, 6).map((policy) => (
+            <Link key={policy.id} to="/app/protection" className="mode-pill">
+              {policy.name}
+            </Link>
+          ))}
         </div>
 
         <LiveDomainCheck />
@@ -134,17 +142,32 @@ export function Landing() {
         </div>
       </section>
 
+      <section className="landing-section" id="philosophy">
+        <p className="eyebrow">The idea</p>
+        <h2>Not &ldquo;AI bad.&rdquo; AI on your terms.</h2>
+        <div className="belief-grid">
+          <p><strong>I</strong> choose when AI enters my attention.</p>
+          <p><strong>Families</strong> choose what tools their kids can reach.</p>
+          <p><strong>Schools</strong> choose what counts as fair assistance.</p>
+          <p><strong>Workers</strong> choose focus over ambient automation.</p>
+        </div>
+        <Link to="/philosophy" className="secondary-button belief-cta">
+          Read the philosophy
+          <ArrowRight size={16} />
+        </Link>
+      </section>
+
       <section className="cta-band">
         <div>
-          <h2>See what&apos;s inside</h2>
+          <h2>Every rule, in the open</h2>
           <p>
-            {serviceCount} AI services across 5 categories, five export formats, and a rule pack
-            that keeps growing.
+            {serviceCount} services, each with a last-verified date and a breakage-risk label. No
+            black box — see exactly what Aegis blocks and why.
           </p>
         </div>
         <div className="cta-band-actions">
-          <Link to="/features" className="secondary-button">
-            Explore features
+          <Link to="/catalog" className="secondary-button">
+            Browse the catalog
           </Link>
           <Link to="/pricing" className="primary-button">
             See pricing

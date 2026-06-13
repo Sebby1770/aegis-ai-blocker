@@ -2,6 +2,33 @@
 
 All notable changes to the product and the rule pack.
 
+## 2.0.0 — 2026-06-13
+
+Aegis is now a policy engine for intentional digital boundaries, not just a blocker.
+
+### Added
+- **Policy modes.** Choose a value — Strict no-AI, Focus, Child-safe, School exam,
+  Workplace compliance, Creative tools allowed, Research allowed/chat blocked — and
+  Aegis sets the rules. Manual tuning shows as a "Custom" policy. Your choice persists.
+- **Explainability.** Every domain check now answers *why*: which service, which
+  category, exact vs. parent-domain match, and strict-only status.
+- **Trust metadata.** Every service carries a breakage-risk label (low/medium/high),
+  a last-verified date, and side-effect notes for domains that overlap non-AI tools.
+- **Public Catalog page** (`/catalog`) — searchable, every rule in the open, with
+  stewardship stats. The "maintained garden", not a black box.
+- **Philosophy page** (`/philosophy`) — the reframe, and an honest line on what is
+  enforced today (block) versus the roadmap (warn, delay, schedule, rituals — these
+  need an always-on agent).
+
+### Changed
+- New claim: "Decide where AI is allowed in your life." Home reframed around values.
+- The Protection page leads with policy modes; the rule tester is now an explainer.
+
+### Honesty note
+- Warn/Delay/Schedule friction levels and notification-driven rituals are intentionally
+  **not** shipped as toggles, because a static blocklist cannot enforce them. They are
+  on the roadmap behind the active agent (e.g. the iOS Network Extension).
+
 ## 1.4.0 — 2026-06-13
 
 ### Changed

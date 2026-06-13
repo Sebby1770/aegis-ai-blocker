@@ -4,9 +4,10 @@ import { usePathname } from '../router'
 import { Link } from './Link'
 
 const navItems = [
+  { to: '/philosophy', label: 'Philosophy' },
   { to: '/features', label: 'Features' },
+  { to: '/catalog', label: 'Catalog' },
   { to: '/pricing', label: 'Pricing' },
-  { to: '/faq', label: 'FAQ' },
 ]
 
 export function MarketingHeader() {
