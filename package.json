@@ -16,11 +16,11 @@
     "verify": "npm run generate:rules && npm run lint && npm run typecheck:api && npm run test && npm run build"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.108.1",
-    "lucide-react": "^1.17.0",
+    "@supabase/supabase-js": "^2.108.2",
+    "lucide-react": "^1.21.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
-    "stripe": "^22.2.0",
+    "stripe": "^22.2.1",
     "zod": "^4.4.3"
   },
   "devDependencies": {
@@ -29,13 +29,13 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
-    "eslint": "^10.3.0",
+    "eslint": "^10.5.0",
     "eslint-plugin-react-hooks": "^7.1.1",
-    "eslint-plugin-react-refresh": "^0.5.2",
+    "eslint-plugin-react-refresh": "^0.5.3",
     "globals": "^17.6.0",
     "typescript": "~6.0.2",
-    "typescript-eslint": "^8.59.2",
+    "typescript-eslint": "^8.61.1",
     "vite": "^8.0.12",
-    "vitest": "^4.1.8"
+    "vitest": "^4.1.9"
   }
 }
