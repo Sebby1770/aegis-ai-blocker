@@ -1,4 +1,9 @@
-import { normalizeDomain, rulePack, type BreakageRisk } from './blocklists'
+import { isDomainBlocked, normalizeDomain, rulePack, type BreakageRisk } from './blocklists'
+
+export type ExplainExceptions = {
+  allow?: string[]
+  block?: string[]
+}
 
 // Reverse index: every blocklisted domain -> the service and category it
 // belongs to. Built once from the rule pack so explanations are O(labels).
@@ -62,11 +67,43 @@ function findOwner(normalized: string): { owner: DomainOwner; matchType: 'exact'
 
 // Explains how a hostname is treated under the current strict-mode setting,
 // including the case where a domain is only covered when strict mode is on.
-export function explainDomain(input: string, strictMode: boolean): Explanation {
+export function explainDomain(
+  input: string,
+  strictMode: boolean,
+  exceptions?: ExplainExceptions,
+): Explanation {
   const normalized = normalizeDomain(input)
 
   if (!normalized) {
     return { input, normalized: '', status: 'allowed', matchType: null, owner: null, reason: 'Enter a domain to check it.' }
+  }
+
+  // User exceptions are checked first: an allow exception overrides everything,
+  // and a custom block applies even when the pack would not catch the domain.
+  const allowMatch = exceptions?.allow?.length ? isDomainBlocked(normalized, exceptions.allow) : null
+  if (allowMatch?.blocked) {
+    const via = allowMatch.matchedDomain !== normalized ? ` (via your allow rule for ${allowMatch.matchedDomain})` : ''
+    return {
+      input,
+      normalized,
+      status: 'allowed',
+      matchType: null,
+      owner: null,
+      reason: `${normalized} is allowed by your exceptions${via}, even if a policy would otherwise block it.`,
+    }
+  }
+
+  const blockMatch = exceptions?.block?.length ? isDomainBlocked(normalized, exceptions.block) : null
+  if (blockMatch?.blocked) {
+    const via = blockMatch.matchedDomain !== normalized ? ` (via your block rule for ${blockMatch.matchedDomain})` : ''
+    return {
+      input,
+      normalized,
+      status: 'blocked',
+      matchType: null,
+      owner: null,
+      reason: `${normalized} is blocked by a custom rule you added${via}.`,
+    }
   }
 
   const match = findOwner(normalized)

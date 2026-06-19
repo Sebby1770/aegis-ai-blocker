@@ -20,6 +20,8 @@ It ships as:
   rule exports, and health checks
 - a Supabase Postgres schema with row-level security, audit logs, and durable rate limiting
 - generated DNS/blocklist exports (AdGuard/uBlock, hosts, dnsmasq, plain, Safari content blocker)
+- per-domain exceptions: *always allow* a domain through a blocking policy (e.g. keep Copilot for
+  work) or *also block* your own — rendered as real allow rules where the format supports them
 - a SwiftUI iOS companion app whose rule data is generated from the same pack as the web app
 
 Honesty is part of the product: no static app can block "all AI" forever. Aegis blocks the curated

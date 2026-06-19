@@ -40,6 +40,8 @@ export function Protection() {
     activeDomains,
     activeServiceCount,
     activePolicyId,
+    allowDomains,
+    blockDomains,
     toggleCategory,
     setStrictMode,
     applyPolicy,
@@ -47,7 +49,10 @@ export function Protection() {
   const [testUrl, setTestUrl] = useState('claude.ai')
   const [expanded, setExpanded] = useState<string | null>(null)
 
-  const explanation = useMemo(() => explainDomain(testUrl, strictMode), [strictMode, testUrl])
+  const explanation = useMemo(
+    () => explainDomain(testUrl, strictMode, { allow: allowDomains, block: blockDomains }),
+    [strictMode, testUrl, allowDomains, blockDomains],
+  )
   const activePolicy = policies.find((policy) => policy.id === activePolicyId)
 
   return (
