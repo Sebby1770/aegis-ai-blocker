@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
-import { getActiveDomains, getActiveServices } from './blocklists'
+import { getActiveServices, resolveRules, toValidDomain } from './blocklists'
 import { matchPolicyId, policies, settingsForPolicy } from './policies'
 import { RulesContext, type RulesContextValue } from './rules-context'
 import { parseSettings, serializeSettings, STORAGE_KEY, type RulesSettings } from './rules-storage'
@@ -24,7 +24,7 @@ export function RulesProvider({ children }: { children: ReactNode }) {
   }, [settings])
 
   const value = useMemo<RulesContextValue>(() => {
-    const activeDomains = getActiveDomains(settings.enabledCategories, settings.strictMode)
+    const { blocked: activeDomains, allowed: activeAllowed } = resolveRules(settings)
     const activeServiceCount = getActiveServices(settings.enabledCategories, settings.strictMode).length
 
     // Any manual change re-derives the active policy: it becomes a named
@@ -37,6 +37,7 @@ export function RulesProvider({ children }: { children: ReactNode }) {
     return {
       ...settings,
       activeDomains,
+      activeAllowed,
       activeServiceCount,
       toggleCategory: (id) =>
         setSettings((current) =>
@@ -50,8 +51,40 @@ export function RulesProvider({ children }: { children: ReactNode }) {
       applyPolicy: (policyId) =>
         setSettings((current) => {
           const policy = policies.find((entry) => entry.id === policyId)
-          return policy ? settingsForPolicy(policy, current.exportFormat) : current
+          // Applying a policy resets categories/strict but keeps the user's
+          // personal allow/block exceptions in place.
+          return policy
+            ? { ...settingsForPolicy(policy, current.exportFormat), allowDomains: current.allowDomains, blockDomains: current.blockDomains }
+            : current
         }),
+      addException: (kind, domain) => {
+        const normalized = toValidDomain(domain)
+        if (!normalized) {
+          return null
+        }
+        setSettings((current) => {
+          if (kind === 'allow') {
+            const allowDomains = current.allowDomains.includes(normalized)
+              ? current.allowDomains
+              : [...current.allowDomains, normalized]
+            // Allow wins: drop it from the block list if present.
+            const blockDomains = current.blockDomains.filter((entry) => entry !== normalized)
+            return { ...current, allowDomains, blockDomains }
+          }
+          // A domain that's an allow exception can't also be custom-blocked.
+          if (current.allowDomains.includes(normalized) || current.blockDomains.includes(normalized)) {
+            return current
+          }
+          return { ...current, blockDomains: [...current.blockDomains, normalized] }
+        })
+        return normalized
+      },
+      removeException: (kind, domain) =>
+        setSettings((current) =>
+          kind === 'allow'
+            ? { ...current, allowDomains: current.allowDomains.filter((entry) => entry !== domain) }
+            : { ...current, blockDomains: current.blockDomains.filter((entry) => entry !== domain) },
+        ),
     }
   }, [settings])
 

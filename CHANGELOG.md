@@ -2,6 +2,29 @@
 
 All notable changes to the product and the rule pack.
 
+## Unreleased
+
+### Added
+- **Domain exceptions.** Override any policy per domain. *Always allow* keeps a
+  domain reachable even when its category (or strict mode) would block it — e.g.
+  "block all AI except GitHub Copilot for work." *Also block* adds your own
+  domains on top of the pack. Allow wins on conflict; both lists persist with
+  your other settings and are validated and normalized on the way in.
+- Exceptions flow into **every export**: AdGuard (`@@||domain^`), dnsmasq
+  (`server=/domain/#`) and Safari (`ignore-previous-rules`) get real allow rules
+  that override a broader parent-domain block; hosts and plain lists annotate
+  any exception they can't express, rather than dropping it silently.
+- The live domain checker now reflects your exceptions — an allowed domain reads
+  *Allowed by your exceptions*, a custom-blocked one reads *blocked by a custom
+  rule*.
+- `toValidDomain` validation so only plausible hostnames enter the exception
+  lists; 21 new unit tests covering the engine, exports, checker, and storage.
+
+### Honesty note
+- Allow exceptions are exact/parent-domain DNS rules — they're as honest as the
+  rest of the pack. Where a format can't express an allow rule (hosts, plain),
+  the export says so instead of pretending.
+
 ## 2.0.0 — 2026-06-13
 
 Aegis is now a policy engine for intentional digital boundaries, not just a blocker.

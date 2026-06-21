@@ -17,6 +17,10 @@ export function settingsForPolicy(policy: Policy, exportFormat: RulesSettings['e
     strictMode: policy.strict,
     exportFormat,
     activePolicyId: policy.id,
+    // A policy carries no personal exceptions; callers that want to preserve
+    // the user's allow/block lists across a policy switch merge them back in.
+    allowDomains: [],
+    blockDomains: [],
   }
 }
 
