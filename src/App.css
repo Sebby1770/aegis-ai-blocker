@@ -2548,3 +2548,278 @@ button {
   background: rgba(212, 86, 75, 0.12);
   color: #b5443a;
 }
+
+/* ===========================================================================
+   Aegis "cool theme" — dramatic hero, gradient CTAs, glass, motion.
+   Appended last so these win over the base rules above.
+   =========================================================================== */
+
+.landing-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  padding: 13px max(24px, calc(50vw - 660px));
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: saturate(160%) blur(14px);
+  -webkit-backdrop-filter: saturate(160%) blur(14px);
+  border-bottom: 1px solid var(--line);
+}
+
+.brand-mark {
+  background: var(--grad-accent);
+  border-color: transparent;
+  color: #04201c;
+  box-shadow: 0 6px 18px -8px rgba(20, 184, 166, 0.7);
+}
+
+.primary-button {
+  background: var(--grad-accent);
+  background-size: 170% auto;
+  color: #04211d;
+  border: 0;
+  box-shadow: 0 10px 26px -10px rgba(20, 184, 166, 0.65);
+  transition:
+    transform 0.16s ease,
+    box-shadow 0.22s ease,
+    background-position 0.45s ease;
+}
+
+.primary-button:hover {
+  background-position: right center;
+  transform: translateY(-2px);
+  box-shadow: 0 16px 34px -10px rgba(20, 184, 166, 0.75);
+}
+
+.hero {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-bottom: 10px;
+  padding: 92px 24px 80px;
+  overflow: hidden;
+  isolation: isolate;
+  text-align: center;
+  color: var(--hero-text);
+  background:
+    radial-gradient(1100px 560px at 50% -12%, #073f37 0%, transparent 62%),
+    linear-gradient(180deg, #02211e 0%, #02181f 100%);
+}
+
+.hero-orb {
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  filter: blur(72px);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.hero-orb-1 {
+  width: 520px;
+  height: 520px;
+  left: -130px;
+  top: -150px;
+  background: radial-gradient(circle, rgba(20, 184, 166, 0.95), transparent 70%);
+  animation: aurora-drift 19s ease-in-out infinite;
+}
+
+.hero-orb-2 {
+  width: 560px;
+  height: 560px;
+  right: -160px;
+  top: -70px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.7), transparent 70%);
+  animation: aurora-drift 24s ease-in-out infinite reverse;
+}
+
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 46px 46px;
+  -webkit-mask-image: radial-gradient(circle at 50% 26%, #000 0%, transparent 68%);
+  mask-image: radial-gradient(circle at 50% 26%, #000 0%, transparent 68%);
+}
+
+.hero-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.hero .hero-eyebrow {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+  color: #a9f0e2;
+  backdrop-filter: blur(8px);
+}
+
+.hero h1 {
+  color: #fff;
+  max-width: 16ch;
+  font-size: clamp(40px, 6.6vw, 72px);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+}
+
+.grad-text {
+  background: var(--grad-accent);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 6s linear infinite;
+}
+
+.hero .hero-copy {
+  color: var(--hero-muted);
+  max-width: 58ch;
+}
+
+.hero .hero-secondary {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #eafff9;
+  backdrop-filter: blur(8px);
+}
+
+.hero .hero-secondary:hover {
+  background: rgba(255, 255, 255, 0.13);
+  transform: translateY(-2px);
+}
+
+.hero .mode-pill {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #cfeee7;
+  backdrop-filter: blur(6px);
+  transition:
+    transform 0.15s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.hero .mode-pill:hover {
+  background: rgba(20, 184, 166, 0.22);
+  border-color: rgba(20, 184, 166, 0.55);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.hero .landing-tester {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--shadow-lg);
+}
+
+.hero .landing-tester .tester-input span {
+  color: #bfe6dd;
+}
+
+.hero .landing-tester input {
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.hero .landing-tester-note {
+  color: #8fb8b0;
+}
+
+.hero .hero-stats div {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(10px);
+  box-shadow: none;
+}
+
+.hero .hero-stats strong {
+  color: #fff;
+}
+
+.hero .hero-stats span {
+  color: #9fc6bf;
+}
+
+.step-card,
+.feature-card,
+.coverage-card,
+.catalog-card,
+.policy-card,
+.belief-grid p {
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.22s ease,
+    border-color 0.2s ease;
+}
+
+.step-card:hover,
+.feature-card:hover,
+.coverage-card:hover,
+.catalog-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: #bfe3db;
+}
+
+.belief-grid p {
+  border-left: 3px solid transparent;
+  background-image: linear-gradient(#fff, #fff), var(--grad-accent);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+
+.feature-icon,
+.step-card > svg {
+  color: var(--accent);
+}
+
+.landing-section .eyebrow,
+.page-hero .eyebrow {
+  color: var(--accent);
+}
+
+.cta-band {
+  border-color: transparent;
+  background:
+    radial-gradient(600px 200px at 12% 0%, rgba(56, 189, 248, 0.22), transparent 60%),
+    linear-gradient(120deg, #04302b, #064049);
+  color: #eafff9;
+  box-shadow: var(--shadow-lg);
+}
+
+.cta-band h2 {
+  color: #fff;
+}
+
+.cta-band p {
+  color: #a7d8d0;
+}
+
+.cta-band .secondary-button {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  color: #eafff9;
+}
+
+.cta-band .secondary-button:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+@media (max-width: 680px) {
+  .hero {
+    padding: 64px 20px 56px;
+  }
+
+  .hero h1 {
+    font-size: clamp(34px, 11vw, 46px);
+  }
+
+  .hero .hero-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

@@ -4,6 +4,14 @@ All notable changes to the product and the rule pack.
 
 ## Unreleased
 
+### Changed
+- **Redesigned the marketing site.** A dramatic dark hero with an animated
+  aurora glow, a soft grid, and a gradient headline; a frosted sticky nav;
+  gradient call-to-action buttons; glassmorphic stat cards, mode pills, and
+  domain checker; gradient-accented belief cards; card hover lifts; and a rich
+  dark-gradient call-to-action band. Decorative motion only — content is never
+  hidden behind an animation, and everything respects `prefers-reduced-motion`.
+
 ### Added
 - **Domain exceptions.** Override any policy per domain. *Always allow* keeps a
   domain reachable even when its category (or strict mode) would block it — e.g.
