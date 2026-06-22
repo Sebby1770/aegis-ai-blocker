@@ -15,6 +15,7 @@ import {
   strictDomainCount,
 } from "../lib/marketing";
 import { priceDisplay, useSaas } from "../lib/saas-context";
+import { HeroField } from "../components/HeroField";
 import { Link } from "../components/Link";
 import { MarketingHeader } from "../components/MarketingHeader";
 import { navigate } from "../router";
@@ -72,8 +73,7 @@ export function Landing() {
 
       <section className="hero">
         <span className="hero-orb hero-orb-1" aria-hidden="true" />
-        <span className="hero-orb hero-orb-2" aria-hidden="true" />
-        <span className="hero-grid" aria-hidden="true" />
+        <HeroField />
 
         <div className="hero-inner">
           <p className="hero-eyebrow">

@@ -5,12 +5,16 @@ All notable changes to the product and the rule pack.
 ## Unreleased
 
 ### Changed
-- **Redesigned the marketing site.** A dramatic dark hero with an animated
-  aurora glow, a soft grid, and a gradient headline; a frosted sticky nav;
-  gradient call-to-action buttons; glassmorphic stat cards, mode pills, and
-  domain checker; gradient-accented belief cards; card hover lifts; and a rich
-  dark-gradient call-to-action band. Decorative motion only — content is never
-  hidden behind an animation, and everything respects `prefers-reduced-motion`.
+- **Redesigned the marketing site around an interactive "containment field"
+  hero.** A hand-rolled canvas (no libraries) drifts real AI domains through
+  dark space; they are deflected at a glowing boundary ring around your
+  headline and flash red as they are blocked — a literal picture of "decide
+  where AI is allowed." It reacts to the cursor, pauses when the tab is hidden,
+  and renders a single settled frame under `prefers-reduced-motion`. Paired with
+  a monospaced instrument-readout eyebrow, a frosted sticky nav, gradient CTAs,
+  glassmorphic panels, gradient-accented belief cards, card hover lifts, and a
+  dark-gradient CTA band. The canvas is purely decorative and takes no pointer
+  events, so content is never hidden or blocked behind it.
 
 ### Added
 - **Domain exceptions.** Override any policy per domain. *Always allow* keeps a
