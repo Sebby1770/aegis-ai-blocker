@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import './App.css'
 import { DashboardShell } from './components/DashboardShell'
 import { Footer } from './components/Footer'
+import { SiteChrome } from './components/SiteChrome'
 import { RulesProvider } from './lib/rules'
 import { SaasProvider } from './lib/saas'
 import { useSaas } from './lib/saas-context'
@@ -141,6 +142,7 @@ function Routes() {
 
   return (
     <>
+      {!isDashboard && <SiteChrome />}
       {page}
       {!isDashboard && <Footer />}
       <div className={`toast ${toast ? 'show' : ''}`} role="status" aria-live="polite">

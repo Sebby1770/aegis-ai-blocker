@@ -15,6 +15,15 @@ All notable changes to the product and the rule pack.
   glassmorphic panels, gradient-accented belief cards, card hover lifts, and a
   dark-gradient CTA band. The canvas is purely decorative and takes no pointer
   events, so content is never hidden or blocked behind it.
+- **"Mission control" art direction across the marketing site.** A fixed HUD
+  perimeter bezel with corner brackets and a live readout
+  (`AEGIS · PERIMETER ACTIVE · N DOMAINS CONTAINED`); a scrolling marquee ticker
+  of AI domains being blocked under the hero; an additive reticle cursor that
+  locks onto interactive elements (desktop only — the native cursor is never
+  hidden); oversized outlined `01 / 02 / 03` editorial numerals; `// label`
+  code-comment section eyebrows; an animated teal→cyan gradient headline accent;
+  and a faint film-grain overlay. All marketing-only (the dashboard stays clean),
+  pointer-events-free, and disabled on touch / `prefers-reduced-motion`.
 
 ### Added
 - **Domain exceptions.** Override any policy per domain. *Always allow* keeps a

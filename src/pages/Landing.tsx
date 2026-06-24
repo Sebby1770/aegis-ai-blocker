@@ -15,6 +15,7 @@ import {
   strictDomainCount,
 } from "../lib/marketing";
 import { priceDisplay, useSaas } from "../lib/saas-context";
+import { DomainTicker } from "../components/DomainTicker";
 import { HeroField } from "../components/HeroField";
 import { Link } from "../components/Link";
 import { MarketingHeader } from "../components/MarketingHeader";
@@ -139,6 +140,8 @@ export function Landing() {
           </div>
         </div>
       </section>
+
+      <DomainTicker />
 
       <section className="landing-section" id="how-it-works" data-reveal>
         <p className="eyebrow">How it works</p>
