@@ -14,12 +14,18 @@ import {
   SlidersHorizontal,
   Smartphone,
   Sparkles,
+  Zap,
 } from 'lucide-react'
 import { Link } from '../components/Link'
 import { MarketingHeader } from '../components/MarketingHeader'
 import { rulePack } from '../lib/blocklists'
 
 const featureCards = [
+  {
+    Icon: Zap,
+    title: 'Live browser enforcement',
+    copy: 'The Aegis Enforcer extension blocks AI services in real time via the browser’s declarativeNetRequest engine — switch policy and it updates instantly. Same rule pack as the dashboard.',
+  },
   {
     Icon: SlidersHorizontal,
     title: 'Category toggles',

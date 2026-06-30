@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "Aegis Enforcer",
+  "version": "2.1.0",
+  "description": "Enforce your Aegis AI policy live in the browser. Choose a value — Focus, Child-safe, School exam — and AI services are blocked in real time.",
+  "permissions": ["declarativeNetRequest", "storage"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Aegis Enforcer"
+  }
+}

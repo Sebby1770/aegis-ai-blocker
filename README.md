@@ -13,6 +13,9 @@ delay, schedule) and rituals are on the roadmap behind an always-on agent.
 
 It ships as:
 
+- a **Manifest V3 browser extension (`extension/`) that enforces the policy live** via Chrome's
+  `declarativeNetRequest` engine — not just file export, but real-time blocking that updates the
+  instant you switch modes, generated from the same rule pack ([extension/README.md](extension/README.md))
 - a React/Vite marketing site + web dashboard (home, philosophy, catalog, features, pricing, FAQ,
   legal pages, and a four-page policy dashboard)
 - an installable PWA: offline-capable dashboard via a web app manifest and service worker

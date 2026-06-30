@@ -1,0 +1,133 @@
+:root {
+  --ink: #0a1413;
+  --muted: #6a7672;
+  --line: #e2e8e6;
+  --accent: #0d8f83;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  width: 320px;
+  margin: 0;
+  padding: 14px;
+  color: var(--ink);
+  background: #fbfdfc;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mark {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #0d8f83, #38bdf8);
+  color: #fff;
+  font-size: 13px;
+}
+
+.brand strong {
+  display: block;
+  font-size: 14px;
+}
+
+.status {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.pause {
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: #fff;
+  padding: 6px 11px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pause.is-paused {
+  border-color: #f0c9c8;
+  background: #fdf3f3;
+  color: #a3302f;
+}
+
+.hint {
+  margin: 12px 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.modes {
+  display: grid;
+  gap: 6px;
+}
+
+.mode {
+  display: grid;
+  gap: 2px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: #fff;
+  padding: 9px 11px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.mode:hover {
+  background: #f3f7f5;
+}
+
+.mode.selected {
+  border-color: #95d5cb;
+  background: #edf9f6;
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+.mode strong {
+  font-size: 13px;
+}
+
+.mode small {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.foot a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.count strong {
+  color: var(--ink);
+}

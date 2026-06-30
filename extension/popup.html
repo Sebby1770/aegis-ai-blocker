@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="popup.css" />
+    <title>Aegis Enforcer</title>
+  </head>
+  <body>
+    <header class="head">
+      <div class="brand">
+        <span class="mark" aria-hidden="true">▲</span>
+        <div>
+          <strong>Aegis Enforcer</strong>
+          <span id="status" class="status">Loading…</span>
+        </div>
+      </div>
+      <button id="pause" class="pause" type="button">Pause</button>
+    </header>
+
+    <p class="hint">Choose a value. AI services are blocked in real time across this browser.</p>
+
+    <div id="modes" class="modes" role="listbox" aria-label="Policy modes"></div>
+
+    <footer class="foot">
+      <span id="count" class="count">—</span>
+      <a href="https://github.com/Sebby1770/aegis-ai-blocker" target="_blank" rel="noreferrer">aegis</a>
+    </footer>
+
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>

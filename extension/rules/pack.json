@@ -1,0 +1,740 @@
+{
+  "generated": "scripts/generate-blocklists.mjs — do not edit by hand",
+  "version": "2026.06.11",
+  "updatedAt": "2026-06-11",
+  "disclaimer": "Aegis blocks known AI services from this curated rule set. It cannot guarantee future or embedded AI surfaces until rules are updated.",
+  "policies": [
+    {
+      "id": "strict-no-ai",
+      "name": "Strict no-AI",
+      "tagline": "Block every AI surface we track",
+      "space": "Maximum boundary",
+      "recommendedFor": "People who want AI fully out of their attention.",
+      "block": [
+        "chat",
+        "search",
+        "coding",
+        "creative",
+        "api"
+      ],
+      "strict": true
+    },
+    {
+      "id": "focus",
+      "name": "Focus",
+      "tagline": "Silence AI chat, search, and generators — keep your dev tools",
+      "space": "Writing room · deep work",
+      "recommendedFor": "Workers and writers who want focus without losing coding assistants.",
+      "block": [
+        "chat",
+        "search",
+        "creative"
+      ],
+      "strict": false
+    },
+    {
+      "id": "child-safe",
+      "name": "Child-safe",
+      "tagline": "Block chatbots, image/video generators, and answer engines",
+      "space": "Kid's iPad · family devices",
+      "recommendedFor": "Families choosing what AI tools children can reach.",
+      "block": [
+        "chat",
+        "search",
+        "creative"
+      ],
+      "strict": true
+    },
+    {
+      "id": "school-exam",
+      "name": "School exam",
+      "tagline": "Block everything that could count as unfair assistance",
+      "space": "School network · exams",
+      "recommendedFor": "Schools deciding what counts as fair assistance during assessment.",
+      "block": [
+        "chat",
+        "search",
+        "coding",
+        "creative",
+        "api"
+      ],
+      "strict": true
+    },
+    {
+      "id": "workplace",
+      "name": "Workplace compliance",
+      "tagline": "Block consumer chatbots and generators, leave search and APIs to policy",
+      "space": "Work laptop",
+      "recommendedFor": "Workplaces keeping unsanctioned AI off managed devices.",
+      "block": [
+        "chat",
+        "creative"
+      ],
+      "strict": false
+    },
+    {
+      "id": "creative-allowed",
+      "name": "Creative tools allowed",
+      "tagline": "Allow image, video, and coding AI — block chat and search",
+      "space": "Design studio",
+      "recommendedFor": "Makers who use generative tools but want chatbots out of the way.",
+      "block": [
+        "chat",
+        "search",
+        "api"
+      ],
+      "strict": false
+    },
+    {
+      "id": "research-no-chat",
+      "name": "Research allowed, chat blocked",
+      "tagline": "Allow AI search and APIs for research — block chatbots and generators",
+      "space": "Research desk",
+      "recommendedFor": "Researchers who allow assistive search but block conversational AI.",
+      "block": [
+        "chat",
+        "creative"
+      ],
+      "strict": false
+    }
+  ],
+  "services": [
+    {
+      "name": "OpenAI ChatGPT",
+      "category": "chat",
+      "domains": [
+        "chatgpt.com",
+        "chat.openai.com",
+        "openai.com",
+        "oaistatic.com",
+        "oaiusercontent.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Anthropic Claude",
+      "category": "chat",
+      "domains": [
+        "claude.ai",
+        "console.anthropic.com",
+        "anthropic.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Google Gemini",
+      "category": "chat",
+      "domains": [
+        "gemini.google.com",
+        "bard.google.com",
+        "aistudio.google.com",
+        "notebooklm.google.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Meta AI",
+      "category": "chat",
+      "domains": [
+        "meta.ai",
+        "ai.meta.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "DeepSeek",
+      "category": "chat",
+      "domains": [
+        "deepseek.com",
+        "chat.deepseek.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Qwen",
+      "category": "chat",
+      "domains": [
+        "qwen.ai",
+        "chat.qwen.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Kimi",
+      "category": "chat",
+      "domains": [
+        "kimi.com",
+        "moonshot.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Poe",
+      "category": "chat",
+      "domains": [
+        "poe.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Character.AI",
+      "category": "chat",
+      "domains": [
+        "character.ai",
+        "beta.character.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Pi",
+      "category": "chat",
+      "domains": [
+        "pi.ai",
+        "inflection.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Manus",
+      "category": "chat",
+      "domains": [
+        "manus.im"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Janitor AI",
+      "category": "chat",
+      "domains": [
+        "janitorai.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "QuillBot",
+      "category": "chat",
+      "domains": [
+        "quillbot.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Grammarly",
+      "category": "chat",
+      "domains": [
+        "grammarly.com",
+        "app.grammarly.com"
+      ],
+      "strictOnly": true
+    },
+    {
+      "name": "Perplexity",
+      "category": "search",
+      "domains": [
+        "perplexity.ai",
+        "www.perplexity.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Microsoft Copilot",
+      "category": "search",
+      "domains": [
+        "copilot.microsoft.com",
+        "bing.com",
+        "edgeservices.bing.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "You.com",
+      "category": "search",
+      "domains": [
+        "you.com",
+        "youcdn.io"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Phind",
+      "category": "search",
+      "domains": [
+        "phind.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Grok",
+      "category": "search",
+      "domains": [
+        "grok.com",
+        "x.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Genspark",
+      "category": "search",
+      "domains": [
+        "genspark.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Andi",
+      "category": "search",
+      "domains": [
+        "andisearch.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "iAsk",
+      "category": "search",
+      "domains": [
+        "iask.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Komo",
+      "category": "search",
+      "domains": [
+        "komo.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "GitHub Copilot",
+      "category": "coding",
+      "domains": [
+        "githubcopilot.com",
+        "api.githubcopilot.com",
+        "copilot-proxy.githubusercontent.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Cursor",
+      "category": "coding",
+      "domains": [
+        "cursor.com",
+        "api2.cursor.sh",
+        "cursor.sh"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Replit AI",
+      "category": "coding",
+      "domains": [
+        "replit.com",
+        "replit.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Blackbox AI",
+      "category": "coding",
+      "domains": [
+        "blackbox.ai",
+        "www.blackbox.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Codeium Windsurf",
+      "category": "coding",
+      "domains": [
+        "codeium.com",
+        "windsurf.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Lovable",
+      "category": "coding",
+      "domains": [
+        "lovable.dev",
+        "lovable.app"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Bolt",
+      "category": "coding",
+      "domains": [
+        "bolt.new"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "v0",
+      "category": "coding",
+      "domains": [
+        "v0.dev",
+        "v0.app"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Devin",
+      "category": "coding",
+      "domains": [
+        "devin.ai",
+        "cognition.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Tabnine",
+      "category": "coding",
+      "domains": [
+        "tabnine.com",
+        "api.tabnine.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Augment Code",
+      "category": "coding",
+      "domains": [
+        "augmentcode.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Sourcegraph Cody",
+      "category": "coding",
+      "domains": [
+        "sourcegraph.com"
+      ],
+      "strictOnly": true
+    },
+    {
+      "name": "Midjourney",
+      "category": "creative",
+      "domains": [
+        "midjourney.com",
+        "www.midjourney.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "OpenAI Sora",
+      "category": "creative",
+      "domains": [
+        "sora.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Runway",
+      "category": "creative",
+      "domains": [
+        "runwayml.com",
+        "app.runwayml.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Luma",
+      "category": "creative",
+      "domains": [
+        "lumalabs.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Pika",
+      "category": "creative",
+      "domains": [
+        "pika.art"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Kling",
+      "category": "creative",
+      "domains": [
+        "klingai.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Hailuo",
+      "category": "creative",
+      "domains": [
+        "hailuoai.video",
+        "minimax.io"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "HeyGen",
+      "category": "creative",
+      "domains": [
+        "heygen.com",
+        "app.heygen.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Stability AI",
+      "category": "creative",
+      "domains": [
+        "stability.ai",
+        "platform.stability.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Black Forest Labs",
+      "category": "creative",
+      "domains": [
+        "bfl.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Leonardo AI",
+      "category": "creative",
+      "domains": [
+        "leonardo.ai",
+        "app.leonardo.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Ideogram",
+      "category": "creative",
+      "domains": [
+        "ideogram.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Krea",
+      "category": "creative",
+      "domains": [
+        "krea.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Recraft",
+      "category": "creative",
+      "domains": [
+        "recraft.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Civitai",
+      "category": "creative",
+      "domains": [
+        "civitai.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Adobe Firefly",
+      "category": "creative",
+      "domains": [
+        "firefly.adobe.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Google Labs",
+      "category": "creative",
+      "domains": [
+        "labs.google"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Suno",
+      "category": "creative",
+      "domains": [
+        "suno.com",
+        "suno.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Udio",
+      "category": "creative",
+      "domains": [
+        "udio.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "ElevenLabs",
+      "category": "creative",
+      "domains": [
+        "elevenlabs.io",
+        "api.elevenlabs.io"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "OpenAI API",
+      "category": "api",
+      "domains": [
+        "api.openai.com",
+        "platform.openai.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Anthropic API",
+      "category": "api",
+      "domains": [
+        "api.anthropic.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Google AI API",
+      "category": "api",
+      "domains": [
+        "generativelanguage.googleapis.com",
+        "ai.google.dev"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Azure OpenAI",
+      "category": "api",
+      "domains": [
+        "openai.azure.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "xAI API",
+      "category": "api",
+      "domains": [
+        "api.x.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "DeepSeek API",
+      "category": "api",
+      "domains": [
+        "api.deepseek.com",
+        "platform.deepseek.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Mistral AI",
+      "category": "api",
+      "domains": [
+        "mistral.ai",
+        "chat.mistral.ai",
+        "api.mistral.ai",
+        "console.mistral.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Cohere",
+      "category": "api",
+      "domains": [
+        "cohere.com",
+        "api.cohere.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Groq",
+      "category": "api",
+      "domains": [
+        "groq.com",
+        "api.groq.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Together AI",
+      "category": "api",
+      "domains": [
+        "together.ai",
+        "api.together.xyz"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Fireworks AI",
+      "category": "api",
+      "domains": [
+        "fireworks.ai",
+        "api.fireworks.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Cerebras",
+      "category": "api",
+      "domains": [
+        "cerebras.ai",
+        "api.cerebras.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "OpenRouter",
+      "category": "api",
+      "domains": [
+        "openrouter.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Replicate",
+      "category": "api",
+      "domains": [
+        "replicate.com",
+        "api.replicate.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Google Vertex AI",
+      "category": "api",
+      "domains": [
+        "aiplatform.googleapis.com"
+      ],
+      "strictOnly": true
+    },
+    {
+      "name": "Hugging Face",
+      "category": "api",
+      "domains": [
+        "huggingface.co",
+        "api-inference.huggingface.co"
+      ],
+      "strictOnly": true
+    },
+    {
+      "name": "Ollama",
+      "category": "api",
+      "domains": [
+        "ollama.com"
+      ],
+      "strictOnly": true
+    },
+    {
+      "name": "LM Studio",
+      "category": "api",
+      "domains": [
+        "lmstudio.ai"
+      ],
+      "strictOnly": true
+    }
+  ]
+}

@@ -2,7 +2,20 @@
 
 All notable changes to the product and the rule pack.
 
-## Unreleased
+## 2.1.0 — 2026-06-23
+
+### Added
+- **Live browser enforcement — the Aegis Enforcer extension (`extension/`).**
+  Aegis no longer only *exports* blocklists you import elsewhere; it can now
+  *enforce* your policy itself. A Manifest V3 browser extension compiles your
+  chosen policy + exceptions into Chrome `declarativeNetRequest` rules and blocks
+  AI services live, updating the instant you switch modes or pause. Its rule pack
+  (`extension/rules/pack.json`) is generated from the same `ai-services.json` as
+  the website and exports, so web, exports, iOS and the extension can never
+  drift. The enforcement engine (`extension/enforce.js`) is pure and unit-tested
+  (8 tests): strict-no-AI blocks everything, Focus leaves coding tools reachable,
+  allow-exceptions override blocks, pause enforces nothing, and the compiled DNR
+  rules carry unique ids with allow-over-block priority.
 
 ### Changed
 - **Redesigned the marketing site around an interactive "containment field"

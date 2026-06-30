@@ -97,4 +97,31 @@ ${swiftCategories}
 
 await writeFile(path.join(root, 'ios/AegisAIBlocker/RulePackData.generated.swift'), swiftFile)
 
-console.log(`Generated ${domains.length} default domains in ${path.relative(root, outputDir)} and RulePackData.generated.swift`)
+// The browser extension (extension/) enforces the policy live via
+// declarativeNetRequest. It bundles a flattened copy of the pack — services
+// with their category + the policy modes — so its enforcement always matches
+// this rule pack. Generated, never hand-edited.
+const extensionPack = {
+  generated: 'scripts/generate-blocklists.mjs — do not edit by hand',
+  version: rulePack.version,
+  updatedAt: rulePack.updatedAt,
+  disclaimer: rulePack.disclaimer,
+  policies: rulePack.policies,
+  services: rulePack.categories.flatMap((category) =>
+    category.services.map((service) => ({
+      name: service.name,
+      category: category.id,
+      domains: service.domains,
+      strictOnly: Boolean(service.strictOnly),
+    })),
+  ),
+}
+
+const extensionRulesDir = path.join(root, 'extension/rules')
+await mkdir(extensionRulesDir, { recursive: true })
+await writeFile(path.join(extensionRulesDir, 'pack.json'), `${JSON.stringify(extensionPack, null, 2)}\n`)
+
+console.log(
+  `Generated ${domains.length} default domains in ${path.relative(root, outputDir)}, ` +
+    `RulePackData.generated.swift, and extension/rules/pack.json (${extensionPack.services.length} services)`,
+)
