@@ -55,14 +55,17 @@ export function HeroField() {
     let running = false;
 
     const spawn = (): Particle => {
-      let x = 0;
-      let y = 0;
+      // Seed a position, then re-roll while it lands inside the protected ring
+      // (capped so a small viewport can't loop forever). The initial values are
+      // read by the while condition, so nothing is assigned uselessly.
+      let x = rand(0, w);
+      let y = rand(0, h);
       let guard = 0;
-      do {
+      while (Math.hypot(x - cx, y - cy) < radius + 24 && guard < 12) {
         x = rand(0, w);
         y = rand(0, h);
         guard += 1;
-      } while (Math.hypot(x - cx, y - cy) < radius + 24 && guard < 12);
+      }
       const angle = Math.atan2(cy - y, cx - x) + rand(-0.5, 0.5);
       const speed = rand(0.12, 0.5);
       return { x, y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, r: rand(1.3, 2.7), flash: 0 };
