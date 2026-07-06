@@ -131,3 +131,112 @@ body {
 .count strong {
   color: var(--ink);
 }
+
+.exceptions {
+  margin-top: 12px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: #fff;
+  padding: 0 11px;
+}
+
+.exceptions summary {
+  padding: 9px 0;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.exception-group {
+  padding-bottom: 10px;
+}
+
+.exception-group label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.exception-form {
+  display: flex;
+  gap: 6px;
+}
+
+.exception-form input {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 6px 9px;
+  font: inherit;
+  font-size: 12px;
+}
+
+.exception-form button {
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: #f3f7f5;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 6px;
+}
+
+.chip {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #f7faf9;
+  padding: 3px 9px;
+  font-size: 11px;
+  font-family: ui-monospace, Menlo, monospace;
+  cursor: pointer;
+}
+
+.chip:hover {
+  border-color: #f0c9c8;
+  background: #fdf3f3;
+}
+
+.chips-empty {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.foot-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pack {
+  color: var(--muted);
+  font-size: 10.5px;
+  font-family: ui-monospace, Menlo, monospace;
+}
+
+.refresh {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+  width: 22px;
+  height: 22px;
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.refresh:disabled {
+  opacity: 0.5;
+  cursor: default;
+}

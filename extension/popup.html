@@ -22,9 +22,33 @@
 
     <div id="modes" class="modes" role="listbox" aria-label="Policy modes"></div>
 
+    <details class="exceptions">
+      <summary>Exceptions</summary>
+      <div class="exception-group">
+        <label for="allow-input">Always allow</label>
+        <form id="allow-form" class="exception-form">
+          <input id="allow-input" placeholder="github.com" autocomplete="off" spellcheck="false" />
+          <button type="submit">Add</button>
+        </form>
+        <div id="allow-list" class="chips" aria-label="Allowed domains"></div>
+      </div>
+      <div class="exception-group">
+        <label for="block-input">Also block</label>
+        <form id="block-form" class="exception-form">
+          <input id="block-input" placeholder="my-ai.example.com" autocomplete="off" spellcheck="false" />
+          <button type="submit">Add</button>
+        </form>
+        <div id="block-list" class="chips" aria-label="Extra blocked domains"></div>
+      </div>
+    </details>
+
     <footer class="foot">
       <span id="count" class="count">—</span>
-      <a href="https://github.com/Sebby1770/aegis-ai-blocker" target="_blank" rel="noreferrer">aegis</a>
+      <span class="foot-right">
+        <span id="pack" class="pack" title="Rule pack version">—</span>
+        <button id="refresh" class="refresh" type="button" title="Fetch the latest rule pack">↻</button>
+        <a href="https://github.com/Sebby1770/aegis-ai-blocker" target="_blank" rel="noreferrer">aegis</a>
+      </span>
     </footer>
 
     <script type="module" src="popup.js"></script>

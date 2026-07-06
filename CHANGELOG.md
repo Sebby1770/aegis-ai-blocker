@@ -2,6 +2,64 @@
 
 All notable changes to the product and the rule pack.
 
+## 2.2.0 — 2026-07-06
+
+### Added
+- **Self-updating rule pack in the Aegis Enforcer extension.** The service
+  worker now refreshes `rules/pack.json` from this repository (GitHub raw,
+  `main` branch) on a 6-hour `chrome.alarms` schedule, so newly catalogued AI
+  domains start getting blocked without waiting for a store update. Every
+  remote — and every stored — pack passes through a new validation gate
+  (`extension/pack-validate.js`) before it can touch enforcement: malformed
+  entries are dropped, domains are canonicalized (protocol/`www.`/port/path
+  stripped, strict hostname grammar), and hard caps bound the ruleset
+  (≤20 policies, ≤500 services, ≤50 domains per service, ≤2000 total domains)
+  so a corrupted or hostile download can never balloon the rules or crash the
+  worker. Anything that fails validation is discarded and the bundled pack
+  keeps enforcing; network errors are swallowed the same way. 16 new unit tests
+  (`pack-validate.test.ts`) cover canonicalization, garbage rejection, caps
+  under an oversized hostile pack, never-throws on adversarial shapes, the
+  size-cap streaming reader, the version-downgrade guard, and the end-to-end
+  validated fetch — the suite is now 109 tests.
+- **Per-domain exceptions in the extension popup.** The same *always allow* /
+  *also block* overrides the dashboard has, now editable right where
+  enforcement happens. Domains render as removable chips, input is validated
+  with the shared `toValidDomain`, allow wins on conflict, and adding a domain
+  to one list removes it from the other. Enforcement re-compiles instantly.
+- **Pack status + manual refresh in the popup.** A footer readout shows the
+  active pack version and freshness ("bundled", "refreshed 2h ago"), plus a ↻
+  button to fetch the latest pack on demand — failures keep the current pack
+  and say so ("offline — kept current pack").
+- **Real extension icons.** `extension/icons/icon-{16,48,128}.png` — the Aegis
+  shield on a teal→cyan gradient — generated deterministically by a
+  dependency-free PNG encoder (`scripts/generate-extension-icons.mjs`, ~160
+  lines: hand-rolled IHDR/IDAT/IEND chunks, CRC32, zlib deflate, supersampled
+  SDF drawing). Wired into `manifest.json` (`icons` + `action.default_icon`),
+  clearing the last blocker for Chrome Web Store submission.
+
+### Hardened
+Following an adversarial review of the self-update path, the remote-pack
+pipeline was tightened against a compromised or misbehaving source:
+- **Size cap on remote fetches.** Pack downloads are refused if they exceed
+  1 MB (the bundled pack is ~15 KB). The body is streamed and abandoned the
+  moment the byte count crosses the cap, so a lying `Content-Length` or a
+  multi-gigabyte payload can no longer be buffered into the worker's memory.
+  Applies to both the 6-hour background refresh and the popup's manual refresh.
+- **Downgrade protection.** A fetched pack is stored only when its version is
+  newer than (or equal to) the one already in force, so a rolled-back or
+  hostile older pack can't quietly shrink your coverage. Versions are compared
+  as their date-stamped strings.
+- **Fail-safe rule compilation.** `declarativeNetRequest.updateDynamicRules`
+  is now wrapped in try/catch; a transient API or limit error is logged and the
+  previous rules are left intact instead of the apply failing silently.
+- **Race-free popup edits.** Adding an exception or removing a chip disables its
+  control until the storage write lands, closing a read-modify-write window
+  where two fast clicks could clobber each other's changes.
+
+### Changed
+- Extension manifest gains the `alarms` permission (for the refresh schedule)
+  and is now versioned in lockstep with the product (2.2.0).
+
 ## 2.1.0 — 2026-06-23
 
 ### Added
