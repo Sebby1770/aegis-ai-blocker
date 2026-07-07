@@ -2,6 +2,22 @@
 
 All notable changes to the product and the rule pack.
 
+## 2.3.1 — 2026-07-07
+
+### Changed
+- **A second, deeper layer of marketing motion** — same rules as 2.3.0 (no new
+  dependencies; reduced-motion / touch / fine-pointer gated; no feature change):
+  - **3D tilt** — spotlight cards now lean toward the cursor (a subtle ≤2.5°
+    perspective tilt) on top of the radial glow, folded into the same single
+    delegated pointer listener and reset the instant the pointer leaves.
+  - **Magnetic CTA** — the hero "Get lifetime access" button is gently pulled
+    toward the cursor and eases back on exit.
+  - **Scroll-progress bar** — a thin teal→cyan bar across the top of the
+    viewport fills as you scroll (transform-based, so it's cheap).
+  - **Ambient section aurora** — the light content sections carry a faint,
+    slowly-breathing teal glow so the white space has depth instead of sitting
+    flat.
+
 ## 2.3.0 — 2026-07-07
 
 ### Changed

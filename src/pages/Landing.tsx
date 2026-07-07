@@ -100,7 +100,7 @@ export function Landing() {
           </p>
           <div className="hero-actions">
             <button
-              className="primary-button hero-cta"
+              className="primary-button hero-cta magnetic"
               type="button"
               onClick={buyNow}
             >
