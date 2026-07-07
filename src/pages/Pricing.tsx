@@ -1,6 +1,7 @@
 import { ArrowRight, BadgeCheck } from 'lucide-react'
 import { Link } from '../components/Link'
 import { MarketingHeader } from '../components/MarketingHeader'
+import { SplitText } from '../components/motion/SplitText'
 import { rulePack } from '../lib/blocklists'
 import { priceDisplay, useSaas } from '../lib/saas-context'
 import { navigate } from '../router'
@@ -23,12 +24,18 @@ export function Pricing() {
 
       <section className="page-hero">
         <p className="eyebrow">Pricing</p>
-        <h1>One price. Yours for life.</h1>
+        <SplitText
+          as="h1"
+          segments={[
+            { text: 'One price. Yours for' },
+            { text: 'life.', highlight: true },
+          ]}
+        />
         <p className="hero-copy">No subscription, no tiers, no upsells — one payment, every update.</p>
       </section>
 
-      <section className="landing-section compact-top pricing-section">
-        <div className="pricing-card">
+      <section className="landing-section compact-top pricing-section" data-reveal>
+        <div className="pricing-card spotlight">
           <p className="pricing-amount">
             {priceDisplay}
             <span> one-time</span>
@@ -64,7 +71,7 @@ export function Pricing() {
         </p>
       </section>
 
-      <section className="cta-band">
+      <section className="cta-band spotlight" data-reveal>
         <div>
           <h2>Not ready to buy?</h2>
           <p>The rule builder is free to try — see exactly what you&apos;d get before paying.</p>

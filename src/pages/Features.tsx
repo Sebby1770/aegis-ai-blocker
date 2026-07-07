@@ -18,6 +18,7 @@ import {
 } from 'lucide-react'
 import { Link } from '../components/Link'
 import { MarketingHeader } from '../components/MarketingHeader'
+import { SplitText } from '../components/motion/SplitText'
 import { rulePack } from '../lib/blocklists'
 
 const featureCards = [
@@ -73,16 +74,23 @@ export function Features() {
 
       <section className="page-hero">
         <p className="eyebrow">Features</p>
-        <h1>Everything you need to switch AI off</h1>
+        <SplitText
+          as="h1"
+          segments={[
+            { text: 'Everything you need to switch' },
+            { text: 'AI', highlight: true },
+            { text: 'off' },
+          ]}
+        />
         <p className="hero-copy">
           One dashboard turns the rule pack into the right file for every device you own.
         </p>
       </section>
 
-      <section className="landing-section compact-top">
+      <section className="landing-section compact-top" data-reveal>
         <div className="feature-grid">
           {featureCards.map(({ Icon, title, copy }) => (
-            <article className="feature-card" key={title}>
+            <article className="feature-card spotlight" key={title}>
               <span className="feature-icon">
                 <Icon size={20} />
               </span>
@@ -107,14 +115,14 @@ export function Features() {
         </div>
       </section>
 
-      <section className="landing-section" id="coverage">
+      <section className="landing-section" id="coverage" data-reveal>
         <p className="eyebrow">Coverage</p>
         <h2>{rulePack.categories.length} categories, one switch each</h2>
         <div className="coverage-grid">
           {rulePack.categories.map((category) => {
             const Icon = categoryIcons[category.id] ?? ListChecks
             return (
-              <article className="coverage-card" key={category.id}>
+              <article className="coverage-card spotlight" key={category.id}>
                 <span className="category-icon" style={{ color: category.color }}>
                   <Icon size={20} />
                 </span>
@@ -132,7 +140,7 @@ export function Features() {
         </div>
       </section>
 
-      <section className="cta-band">
+      <section className="cta-band spotlight" data-reveal>
         <div>
           <h2>One payment covers all of it</h2>
           <p>Every category, every format, every future rule pack update.</p>

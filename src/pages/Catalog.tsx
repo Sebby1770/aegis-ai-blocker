@@ -2,6 +2,8 @@ import { useMemo, useState } from 'react'
 import { ShieldCheck } from 'lucide-react'
 import { Link } from '../components/Link'
 import { MarketingHeader } from '../components/MarketingHeader'
+import { CountUp } from '../components/motion/CountUp'
+import { SplitText } from '../components/motion/SplitText'
 import { rulePack, type BreakageRisk } from '../lib/blocklists'
 import { breakageLabels } from '../lib/explain'
 import { defaultDomainCount, serviceCount } from '../lib/marketing'
@@ -47,7 +49,13 @@ export function Catalog() {
 
       <section className="page-hero">
         <p className="eyebrow">Catalog</p>
-        <h1>Every rule, in the open</h1>
+        <SplitText
+          as="h1"
+          segments={[
+            { text: 'Every rule, in the' },
+            { text: 'open', highlight: true },
+          ]}
+        />
         <p className="hero-copy">
           Aegis is a maintained garden, not a static download. Here is every service we track, what
           it belongs to, when it was last verified, and how likely it is to affect anything else.
@@ -57,11 +65,15 @@ export function Catalog() {
       <section className="landing-section compact-top">
         <div className="catalog-stats" aria-label="Catalog statistics">
           <div>
-            <strong>{serviceCount}</strong>
+            <strong>
+              <CountUp end={serviceCount} />
+            </strong>
             <span>services tracked</span>
           </div>
           <div>
-            <strong>{defaultDomainCount}</strong>
+            <strong>
+              <CountUp end={defaultDomainCount} />
+            </strong>
             <span>domains by default</span>
           </div>
           <div>
@@ -69,7 +81,9 @@ export function Catalog() {
             <span>last verified</span>
           </div>
           <div>
-            <strong>{rulePack.policies.length}</strong>
+            <strong>
+              <CountUp end={rulePack.policies.length} />
+            </strong>
             <span>policy modes</span>
           </div>
         </div>
@@ -101,7 +115,7 @@ export function Catalog() {
               <p className="catalog-category-desc">{category.description}</p>
               <div className="catalog-grid">
                 {services.map((service) => (
-                  <article className="catalog-card" key={service.name}>
+                  <article className="catalog-card spotlight" key={service.name}>
                     <div className="catalog-card-head">
                       <strong>{service.name}</strong>
                       <span className={`risk-badge ${riskClass[service.breakageRisk]}`} title={breakageLabels[service.breakageRisk]}>
@@ -126,7 +140,7 @@ export function Catalog() {
         )}
       </section>
 
-      <section className="cta-band">
+      <section className="cta-band spotlight" data-reveal>
         <div>
           <h2>Found one we miss?</h2>
           <p>Coverage requests shape the next rule pack. Tell us what to add.</p>

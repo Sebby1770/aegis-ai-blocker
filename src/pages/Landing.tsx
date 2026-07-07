@@ -19,6 +19,9 @@ import { DomainTicker } from "../components/DomainTicker";
 import { HeroField } from "../components/HeroField";
 import { Link } from "../components/Link";
 import { MarketingHeader } from "../components/MarketingHeader";
+import { CountUp } from "../components/motion/CountUp";
+import { ShinyText } from "../components/motion/ShinyText";
+import { SplitText } from "../components/motion/SplitText";
 import { navigate } from "../router";
 
 function LiveDomainCheck() {
@@ -81,10 +84,14 @@ export function Landing() {
             <BadgeCheck size={16} />
             Intentional digital boundaries · one payment · no tracking
           </p>
-          <h1>
-            Decide where <span className="grad-text">AI</span> is allowed in your
-            life
-          </h1>
+          <SplitText
+            as="h1"
+            segments={[
+              { text: "Decide where" },
+              { text: "AI", highlight: true },
+              { text: "is allowed in your life" },
+            ]}
+          />
           <p className="hero-copy">
             Aegis is a policy engine for AI exposure. Choose a value — Focus,
             Child-safe, School exam, Workplace — and Aegis turns it into
@@ -122,19 +129,27 @@ export function Landing() {
 
           <div className="hero-stats" aria-label="Coverage statistics">
             <div>
-              <strong>{defaultDomainCount}</strong>
+              <strong>
+                <CountUp end={defaultDomainCount} />
+              </strong>
               <span>domains blocked by default</span>
             </div>
             <div>
-              <strong>{strictDomainCount}</strong>
+              <strong>
+                <CountUp end={strictDomainCount} />
+              </strong>
               <span>domains in strict mode</span>
             </div>
             <div>
-              <strong>{serviceCount}</strong>
+              <strong>
+                <CountUp end={serviceCount} />
+              </strong>
               <span>AI services tracked</span>
             </div>
             <div>
-              <strong>5</strong>
+              <strong>
+                <CountUp end={5} />
+              </strong>
               <span>export formats</span>
             </div>
           </div>
@@ -147,13 +162,13 @@ export function Landing() {
         <p className="eyebrow">How it works</p>
         <h2>Protected in three steps</h2>
         <div className="steps-grid">
-          <article className="step-card">
+          <article className="step-card spotlight">
             <span className="step-number">1</span>
             <KeyRound size={22} />
             <h3>Sign in with your email</h3>
             <p>No passwords to remember — a magic link signs you in securely.</p>
           </article>
-          <article className="step-card">
+          <article className="step-card spotlight">
             <span className="step-number">2</span>
             <BadgeCheck size={22} />
             <h3>Pay once with Stripe</h3>
@@ -162,7 +177,7 @@ export function Landing() {
               automatically.
             </p>
           </article>
-          <article className="step-card">
+          <article className="step-card spotlight">
             <span className="step-number">3</span>
             <Download size={22} />
             <h3>Download rules for your device</h3>
@@ -197,9 +212,11 @@ export function Landing() {
         </Link>
       </section>
 
-      <section className="cta-band" data-reveal>
+      <section className="cta-band spotlight" data-reveal>
         <div>
-          <h2>Every rule, in the open</h2>
+          <h2>
+            <ShinyText text="Every rule, in the open" />
+          </h2>
           <p>
             {serviceCount} services, each with a last-verified date and a
             breakage-risk label. No black box — see exactly what Aegis blocks and

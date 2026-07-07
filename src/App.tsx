@@ -3,6 +3,7 @@ import './App.css'
 import { DashboardShell } from './components/DashboardShell'
 import { Footer } from './components/Footer'
 import { SiteChrome } from './components/SiteChrome'
+import { useScrollReveal } from './components/motion/useScrollReveal'
 import { RulesProvider } from './lib/rules'
 import { SaasProvider } from './lib/saas'
 import { useSaas } from './lib/saas-context'
@@ -75,6 +76,8 @@ function Routes() {
   const { toast } = useSaas()
   const route = pathname.replace(/\/$/, '') || '/'
   const isDashboard = route === '/app' || route.startsWith('/app/')
+
+  useScrollReveal(route)
 
   useEffect(() => {
     document.title = pageTitles[route] ?? 'Aegis AI Blocker'

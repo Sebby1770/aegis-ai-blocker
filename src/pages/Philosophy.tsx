@@ -1,6 +1,7 @@
 import { ArrowRight } from 'lucide-react'
 import { Link } from '../components/Link'
 import { MarketingHeader } from '../components/MarketingHeader'
+import { SplitText } from '../components/motion/SplitText'
 
 export function Philosophy() {
   return (
@@ -9,14 +10,21 @@ export function Philosophy() {
 
       <section className="page-hero">
         <p className="eyebrow">Philosophy</p>
-        <h1>Choose, maintain, and enforce where AI tools are allowed in your digital life</h1>
+        <SplitText
+          as="h1"
+          segments={[
+            { text: 'Choose, maintain, and enforce where' },
+            { text: 'AI', highlight: true },
+            { text: 'tools are allowed in your digital life' },
+          ]}
+        />
         <p className="hero-copy">
           Aegis is not an &ldquo;AI is bad&rdquo; tool. It is about intentional digital boundaries —
           deciding, on purpose, when and where AI enters your attention.
         </p>
       </section>
 
-      <section className="landing-section compact-top manifesto">
+      <section className="landing-section compact-top manifesto" data-reveal>
         <h2>Boundaries are a choice, not a verdict</h2>
         <p className="manifesto-lead">
           Every household, classroom, and workplace draws the line in a different place. Aegis does
@@ -56,7 +64,7 @@ export function Philosophy() {
         </p>
       </section>
 
-      <section className="cta-band">
+      <section className="cta-band spotlight" data-reveal>
         <div>
           <h2>Set your boundary</h2>
           <p>Pick a policy, see exactly what it blocks, and download it for every device.</p>

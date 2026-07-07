@@ -69,6 +69,30 @@ export function SiteChrome() {
     }
   }, [])
 
+  // Pointer-follow spotlight for cards marked `.spotlight`. One delegated
+  // listener updates the hovered card's --mx/--my so a radial glow tracks the
+  // cursor (see App.css). Fine-pointer only; a no-op on touch.
+  useEffect(() => {
+    const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches
+    if (!fine) {
+      return
+    }
+
+    const onMove = (event: PointerEvent) => {
+      const target = event.target as Element | null
+      const card = target?.closest?.('.spotlight') as HTMLElement | null
+      if (!card) {
+        return
+      }
+      const rect = card.getBoundingClientRect()
+      card.style.setProperty('--mx', `${event.clientX - rect.left}px`)
+      card.style.setProperty('--my', `${event.clientY - rect.top}px`)
+    }
+
+    window.addEventListener('pointermove', onMove, { passive: true })
+    return () => window.removeEventListener('pointermove', onMove)
+  }, [])
+
   return (
     <>
       <div className="hud-frame" aria-hidden="true">

@@ -2,6 +2,31 @@
 
 All notable changes to the product and the rule pack.
 
+## 2.3.0 — 2026-07-07
+
+### Changed
+- **A ReactBits-inspired motion pass across the marketing site — no new
+  dependencies.** Every effect is hand-built, GPU-cheap, and gated on
+  `prefers-reduced-motion` / touch / IntersectionObserver support so content is
+  never hidden behind an animation that can't run, and no existing feature
+  changed:
+  - **SplitText headlines** — hero and page-hero headings rise in word-by-word
+    with a staggered entrance, keeping the teal→cyan gradient on the accent word.
+  - **CountUp stats** — the hero and catalog coverage numbers animate up from
+    zero the first time they scroll into view.
+  - **Spotlight cards** — step, feature, coverage, catalog, pricing, and CTA
+    cards now carry a soft radial glow that follows the cursor (one delegated
+    listener; disabled on touch).
+  - **Scroll reveal** — marketing sections fade and rise as they enter the
+    viewport; this also activates the previously-inert `data-reveal` markers.
+  - **ShinyText + button sheen** — a light glint travels across the "Every rule,
+    in the open" CTA heading, and primary buttons get a subtle sheen sweep on
+    hover.
+  - A staggered cascade brings the hero eyebrow, copy, actions, mode pills,
+    tester, and stats in on load.
+- New reusable motion primitives live under `src/components/motion/`
+  (`useInView`, `useScrollReveal`, `CountUp`, `SplitText`, `ShinyText`).
+
 ## 2.2.0 — 2026-07-06
 
 ### Added
