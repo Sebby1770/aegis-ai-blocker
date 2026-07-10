@@ -55,6 +55,7 @@ alter table public.lifetime_licenses add column if not exists stripe_customer_id
 create or replace function public.touch_updated_at()
 returns trigger
 language plpgsql
+set search_path = public
 as $$
 begin
   new.updated_at = now();
