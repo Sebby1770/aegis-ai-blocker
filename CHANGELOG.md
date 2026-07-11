@@ -2,6 +2,26 @@
 
 All notable changes to the product and the rule pack.
 
+## 2.3.2 — 2026-07-11
+
+### Added
+- **Live backend.** The app now runs against a real production Supabase project
+  (`aegis-ai-blocker`, ap-southeast-2): magic-link email sign-in works, all
+  schema migrations are applied (profiles, lifetime licenses, payment events,
+  devices, rule snapshots, audit logs, durable rate limiting — RLS throughout),
+  and the security advisors were reviewed (one `search_path` hardening fix
+  applied live and mirrored into `supabase/migrations/`).
+- **Full-stack local dev.** A new dev-only Vite plugin
+  (`scripts/vite-api-dev.ts`) mounts the Vercel serverless functions from
+  `api/` directly on the dev server via the Environment API module runner —
+  `npm run dev` now serves the SPA *and* `/api/health`, `/api/entitlement`,
+  `/api/create-checkout-session`, `/api/stripe-webhook`, and `/api/export`,
+  with env loaded from `.env.local` and hot re-transform when API files
+  change. Production builds and deployed functions are untouched
+  (`apply: 'serve'`).
+- Launch checklist gains a **Local development** section (webhook testing via
+  `stripe listen`, test card flow) and tracks Supabase setup progress.
+
 ## 2.3.1 — 2026-07-07
 
 ### Changed

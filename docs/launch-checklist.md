@@ -2,7 +2,22 @@
 
 Use this when you are ready to turn the local preview into a paid SaaS.
 
+## 0. Local development
+
+`npm run dev` serves the whole stack: a Vite plugin (`scripts/vite-api-dev.ts`)
+mounts the Vercel functions in `api/` on the dev server, loading env from
+`.env.local`, so sign-in, entitlement, checkout, and the webhook run at
+`http://localhost:5180/api/*` with no extra process. To exercise the payment
+webhook locally: `stripe listen --forward-to localhost:5180/api/stripe-webhook`,
+copy the printed `whsec_...` into `STRIPE_WEBHOOK_SECRET` in `.env.local`, and
+pay with card `4242 4242 4242 4242`.
+
 ## 1. Connect Supabase
+
+> Done 2026-07-10: project **aegis-ai-blocker** (`liqrebpaokbmftmqqeci`,
+> ap-southeast-2) exists with all migrations applied and advisors reviewed.
+> Still to do: copy the **secret key** into `.env.local`/Vercel (step 5),
+> set the Auth Site URL + redirect list, and enable backups (step 7).
 
 1. Run `supabase login`.
 2. Create a Supabase project in the dashboard.
