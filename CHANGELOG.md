@@ -21,6 +21,13 @@ All notable changes to the product and the rule pack.
   (`apply: 'serve'`).
 - Launch checklist gains a **Local development** section (webhook testing via
   `stripe listen`, test card flow) and tracks Supabase setup progress.
+- **One-command buy-flow verification** (`npm run verify:buy-flow`): creates a
+  throwaway user via the Supabase admin API, exercises checkout-session
+  creation, delivers a correctly HMAC-signed synthetic
+  `checkout.session.completed`, asserts the license grant and the
+  `/api/entitlement` flip, replays the event to prove idempotency, and cleans
+  up after itself. Fails fast with a precise message when a required key is
+  missing from `.env.local`.
 
 ## 2.3.1 — 2026-07-07
 

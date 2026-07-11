@@ -12,6 +12,7 @@
     "test:watch": "vitest",
     "typecheck:api": "tsc -p tsconfig.api.json",
     "generate:rules": "node scripts/generate-blocklists.mjs",
+    "verify:buy-flow": "node scripts/verify-buy-flow.mjs",
     "audit:deps": "npm audit --audit-level=high",
     "verify": "npm run generate:rules && npm run lint && npm run typecheck:api && npm run test && npm run build"
   },
