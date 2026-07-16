@@ -11,7 +11,14 @@ function LegalShell({ title, updated, children }: { title: string; updated: stri
 
 export function Privacy() {
   return (
-    <LegalShell title="Privacy Policy" updated="11 June 2026">
+    <LegalShell title="Privacy Policy" updated="12 July 2026">
+      <h2>Who runs Aegis</h2>
+      <p>
+        Aegis AI Blocker is operated by Sebastian Forbes, a sole trader based in Australia, who is the
+        data controller for the information described in this policy. For any privacy request, email{' '}
+        <a href="mailto:sebforbes03@gmail.com">sebforbes03@gmail.com</a>.
+      </p>
+
       <h2>The short version</h2>
       <p>
         Aegis sells blocklists. We collect the minimum needed to run accounts and licenses: your email
@@ -49,15 +56,23 @@ export function Privacy() {
         encrypt data in transit and at rest.
       </p>
 
+      <h2>Your rights and choices</h2>
+      <p>
+        You can ask us to access, correct, export, or delete your personal data, and you can object to or
+        restrict how we use it. To exercise any of these, email{' '}
+        <a href="mailto:sebforbes03@gmail.com">sebforbes03@gmail.com</a> from the address tied to your
+        account. If you are in the EU, UK, or a US state with privacy legislation, you also have the right
+        to lodge a complaint with your local data-protection authority.
+      </p>
+
       <h2>Data retention and deletion</h2>
       <p>
         We keep license records for as long as your license is active so we can verify it. To delete your
-        account and data, open a support request on{' '}
-        <a href="https://github.com/Sebby1770/aegis-ai-blocker/issues" rel="noreferrer" target="_blank">
-          GitHub
-        </a>{' '}
-        from the email tied to your account. Payment records required for tax and accounting are retained
-        as the law requires.
+        account and data, email{' '}
+        <a href="mailto:sebforbes03@gmail.com">sebforbes03@gmail.com</a> from the email address tied to
+        your account; we action deletion requests within 30 days. We never ask you to send deletion or
+        other privacy requests through any public channel. Payment records required for tax and accounting
+        are retained as the law requires.
       </p>
 
       <h2>Cookies and local storage</h2>
@@ -77,18 +92,27 @@ export function Privacy() {
 
 export function Terms() {
   return (
-    <LegalShell title="Terms of Service" updated="11 June 2026">
+    <LegalShell title="Terms of Service" updated="12 July 2026">
       <h2>The agreement</h2>
       <p>
-        These terms govern your use of Aegis AI Blocker (&ldquo;Aegis&rdquo;, &ldquo;we&rdquo;,
-        &ldquo;us&rdquo;). By creating an account or purchasing a license you agree to them.
+        Aegis AI Blocker (&ldquo;Aegis&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;) is operated by
+        Sebastian Forbes, a sole trader based in Australia, who is the party you contract with under these
+        terms. By creating an account or purchasing a license you agree to them. You can reach us any time
+        at <a href="mailto:sebforbes03@gmail.com">sebforbes03@gmail.com</a>.
       </p>
 
       <h2>What you buy</h2>
       <p>
         A lifetime license is a one-time purchase that grants your account personal, non-transferable
-        access to download the Aegis rule pack in all supported export formats, including future rule
-        pack updates, for as long as the service operates.
+        access to download the Aegis rule pack in all supported export formats, including future rule pack
+        updates, for the operating life of the service. &ldquo;Lifetime&rdquo; means the lifetime of the
+        product, not a guaranteed number of years: there is no recurring fee and no renewal — it does not
+        promise the service will run forever.
+      </p>
+      <p>
+        If we ever have to discontinue Aegis, we will give at least 30 days&apos; notice on this site and,
+        where we can, by email, and we will keep the rule pack you paid for available to download during
+        that period. Any exports you have already downloaded remain yours to keep and use.
       </p>
 
       <h2>What we promise — and what we don&apos;t</h2>
@@ -113,23 +137,32 @@ export function Terms() {
         abuse.
       </p>
 
+      <h2>Your consumer rights</h2>
+      <p>
+        Nothing in these terms excludes, restricts, or modifies any guarantee, right, or remedy you have
+        under the Australian Consumer Law or any other law that cannot legally be excluded. If you are a
+        consumer in the EU or UK, you keep your statutory rights, including the legal guarantee that
+        digital content matches its description and works as described. Where such rights apply they
+        operate alongside these terms and prevail to the extent of any conflict.
+      </p>
+
       <h2>Disclaimer and liability</h2>
       <p>
-        The service is provided &ldquo;as is&rdquo; without warranties of any kind. To the maximum extent
-        permitted by law, our total liability for any claim related to the service is limited to the
-        amount you paid for your license.
+        Except for the rights described above that cannot be excluded, and to the maximum extent permitted
+        by law: the service is provided &ldquo;as is&rdquo; without warranties of any kind, and our total
+        liability for any claim related to the service is limited to the amount you paid for your license.
       </p>
 
       <h2>Governing law</h2>
-      <p>These terms are governed by the laws of Victoria, Australia.</p>
+      <p>
+        These terms are governed by the laws of Victoria, Australia. This does not deprive you of the
+        protection of any mandatory consumer law of the country where you live.
+      </p>
 
       <h2>Contact</h2>
       <p>
-        Questions about these terms:{' '}
-        <a href="https://github.com/Sebby1770/aegis-ai-blocker/issues" rel="noreferrer" target="_blank">
-          open a support request
-        </a>
-        .
+        Questions about these terms? Email{' '}
+        <a href="mailto:sebforbes03@gmail.com">sebforbes03@gmail.com</a>.
       </p>
     </LegalShell>
   )
@@ -137,21 +170,19 @@ export function Terms() {
 
 export function Refunds() {
   return (
-    <LegalShell title="Refund Policy" updated="11 June 2026">
+    <LegalShell title="Refund Policy" updated="12 July 2026">
       <h2>14-day refunds</h2>
       <p>
         If Aegis is not what you expected, request a refund within 14 days of purchase and we will refund
-        the payment in full. No forms, no hoops.
+        the payment in full. No forms, no hoops. This voluntary policy is in addition to — and never
+        instead of — any refund or withdrawal right you have under consumer law where you live.
       </p>
 
       <h2>How to request one</h2>
       <ol>
         <li>
-          Open a request on{' '}
-          <a href="https://github.com/Sebby1770/aegis-ai-blocker/issues" rel="noreferrer" target="_blank">
-            GitHub
-          </a>{' '}
-          using the email address on your account, or reply to your Stripe receipt email.
+          Email <a href="mailto:sebforbes03@gmail.com">sebforbes03@gmail.com</a> from the email address on
+          your account, or reply to your Stripe receipt email.
         </li>
         <li>Include the approximate purchase date.</li>
         <li>Refunds are issued to the original payment method through Stripe, usually within 5–10 business days.</li>

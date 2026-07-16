@@ -10,13 +10,14 @@ export function Support() {
     <PageShell title="Support" intro="Questions, problems, and rule pack requests — all in one place.">
       <h2>Get help</h2>
       <p>
-        The fastest way to reach us is a{' '}
+        For anything private — billing, your account, refunds, or a data request — email{' '}
+        <a href="mailto:sebforbes03@gmail.com">sebforbes03@gmail.com</a> from the address you signed up
+        with, or reply to your Stripe receipt (it already identifies your purchase). For general product
+        questions and bug reports you can also open a{' '}
         <a href={newIssueUrl} rel="noreferrer" target="_blank">
-          GitHub support request
+          GitHub request
         </a>
-        . Issues are public, so describe the problem but never post receipts, emails, or payment
-        details there. For billing questions, reply directly to your Stripe receipt email instead —
-        it reaches us privately and already identifies your purchase.
+        , but because those are public, never post receipts, emails, or payment details there.
       </p>
 
       <h2>Quick fixes</h2>

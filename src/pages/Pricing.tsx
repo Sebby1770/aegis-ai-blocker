@@ -64,6 +64,10 @@ export function Pricing() {
             Final price is shown at checkout in your local currency. Payments are processed by
             Stripe — card details never touch our servers.
           </p>
+          <p className="pricing-note">
+            &ldquo;Lifetime&rdquo; means one payment with no renewal, for the operating life of the
+            product — see the <Link to="/terms">Terms</Link> for exactly what it covers.
+          </p>
         </div>
         <p className="pricing-links">
           Questions first? Read the <Link to="/faq">FAQ</Link> or the{' '}

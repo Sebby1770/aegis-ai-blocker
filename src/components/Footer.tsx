@@ -49,7 +49,10 @@ export function Footer() {
           </div>
         </nav>
       </div>
-      <p className="footer-fineprint">© 2026 Aegis AI Blocker. All rights reserved.</p>
+      <p className="footer-fineprint">
+        © 2026 Aegis AI Blocker — operated by Sebastian Forbes, a sole trader based in Australia.
+        Contact <a href="mailto:sebforbes03@gmail.com">sebforbes03@gmail.com</a>.
+      </p>
     </footer>
   )
 }
