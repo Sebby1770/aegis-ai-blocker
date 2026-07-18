@@ -2,6 +2,38 @@
 
 All notable changes to the product and the rule pack.
 
+## 2.3.3 — 2026-07-15
+
+### Security
+Pre-launch hardening from the security/legal audit (the launch-blocking legal
+fixes shipped separately on 2026-07-15):
+- **Zero-amount payments can no longer mint licenses.** The Stripe webhook now
+  refuses to fulfill a checkout session whose `amount_total` is missing, zero,
+  or negative — a 100%-off promotion code (or a future price misconfiguration)
+  reports `payment_status: 'paid'` but must not grant a free lifetime license
+  silently. Rejected sessions are logged and written to the audit trail. The
+  decision logic is a pure, unit-tested helper (`api/_lib/stripe-events.ts`).
+- **Rate limiting no longer keys on a spoofable header.** The client identity
+  now comes from the platform-set `x-real-ip`, falling back to the *rightmost*
+  `X-Forwarded-For` entry (appended by the nearest trusted proxy) instead of
+  the caller-controlled leftmost one, so an attacker can't dodge limits by
+  rotating a forged header. Unit-tested (`resolveClientIp`).
+- **The extension requests no host permissions at all.** Dropped
+  `host_permissions: ["<all_urls>"]` from the Enforcer manifest — block/allow
+  `declarativeNetRequest` rules need none. Smaller install warning, better
+  Chrome Web Store review posture, and an honest README claim to match.
+- **Profile updates are column-scoped in Postgres.** Authenticated users can
+  now update only `email` and `display_name` on their own profile row; the
+  server-managed `stripe_customer_id` billing linkage is service-role-only
+  (migration `20260715090000`, applied to production and verified via
+  `information_schema.column_privileges`).
+
+### Legal
+- **EU/UK statutory withdrawal disclosure.** The refund policy now explains the
+  14-day distance-selling withdrawal right, the immediate-performance consent
+  (requested at checkout via a new pricing-card notice) under which it ends on
+  download, and that the voluntary 14-day refund still applies regardless.
+
 ## 2.3.2 — 2026-07-11
 
 ### Added

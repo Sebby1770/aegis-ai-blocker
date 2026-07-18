@@ -69,9 +69,9 @@ the standard `browser_specific_settings` block.
 ## Defaults & scope
 
 - Default policy on install is **Strict no-AI**, so it protects out of the box.
-- It requests `<all_urls>` host access because a blocker must be able to act on
-  any site; it inspects nothing — DNR rules are evaluated by the browser itself,
-  and the extension never reads page content or sends data anywhere.
+- It requests **no host permissions at all**: block/allow `declarativeNetRequest`
+  rules are evaluated by the browser itself and need none. The extension cannot
+  read page content on any site, and it never sends data anywhere.
 
 ## Icons
 

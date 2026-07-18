@@ -188,6 +188,21 @@ export function Refunds() {
         <li>Refunds are issued to the original payment method through Stripe, usually within 5–10 business days.</li>
       </ol>
 
+      <h2>EU &amp; UK withdrawal rights</h2>
+      <p>
+        If you are a consumer in the EU or UK, you have a statutory right to withdraw from a distance
+        purchase of digital content within 14 days without giving a reason. Because Aegis delivers its
+        digital content immediately, at checkout you request immediate performance and acknowledge that
+        the statutory withdrawal right ends once you access or download the rule pack. To withdraw before
+        then, email <a href="mailto:sebforbes03@gmail.com">sebforbes03@gmail.com</a> with a clear
+        statement that you withdraw from the purchase (a model form is not required).
+      </p>
+      <p>
+        Either way you are not left worse off: our voluntary 14-day refund above applies even after you
+        have downloaded the rules, and nothing in this policy limits any non-excludable consumer
+        guarantee, including under the Australian Consumer Law.
+      </p>
+
       <h2>What happens to the license</h2>
       <p>
         When a refund is processed, the lifetime license deactivates automatically. Rule exports stop

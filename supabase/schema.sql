@@ -87,6 +87,11 @@ to authenticated
 using ((select auth.uid()) = id)
 with check ((select auth.uid()) = id);
 
+-- The policy above limits WHICH row a user can update; these grants limit
+-- WHICH columns. stripe_customer_id is server-managed (service role only).
+revoke update on table public.profiles from anon, authenticated;
+grant update (email, display_name) on table public.profiles to authenticated;
+
 drop policy if exists "Users can read own licenses" on public.lifetime_licenses;
 create policy "Users can read own licenses"
 on public.lifetime_licenses for select

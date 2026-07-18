@@ -68,6 +68,11 @@ export function Pricing() {
             &ldquo;Lifetime&rdquo; means one payment with no renewal, for the operating life of the
             product — see the <Link to="/terms">Terms</Link> for exactly what it covers.
           </p>
+          <p className="pricing-note">
+            By purchasing you get access immediately and consent to delivery starting at once — see the{' '}
+            <Link to="/refunds">refund policy</Link> for how this interacts with EU/UK withdrawal
+            rights.
+          </p>
         </div>
         <p className="pricing-links">
           Questions first? Read the <Link to="/faq">FAQ</Link> or the{' '}

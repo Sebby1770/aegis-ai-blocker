@@ -101,10 +101,37 @@ export function enforceOrigin(req: ApiRequest, res: ApiResponse) {
   return true
 }
 
+// Resolves the client identity for rate limiting from proxy headers without
+// trusting caller-controlled values. The LEFTMOST X-Forwarded-For entry is
+// whatever the caller chose to send, so keying on it lets an attacker mint a
+// fresh bucket per request. Instead prefer x-real-ip (set by the platform
+// proxy, e.g. Vercel), else the RIGHTMOST X-Forwarded-For entry — the one
+// appended by the nearest trusted proxy — else the socket address.
+export function resolveClientIp(
+  headers: Record<string, string | string[] | undefined>,
+  remoteAddress: string | undefined,
+) {
+  const realIp = headers['x-real-ip']
+  const firstRealIp = Array.isArray(realIp) ? realIp[0] : realIp
+  if (firstRealIp?.trim()) {
+    return firstRealIp.trim()
+  }
+
+  const forwardedFor = headers['x-forwarded-for']
+  const joined = Array.isArray(forwardedFor) ? forwardedFor.join(',') : forwardedFor
+  const entries = (joined ?? '')
+    .split(',')
+    .map((entry) => entry.trim())
+    .filter(Boolean)
+  if (entries.length > 0) {
+    return entries[entries.length - 1]
+  }
+
+  return remoteAddress || 'unknown'
+}
+
 function clientIp(req: ApiRequest) {
-  const forwardedFor = req.headers['x-forwarded-for']
-  const firstForwardedFor = Array.isArray(forwardedFor) ? forwardedFor[0] : forwardedFor
-  return firstForwardedFor?.split(',')[0]?.trim() || req.socket.remoteAddress || 'unknown'
+  return resolveClientIp(req.headers, req.socket.remoteAddress ?? undefined)
 }
 
 function memoryRateLimit(key: string, options: RateLimitOptions) {

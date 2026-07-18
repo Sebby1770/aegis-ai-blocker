@@ -1,5 +1,13 @@
 import { describe, expect, it } from 'vitest'
-import { enforceOrigin, guardRequest, rateLimit, readJsonBody, readRawBody, requireMethod } from './http.js'
+import {
+  enforceOrigin,
+  guardRequest,
+  rateLimit,
+  readJsonBody,
+  readRawBody,
+  requireMethod,
+  resolveClientIp,
+} from './http.js'
 import type { ApiRequest, ApiResponse } from './types.js'
 
 type MockResponse = ApiResponse & {
@@ -89,6 +97,40 @@ describe('enforceOrigin', () => {
     expect(enforceOrigin(req, res)).toBe(false)
     expect(res.statusCode).toBe(403)
     expect(res.getHeader('Access-Control-Allow-Origin')).toBeUndefined()
+  })
+})
+
+describe('resolveClientIp', () => {
+  it('prefers the platform-set x-real-ip', () => {
+    expect(
+      resolveClientIp(
+        { 'x-real-ip': '198.51.100.7', 'x-forwarded-for': 'attacker-choice, 198.51.100.7' },
+        '10.0.0.1',
+      ),
+    ).toBe('198.51.100.7')
+  })
+
+  it('uses the RIGHTMOST forwarded entry, ignoring caller-controlled prefixes', () => {
+    expect(resolveClientIp({ 'x-forwarded-for': 'spoofed1, spoofed2, 198.51.100.9' }, '10.0.0.1')).toBe(
+      '198.51.100.9',
+    )
+  })
+
+  it('is stable when an attacker rotates the leftmost entry', () => {
+    const a = resolveClientIp({ 'x-forwarded-for': 'fake-a, 198.51.100.9' }, '10.0.0.1')
+    const b = resolveClientIp({ 'x-forwarded-for': 'fake-b, 198.51.100.9' }, '10.0.0.1')
+    expect(a).toBe(b)
+  })
+
+  it('joins multiple forwarded headers before picking the last entry', () => {
+    expect(
+      resolveClientIp({ 'x-forwarded-for': ['spoofed', '203.0.113.5, 198.51.100.2'] }, '10.0.0.1'),
+    ).toBe('198.51.100.2')
+  })
+
+  it('falls back to the socket address, then unknown', () => {
+    expect(resolveClientIp({}, '192.0.2.4')).toBe('192.0.2.4')
+    expect(resolveClientIp({}, undefined)).toBe('unknown')
   })
 })
 

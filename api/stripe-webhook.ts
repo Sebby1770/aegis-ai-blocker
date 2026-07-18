@@ -2,6 +2,7 @@ import type Stripe from 'stripe'
 import { requireEnv } from './_lib/env.js'
 import { guardRequest, readRawBody, requestId, sendError } from './_lib/http.js'
 import { logEvent } from './_lib/log.js'
+import { assessCheckoutSession } from './_lib/stripe-events.js'
 import { supabaseAdmin, writeAuditLog } from './_lib/supabase.js'
 import { stripeClient } from './_lib/stripe.js'
 import type { ApiRequest, ApiResponse } from './_lib/types.js'
@@ -15,12 +16,29 @@ function paymentIntentId(value: string | Stripe.PaymentIntent | null | undefined
 }
 
 async function fulfillCheckoutSession(session: Stripe.Checkout.Session) {
-  const userId = session.client_reference_id ?? session.metadata?.user_id
+  const decision = assessCheckoutSession(session)
 
-  if (!userId || session.payment_status !== 'paid') {
+  if (!decision.fulfill) {
+    // A zero-value "paid" session (100%-off promo code or price misconfig)
+    // must never quietly become a lifetime license — record it for review.
+    if (decision.reason === 'zero_amount') {
+      logEvent('warn', 'stripe_webhook_zero_amount_rejected', { session: session.id })
+      await writeAuditLog({
+        actor: 'stripe_webhook',
+        action: 'license.rejected_zero_amount',
+        subjectType: 'checkout_session',
+        subjectId: session.id,
+        userId: session.client_reference_id ?? session.metadata?.user_id ?? null,
+        metadata: {
+          amount_total: session.amount_total ?? null,
+          currency: session.currency ?? null,
+        },
+      })
+    }
     return
   }
 
+  const userId = decision.userId
   const admin = supabaseAdmin()
   const customerId = typeof session.customer === 'string' ? session.customer : session.customer?.id ?? null
   const intentId = paymentIntentId(session.payment_intent)
