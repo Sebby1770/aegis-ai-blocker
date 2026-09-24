@@ -59,6 +59,35 @@ popup.js ──(policy/pause/exceptions via chrome.storage)─┤
   so enforcement can never drift from the dashboard. Never hand-edit it. It is
   both the bundled fallback and the file the self-update fetches.
 
+## Friction: Block, Delay, Schedule
+
+Below the policy modes, the popup picks how blocking feels. The logic lives in
+`friction.js` (pure, unit-tested in `friction.test.ts`):
+
+- **Block** (default): blocked domains never load. Its rules are exactly
+  `buildDnrRules()`, unchanged by friction.
+- **Delay**: page loads of blocked domains are redirected (one DNR regex rule,
+  `\0` substitution) to `interstitial.html` with the original URL in the
+  fragment; every other request type stays blocked. After the countdown the
+  worker adds a **session** `allowAllRequests` rule for that domain, **in that
+  tab only**, for the pass length. The pass ends at expiry (alarm) or when the
+  tab closes. The worker checks the elapsed time against its own clock, only
+  accepts pass requests from the top-level interstitial, and the page refuses
+  to run inside a frame and only navigates to `http(s)` targets.
+- **Schedule**: block only inside the configured days/hours (overnight
+  windows run into the next morning). Outside the window the pack is lifted
+  like Pause; "also block" domains still apply. An alarm fires at the next
+  boundary, plus a 5-minute reconcile tick for sleep and clock changes.
+
+**Permissions.** Chrome silently ignores DNR `redirect` rules for sites the
+extension has no host access to, so Delay would let everything through without
+it. The manifest therefore declares `<all_urls>` only under
+`optional_host_permissions` (no install-time warning). The popup requests it
+when you choose Delay, and until it is granted the worker compiles plain block
+rules. `interstitial.html` is a web-accessible resource so that link clicks from
+other sites can land on it; a side effect is that pages can detect the
+extension is installed.
+
 ## Real-browser tests
 
 `npm run test:e2e` (Playwright, also a CI job) loads this folder unpacked into
@@ -68,7 +97,11 @@ actually blocks: every pack domain as a page and as a subresource, subdomains
 vs. lookalikes, iframes, every policy compiling to exactly the expected live
 rules, mode switching, pause, both exception lists, agreement with the
 dashboard's explanations, and the popup UI end to end. See
-`e2e/extension-blocking.pw.ts`.
+`e2e/extension-blocking.pw.ts`. `e2e/friction.pw.ts` covers Delay (interstitial,
+exact-URL continue, tab-scoped pass, the worker-enforced wait, framing and
+`javascript:` attempts, fallback without the permission) and Schedule
+(inside/outside the window, the next-boundary alarm, and a live boundary
+crossing).
 
 ## Install (unpacked, for development)
 
@@ -83,9 +116,10 @@ the standard `browser_specific_settings` block.
 ## Defaults & scope
 
 - Default policy on install is **Strict no-AI**, so it protects out of the box.
-- It requests **no host permissions at all**: block/allow `declarativeNetRequest`
-  rules are evaluated by the browser itself and need none. The extension cannot
-  read page content on any site, and it never sends data anywhere.
+- By default it has **no host permissions at all**: block/allow
+  `declarativeNetRequest` rules are evaluated by the browser itself and need
+  none. Only choosing **Delay** asks for optional site access (see above). The
+  extension never reads page content and never sends data anywhere.
 
 ## Icons
 

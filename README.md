@@ -8,8 +8,9 @@ desktop browsers, and home routers. It is sold as a one-time lifetime purchase.
 
 Every block explains itself (which service, which category, exact vs. parent-domain match), every
 service carries a breakage-risk label and a last-verified date, and the whole catalog is public —
-trust is a visible feature, not a promise. Today Aegis enforces **block**; softer friction (warn,
-delay, schedule) and rituals are on the roadmap behind an always-on agent.
+trust is a visible feature, not a promise. DNS and router exports enforce **block**; the browser
+extension also offers softer friction: **delay** (a countdown before a blocked site opens) and
+**schedule** (block only in chosen hours). Warn and rituals remain on the roadmap.
 
 It ships as:
 

@@ -4,6 +4,20 @@ All notable changes to the product and the rule pack.
 
 ## Unreleased
 
+### Added
+- **Softer friction in the browser extension: Delay and Schedule.** Block stays the default and
+  its rules are unchanged.
+  - **Delay**: opening a blocked site shows a calm "Take a breath" page with a countdown (15 s by
+    default; it only counts down while the tab is in view). After waiting, you can continue to the
+    exact URL, and that one tab keeps the site open for a short pass (10 min by default). Embeds,
+    API calls, and other tabs stay blocked. The wait is enforced by the extension's background
+    worker, not the page.
+  - **Schedule**: block only on chosen days and hours (overnight windows supported, e.g. 21:00–07:00
+    on school nights). Outside the window the pack is lifted like Pause, while your "also block"
+    list still applies. The switch happens on time via alarms.
+  - Delay needs one optional permission (site access) to show its pause page, requested only when
+    you choose Delay. Without it the extension keeps blocking outright; it never falls open.
+
 ### Security
 Payments and entitlement audit (each fix landed with a test that failed first):
 - **Refunds and disputes now win regardless of event order.** Stripe does not guarantee event

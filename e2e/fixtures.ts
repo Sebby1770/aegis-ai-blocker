@@ -167,6 +167,9 @@ export async function subresource(page: Page, url: string): Promise<'reached' | 
 }
 
 type Fixtures = {
+  // Per-spec option: keys shallow-merged into the unpacked copy's manifest
+  // before launch (e.g. to simulate an optional permission the user granted).
+  manifestOverrides: Record<string, unknown> | null
   context: BrowserContext
   extension: ExtensionHandle
 }
@@ -210,12 +213,18 @@ export const test = base.extend<Fixtures, WorkerFixtures>({
     { scope: 'worker' },
   ],
 
-  context: async ({ probe }, use) => {
+  manifestOverrides: [null, { option: true }],
+
+  context: async ({ probe, manifestOverrides }, use) => {
     probe.reset()
     const extensionDir = mkdtempSync(path.join(tmpdir(), 'aegis-e2e-ext-'))
     const profileDir = mkdtempSync(path.join(tmpdir(), 'aegis-e2e-profile-'))
     cpSync(EXTENSION_SOURCE, extensionDir, { recursive: true })
-    prepareExtension(extensionDir)
+    if (manifestOverrides) {
+      const file = path.join(extensionDir, 'manifest.json')
+      const manifest = JSON.parse(readFileSync(file, 'utf8')) as Record<string, unknown>
+      writeFileSync(file, JSON.stringify({ ...manifest, ...manifestOverrides }, null, 2))
+    }
 
     const context = await launchWithExtension(extensionDir, profileDir)
     await use(context)
@@ -239,23 +248,5 @@ export const test = base.extend<Fixtures, WorkerFixtures>({
     await use(handle)
   },
 })
-
-// Hook for specs that need to adjust the unpacked copy before launch (e.g. to
-// simulate a granted optional permission). Default: load it exactly as shipped.
-let manifestPatch: ((manifest: Record<string, unknown>) => void) | null = null
-
-export function patchManifestForThisFile(patch: (manifest: Record<string, unknown>) => void) {
-  manifestPatch = patch
-}
-
-function prepareExtension(dir: string) {
-  if (!manifestPatch) {
-    return
-  }
-  const file = path.join(dir, 'manifest.json')
-  const manifest = JSON.parse(readFileSync(file, 'utf8')) as Record<string, unknown>
-  manifestPatch(manifest)
-  writeFileSync(file, JSON.stringify(manifest, null, 2))
-}
 
 export { expect }

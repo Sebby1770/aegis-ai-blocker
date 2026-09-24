@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="referrer" content="no-referrer" />
+    <link rel="stylesheet" href="interstitial.css" />
+    <title>Take a breath · Aegis</title>
+  </head>
+  <body>
+    <main class="card" aria-live="polite">
+      <div class="brand"><span class="mark" aria-hidden="true">▲</span> Aegis Enforcer</div>
+      <h1 id="headline">Take a breath.</h1>
+      <p id="lede" class="lede">Checking where this was going…</p>
+
+      <div class="timer" role="timer" aria-label="Seconds left">
+        <span id="seconds">·</span>
+      </div>
+
+      <p id="note" class="note">The pause only counts down while this tab is in view.</p>
+
+      <div class="actions">
+        <button id="back" class="secondary" type="button">Not now</button>
+        <button id="continue" class="primary" type="button" disabled>Continue</button>
+      </div>
+
+      <p id="error" class="error" hidden></p>
+    </main>
+    <script type="module" src="interstitial.js"></script>
+  </body>
+</html>
