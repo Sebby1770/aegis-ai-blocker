@@ -180,7 +180,7 @@ export function stripeEvent(type: string, object: object, id = `evt_${randomUUID
   return {
     id,
     object: 'event',
-    api_version: '2026-05-27.dahlia',
+    api_version: '2026-08-26.dahlia',
     created: Math.floor(Date.now() / 1000),
     livemode: false,
     pending_webhooks: 1,

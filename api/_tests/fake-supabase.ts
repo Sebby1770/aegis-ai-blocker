@@ -17,6 +17,7 @@ const UNIQUE_KEYS: Record<string, string[][]> = {
   lifetime_licenses: [['id'], ['provider', 'provider_reference']],
   payment_events: [['event_id']],
   audit_logs: [['id']],
+  payment_revocations: [['payment_intent']],
 }
 
 const DEFAULTS: Record<string, () => Row> = {

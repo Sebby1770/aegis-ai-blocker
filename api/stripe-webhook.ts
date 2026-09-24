@@ -120,6 +120,44 @@ async function fulfillCheckoutSession(session: Stripe.Checkout.Session) {
     return
   }
 
+  // Close the window between the Stripe check above and the insert: a refund
+  // or dispute processed meanwhile found no license, but it left a durable
+  // marker first. Having inserted, read the marker; whichever of the two ran
+  // second sees the other.
+  if (!revocation && intentId) {
+    const { data: marker, error: markerError } = await admin
+      .from('payment_revocations')
+      .select('status,reason')
+      .eq('payment_intent', intentId)
+      .maybeSingle()
+
+    if (markerError) {
+      throw markerError
+    }
+
+    if (marker) {
+      const { error: revokeError } = await admin
+        .from('lifetime_licenses')
+        .update({ status: marker.status, revoked_at: new Date().toISOString() })
+        .eq('id', inserted[0].id)
+
+      if (revokeError) {
+        throw revokeError
+      }
+
+      logEvent('warn', 'stripe_webhook_fulfilled_after_revocation', { session: session.id, status: marker.status })
+      await writeAuditLog({
+        actor: 'stripe_webhook',
+        action: `license.${marker.status}_before_fulfilment`,
+        subjectType: 'lifetime_license',
+        subjectId: session.id,
+        userId,
+        metadata: { reason: marker.reason },
+      })
+      return
+    }
+  }
+
   if (revocation) {
     logEvent('warn', 'stripe_webhook_fulfilled_after_revocation', { session: session.id, status: revocation.status })
   }
@@ -152,6 +190,16 @@ async function revokeLicenseForPaymentIntent(
 
   const admin = supabaseAdmin()
   const revokedAt = new Date().toISOString()
+
+  // Record the revocation durably BEFORE looking for licenses, so a
+  // fulfilment racing this event (or delivered after it) still honours it.
+  const { error: markerError } = await admin
+    .from('payment_revocations')
+    .upsert({ payment_intent: intentId, status: nextStatus, reason }, { onConflict: 'payment_intent' })
+
+  if (markerError) {
+    throw markerError
+  }
 
   const { data: byIntent, error: byIntentError } = await admin
     .from('lifetime_licenses')

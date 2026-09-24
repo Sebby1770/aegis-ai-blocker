@@ -100,6 +100,14 @@ describe.each<SetupPath>(['migrations', 'schema.sql'])('Supabase RLS and privile
       ).rejects.toThrow()
     })
 
+    it('cannot forge or read refund markers', async () => {
+      await expect(
+        db.as(asA, `insert into public.payment_revocations (payment_intent, status, reason) values ('pi_x', 'refunded', 'x')`),
+      ).rejects.toThrow(/permission denied/)
+      await expect(db.as(asA, 'select * from public.payment_revocations')).rejects.toThrow(/permission denied/)
+      await expect(db.as(anon, 'select * from public.payment_revocations')).rejects.toThrow(/permission denied/)
+    })
+
     it('cannot call the service-only rate-limit function', async () => {
       await expect(db.as(asA, `select public.consume_rate_limit('k', 1000, 60)`)).rejects.toThrow(/permission denied/)
     })

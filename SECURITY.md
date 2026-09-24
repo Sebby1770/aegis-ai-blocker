@@ -50,7 +50,8 @@ every push; `.env*` files are gitignored with only `.env.example` tracked.
   back to active.
 - Refunds (`charge.refunded`) and disputes (`charge.dispute.created`) automatically revoke licenses.
   Because Stripe does not guarantee event order, fulfillment also asks Stripe for the charge's
-  current refund/dispute state, so a refund processed *before* a delayed fulfillment still wins.
+  current refund/dispute state, and revocations leave a durable server-only marker keyed by payment
+  intent, so a refund processed before or during a delayed fulfillment still wins.
 - License rows are written only with the server-side service role.
 
 **Authentication and authorization**

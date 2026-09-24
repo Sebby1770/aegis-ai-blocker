@@ -260,6 +260,41 @@ describe('refunds and disputes', () => {
     expect(licensesFor(USER_A).filter((row) => row.status === 'active')).toHaveLength(0)
   })
 
+  // FINDING (residual race from the Stripe-state check): fulfilment asked
+  // Stripe, saw a clean charge, and a refund processed in that window found
+  // no license to revoke — so the license was inserted active afterwards.
+  it('a refund processed while fulfilment is mid-flight still wins', async () => {
+    state.stripe.checkout.sessions.list.mockResolvedValue({ data: [{ id: 'cs_test_paid_1' }] })
+    state.stripe.paymentIntents.retrieve.mockImplementationOnce(async (id: string) => {
+      // The refund lands between fulfilment's Stripe check and its insert.
+      await deliver(stripeEvent('charge.refunded', refundedCharge()))
+      return {
+        id,
+        object: 'payment_intent',
+        latest_charge: { id: 'ch_test_1', object: 'charge', refunded: false, amount_refunded: 0, disputed: false },
+      }
+    })
+
+    await deliver(stripeEvent('checkout.session.completed', paidSession()))
+
+    expect(licensesFor(USER_A)).toMatchObject([{ status: 'refunded' }])
+  })
+
+  it('a dispute processed while fulfilment is mid-flight still wins', async () => {
+    state.stripe.paymentIntents.retrieve.mockImplementationOnce(async (id: string) => {
+      await deliver(stripeEvent('charge.dispute.created', dispute()))
+      return {
+        id,
+        object: 'payment_intent',
+        latest_charge: { id: 'ch_test_1', object: 'charge', refunded: false, amount_refunded: 0, disputed: false },
+      }
+    })
+
+    await deliver(stripeEvent('checkout.session.completed', paidSession()))
+
+    expect(licensesFor(USER_A)).toMatchObject([{ status: 'revoked' }])
+  })
+
   // FINDING: the fulfilment upsert wrote status 'active' unconditionally, so a
   // Stripe retry of a fulfilment event whose first attempt had partly
   // succeeded (license written, event ledger write failed) re-activated a
