@@ -2,6 +2,20 @@
 
 All notable changes to the product and the rule pack.
 
+## Unreleased
+
+### Security
+- **Dependency audit is green again.** New advisories against transitive dev/build dependencies
+  (`brace-expansion`, `browserslist`, `nanoid`, `postcss`, `baseline-browser-mapping`,
+  `@vitest/mocker`) had turned the CI `npm audit --audit-level=high` gate red. Updated them within
+  their semver ranges (vitest to `^4.1.11`); `npm audit` reports 0 vulnerabilities. None of these
+  packages ship in the production bundle or the serverless functions.
+
+### Tooling
+- A `SessionStart` hook (`.claude/settings.json` → `.claude/hooks/session-start.sh`) runs `npm ci`
+  in Claude Code cloud sessions so `npm run verify` works immediately.
+- `CLAUDE.md` documents the architecture, commands, and trust boundaries.
+
 ## 2.3.3 — 2026-07-15
 
 ### Security
