@@ -13,7 +13,7 @@ Aegis AI Blocker: a paid (one-time lifetime) product that turns a policy ("Focus
 | `src/lib/blocklists.ts` | Pack resolution + export formats (AdGuard, hosts, dnsmasq, plain, Safari JSON). Shared by the SPA and `api/export.ts` |
 | `api/` | Vercel serverless functions. `_lib/http.ts` = `guardRequest` (headers → preflight → method → origin → rate limit) |
 | `supabase/migrations/` | Schema + RLS. `schema.sql` mirrors the migrations for one-shot setup; keep both in sync |
-| `extension/` | Manifest V3 "Aegis Enforcer": `enforce.js` (pure: pack + state → DNR rules), `pack-validate.js` (sanitizes the self-updating remote pack), `background.js` (service worker), `popup.*` |
+| `extension/` | Manifest V3 "Aegis Enforcer": `enforce.js` (pure: pack + state → DNR rules), `friction.js` (pure: block/delay/schedule), `pack-validate.js` (sanitizes the self-updating remote pack), `background.js` (service worker), `popup.*`, `interstitial.*` (delay page) |
 | `scripts/generate-blocklists.mjs` | Regenerates `rules/generated/*`, `extension/rules/pack.json`, `ios/AegisAIBlocker/RulePackData.generated.swift` from the pack |
 | `scripts/vite-api-dev.ts` | Dev-only Vite plugin that serves `api/*.ts` at `/api/*` under `npm run dev` |
 | `ios/` | SwiftUI companion app (XcodeGen); consumes the generated Swift rule data |
@@ -53,8 +53,11 @@ runs gitleaks. Never hand-edit `rules/generated/`, `extension/rules/pack.json`, 
   `rate_limits` have no client policies. `consume_rate_limit` is service-role-only.
 - **Errors are generic** (`sendError(res, status, code)` + request id); logs go through `logEvent`,
   which redacts keys/JWTs/emails. Never log or return raw errors.
-- **Extension**: requests no host permissions; the remote pack is untrusted input and must pass
-  `sanitizePack` (size caps, domain validation, no version downgrade) before it reaches DNR.
+- **Extension**: no host permissions by default (Delay requests optional `<all_urls>`, and without
+  it must compile plain block rules, never fail open). Block-mode rules must stay exactly
+  `buildDnrRules()`. The remote pack is untrusted input and must pass `sanitizePack` (size caps,
+  domain validation, no version downgrade) before it reaches DNR. The interstitial's URL fragment is
+  untrusted too: `safeTarget()` it, and grant passes only from the worker's own clock.
 
 ## Conventions
 

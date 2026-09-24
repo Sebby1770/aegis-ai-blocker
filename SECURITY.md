@@ -75,6 +75,16 @@ every push; `.env*` files are gitignored with only `.env.example` tracked.
 - Generic error codes with request IDs; no stack traces or internals in responses.
 - Structured JSON logging with automatic redaction of Stripe keys, JWTs, and email addresses.
 
+**Browser extension**
+
+- No host permissions by default; `declarativeNetRequest` block/allow rules need none.
+- Delay mode's optional `<all_urls>` permission is requested only when the user picks Delay.
+  Without it the worker compiles plain block rules: friction can only get stricter, never open.
+- Delay passes are session-scoped `allowAllRequests` rules for one domain in one tab, granted by
+  the worker against its own clock. Pass requests are accepted only from the top-level
+  interstitial, which refuses to run framed and navigates only to `http(s)` URLs.
+- Remote rule-pack updates are size-capped, structure-validated, and version-guarded.
+
 **Headers and build**
 
 - CSP, HSTS, `X-Content-Type-Options`, `X-Frame-Options`/`frame-ancestors`, referrer and

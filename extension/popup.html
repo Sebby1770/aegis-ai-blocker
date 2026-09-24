@@ -22,6 +22,54 @@
 
     <div id="modes" class="modes" role="listbox" aria-label="Policy modes"></div>
 
+    <section class="friction" aria-labelledby="friction-label">
+      <span id="friction-label" class="section-label">Friction</span>
+      <div class="segmented" role="radiogroup" aria-labelledby="friction-label">
+        <button type="button" role="radio" data-friction="block">Block</button>
+        <button type="button" role="radio" data-friction="delay">Delay</button>
+        <button type="button" role="radio" data-friction="schedule">Schedule</button>
+      </div>
+
+      <div id="delay-options" class="friction-options" hidden>
+        <label>
+          Pause for
+          <select id="delay-seconds">
+            <option value="5">5 s</option>
+            <option value="10">10 s</option>
+            <option value="15">15 s</option>
+            <option value="30">30 s</option>
+            <option value="60">60 s</option>
+          </select>
+        </label>
+        <label>
+          then open for
+          <select id="pass-minutes">
+            <option value="5">5 min</option>
+            <option value="10">10 min</option>
+            <option value="15">15 min</option>
+            <option value="30">30 min</option>
+            <option value="60">60 min</option>
+          </select>
+        </label>
+      </div>
+
+      <div id="schedule-options" class="friction-options" hidden>
+        <div id="schedule-days" class="days" role="group" aria-label="Days">
+          <label><input type="checkbox" value="1" /><span>Mo</span></label>
+          <label><input type="checkbox" value="2" /><span>Tu</span></label>
+          <label><input type="checkbox" value="3" /><span>We</span></label>
+          <label><input type="checkbox" value="4" /><span>Th</span></label>
+          <label><input type="checkbox" value="5" /><span>Fr</span></label>
+          <label><input type="checkbox" value="6" /><span>Sa</span></label>
+          <label><input type="checkbox" value="0" /><span>Su</span></label>
+        </div>
+        <label>From <input id="schedule-start" type="time" required /></label>
+        <label>to <input id="schedule-end" type="time" required /></label>
+      </div>
+
+      <p id="friction-status" class="friction-status"></p>
+    </section>
+
     <details class="exceptions">
       <summary>Exceptions</summary>
       <div class="exception-group">

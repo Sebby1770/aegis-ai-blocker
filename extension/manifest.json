@@ -4,6 +4,13 @@
   "version": "2.3.3",
   "description": "Enforce your Aegis AI policy live in the browser. Choose a value — Focus, Child-safe, School exam — and AI services are blocked in real time.",
   "permissions": ["declarativeNetRequest", "storage", "alarms"],
+  "optional_host_permissions": ["<all_urls>"],
+  "web_accessible_resources": [
+    {
+      "resources": ["interstitial.html"],
+      "matches": ["<all_urls>"]
+    }
+  ],
   "background": {
     "service_worker": "background.js",
     "type": "module"

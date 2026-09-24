@@ -3,7 +3,10 @@
 // changes and recompiles the live blocking rules.
 
 import { REMOTE_PACK_URL } from './config.js'
+import { describeSchedule, FRICTION_DEFAULTS, sanitizeFriction } from './friction.js'
 import { fetchValidatedPack, isAcceptableVersion, sanitizePack, toValidDomain } from './pack-validate.js'
+
+const ALL_SITES = { origins: ['<all_urls>'] }
 
 const DEFAULT_STATE = {
   activePolicyId: 'strict-no-ai',
@@ -13,6 +16,10 @@ const DEFAULT_STATE = {
   blockedCount: 0,
   packVersion: '',
   packFetchedAt: '',
+  ...FRICTION_DEFAULTS,
+  frictionEffective: 'block',
+  scheduleActive: null,
+  scheduleNextChangeAt: '',
 }
 
 const modesEl = document.getElementById('modes')
@@ -21,6 +28,15 @@ const countEl = document.getElementById('count')
 const pauseEl = document.getElementById('pause')
 const packEl = document.getElementById('pack')
 const refreshEl = document.getElementById('refresh')
+const frictionButtons = Array.from(document.querySelectorAll('[data-friction]'))
+const delayOptionsEl = document.getElementById('delay-options')
+const scheduleOptionsEl = document.getElementById('schedule-options')
+const delaySecondsEl = document.getElementById('delay-seconds')
+const passMinutesEl = document.getElementById('pass-minutes')
+const scheduleDayEls = Array.from(document.querySelectorAll('#schedule-days input'))
+const scheduleStartEl = document.getElementById('schedule-start')
+const scheduleEndEl = document.getElementById('schedule-end')
+const frictionStatusEl = document.getElementById('friction-status')
 
 async function getActivePack() {
   const { remotePack } = await chrome.storage.local.get({ remotePack: null })
@@ -144,6 +160,46 @@ function formatAgo(iso) {
   return hours < 48 ? `refreshed ${hours}h ago` : `refreshed ${Math.round(hours / 24)}d ago`
 }
 
+function formatWhen(iso) {
+  const date = new Date(iso)
+  return Number.isNaN(date.getTime())
+    ? ''
+    : date.toLocaleString([], { weekday: 'short', hour: '2-digit', minute: '2-digit' })
+}
+
+// Shows the saved friction settings, and what is actually in force (delay
+// without site access falls back to blocking).
+function renderFriction(state) {
+  const friction = sanitizeFriction(state)
+
+  for (const button of frictionButtons) {
+    button.setAttribute('aria-checked', String(button.dataset.friction === friction.friction))
+  }
+
+  delayOptionsEl.hidden = friction.friction !== 'delay'
+  scheduleOptionsEl.hidden = friction.friction !== 'schedule'
+  delaySecondsEl.value = String(friction.delaySeconds)
+  passMinutesEl.value = String(friction.passMinutes)
+  for (const input of scheduleDayEls) {
+    input.checked = friction.schedule.days.includes(Number(input.value))
+  }
+  scheduleStartEl.value = friction.schedule.start
+  scheduleEndEl.value = friction.schedule.end
+
+  if (friction.friction === 'delay') {
+    frictionStatusEl.textContent =
+      state.frictionEffective === 'delay'
+        ? `Blocked sites open after a ${friction.delaySeconds}s pause, then stay open ${friction.passMinutes} min in that tab.`
+        : 'Delay needs site access to show its pause page, so blocked sites are blocked outright. Choose Delay again to grant it.'
+  } else if (friction.friction === 'schedule') {
+    const when = state.scheduleNextChangeAt ? formatWhen(state.scheduleNextChangeAt) : ''
+    const now = state.scheduleActive ? 'blocking now' : 'off now'
+    frictionStatusEl.textContent = `${describeSchedule(friction.schedule)} · ${now}${when ? ` until ${when}` : ''}`
+  } else {
+    frictionStatusEl.textContent = 'Blocked sites never load.'
+  }
+}
+
 async function render() {
   const [pack, state] = await Promise.all([
     getActivePack(),
@@ -159,13 +215,16 @@ async function render() {
   renderChips(document.getElementById('allow-list'), state.allowDomains ?? [], 'allowDomains')
   renderChips(document.getElementById('block-list'), state.blockDomains ?? [], 'blockDomains')
 
+  renderFriction(state)
+
   const paused = Boolean(state.paused)
+  const offHours = state.friction === 'schedule' && state.scheduleActive === false
   pauseEl.textContent = paused ? 'Resume' : 'Pause'
   pauseEl.classList.toggle('is-paused', paused)
-  statusEl.textContent = paused ? 'Paused — nothing blocked' : 'Perimeter active'
+  statusEl.textContent = paused ? 'Paused — nothing blocked' : offHours ? 'Off-hours — schedule not active' : 'Perimeter active'
 
   const count = Number(state.blockedCount ?? 0)
-  countEl.textContent = paused ? 'Enforcement paused' : `${count} domains contained`
+  countEl.textContent = paused ? 'Enforcement paused' : offHours ? 'Schedule off-hours' : `${count} domains contained`
   packEl.textContent = `pack ${pack.version} · ${formatAgo(state.packFetchedAt)}`
 }
 
@@ -199,6 +258,42 @@ refreshEl.addEventListener('click', async () => {
     refreshEl.disabled = false
   }
 })
+
+for (const button of frictionButtons) {
+  button.addEventListener('click', async () => {
+    const mode = button.dataset.friction
+
+    // Delay redirects page loads to its pause page, which Chrome only allows
+    // with host access. Ask here, inside the click (a user gesture); without
+    // it the worker keeps blocking outright rather than letting sites through.
+    if (mode === 'delay' && !(await chrome.permissions.request(ALL_SITES))) {
+      frictionStatusEl.textContent = 'Delay needs site access to show its pause page. Staying as it was.'
+      return
+    }
+
+    await chrome.storage.local.set({ friction: mode })
+  })
+}
+
+delaySecondsEl.addEventListener('change', () => {
+  void chrome.storage.local.set({ delaySeconds: Number(delaySecondsEl.value) })
+})
+
+passMinutesEl.addEventListener('change', () => {
+  void chrome.storage.local.set({ passMinutes: Number(passMinutesEl.value) })
+})
+
+function saveSchedule() {
+  if (!scheduleStartEl.value || !scheduleEndEl.value) {
+    return
+  }
+  const days = scheduleDayEls.filter((input) => input.checked).map((input) => Number(input.value))
+  void chrome.storage.local.set({ schedule: { days, start: scheduleStartEl.value, end: scheduleEndEl.value } })
+}
+
+for (const input of [...scheduleDayEls, scheduleStartEl, scheduleEndEl]) {
+  input.addEventListener('change', saveSchedule)
+}
 
 wireExceptionForm('allow-form', 'allow-input', 'allowDomains', 'blockDomains')
 wireExceptionForm('block-form', 'block-input', 'blockDomains', 'allowDomains')
