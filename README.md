@@ -82,7 +82,8 @@ Other scripts:
 
 | Script | Purpose |
 | --- | --- |
-| `npm test` | Run the Vitest suite |
+| `npm test` | Run the Vitest suite (unit, API handler, SQL/RLS, export-format tests) |
+| `npm run test:e2e` | Load the extension in real Chromium (Playwright) and verify what it blocks |
 | `npm run generate:rules` | Regenerate `rules/generated/` from the rule pack |
 | `npm run typecheck:api` | Typecheck the serverless API |
 | `npm run audit:deps` | Fail on high-severity dependency vulnerabilities |

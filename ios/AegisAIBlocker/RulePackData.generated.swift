@@ -2,8 +2,8 @@
 // Source of truth: src/data/ai-services.json
 
 enum RulePackData {
-    static let version = "2026.06.11"
-    static let updatedAt = "2026-06-11"
+    static let version = "2026.09.24"
+    static let updatedAt = "2026-09-24"
 
     static let categories: [RuleCategory] = [
         RuleCategory(
@@ -12,20 +12,36 @@ enum RulePackData {
             symbol: "sparkles",
             colorHex: 0x0f9f8f,
             services: [
-                RuleService(name: "OpenAI ChatGPT", domains: ["chatgpt.com", "chat.openai.com", "openai.com", "oaistatic.com", "oaiusercontent.com"]),
-                RuleService(name: "Anthropic Claude", domains: ["claude.ai", "console.anthropic.com", "anthropic.com"]),
-                RuleService(name: "Google Gemini", domains: ["gemini.google.com", "bard.google.com", "aistudio.google.com", "notebooklm.google.com"]),
+                RuleService(name: "OpenAI ChatGPT", domains: ["chatgpt.com", "chat.openai.com", "openai.com", "oaistatic.com", "oaiusercontent.com", "chat.com"]),
+                RuleService(name: "Anthropic Claude", domains: ["claude.ai", "console.anthropic.com", "anthropic.com", "claude.com", "claudeusercontent.com"]),
+                RuleService(name: "Google Gemini", domains: ["gemini.google.com", "bard.google.com", "aistudio.google.com", "notebooklm.google.com", "gemini.google", "notebook.google.com", "notebook.google", "notebooklm.google"]),
                 RuleService(name: "Meta AI", domains: ["meta.ai", "ai.meta.com"]),
                 RuleService(name: "DeepSeek", domains: ["deepseek.com", "chat.deepseek.com"]),
-                RuleService(name: "Qwen", domains: ["qwen.ai", "chat.qwen.ai"]),
-                RuleService(name: "Kimi", domains: ["kimi.com", "moonshot.ai"]),
+                RuleService(name: "Qwen", domains: ["qwen.ai", "chat.qwen.ai", "tongyi.aliyun.com"]),
+                RuleService(name: "Kimi", domains: ["kimi.com", "moonshot.ai", "moonshot.cn"]),
                 RuleService(name: "Poe", domains: ["poe.com"]),
                 RuleService(name: "Character.AI", domains: ["character.ai", "beta.character.ai"]),
                 RuleService(name: "Pi", domains: ["pi.ai", "inflection.ai"]),
                 RuleService(name: "Manus", domains: ["manus.im"]),
                 RuleService(name: "Janitor AI", domains: ["janitorai.com"]),
                 RuleService(name: "QuillBot", domains: ["quillbot.com"]),
-                RuleService(name: "Grammarly", domains: ["grammarly.com", "app.grammarly.com"], strictOnly: true)
+                RuleService(name: "Grammarly", domains: ["grammarly.com", "app.grammarly.com"], strictOnly: true),
+                RuleService(name: "Mistral Le Chat", domains: ["chat.mistral.ai"]),
+                RuleService(name: "Microsoft 365 Copilot", domains: ["copilot.cloud.microsoft"]),
+                RuleService(name: "Doubao", domains: ["doubao.com"]),
+                RuleService(name: "Zhipu ChatGLM / Z.ai", domains: ["chatglm.cn", "z.ai"]),
+                RuleService(name: "Baidu ERNIE Bot", domains: ["yiyan.baidu.com", "wenxin.baidu.com"]),
+                RuleService(name: "Monica", domains: ["monica.im"]),
+                RuleService(name: "Merlin", domains: ["getmerlin.in"]),
+                RuleService(name: "Sider", domains: ["sider.ai"]),
+                RuleService(name: "TypingMind", domains: ["typingmind.com"]),
+                RuleService(name: "Replika", domains: ["replika.com"]),
+                RuleService(name: "Nomi", domains: ["nomi.ai"]),
+                RuleService(name: "Talkie", domains: ["talkie-ai.com"]),
+                RuleService(name: "Jasper", domains: ["jasper.ai"]),
+                RuleService(name: "Copy.ai", domains: ["copy.ai"]),
+                RuleService(name: "Writesonic", domains: ["writesonic.com"]),
+                RuleService(name: "Rytr", domains: ["rytr.me"])
             ]
         ),
         RuleCategory(
@@ -34,7 +50,7 @@ enum RulePackData {
             symbol: "magnifyingglass",
             colorHex: 0xe49b29,
             services: [
-                RuleService(name: "Perplexity", domains: ["perplexity.ai", "www.perplexity.ai"]),
+                RuleService(name: "Perplexity", domains: ["perplexity.ai", "www.perplexity.ai", "perplexity.com", "pplx.ai"]),
                 RuleService(name: "Microsoft Copilot", domains: ["copilot.microsoft.com", "bing.com", "edgeservices.bing.com"]),
                 RuleService(name: "You.com", domains: ["you.com", "youcdn.io"]),
                 RuleService(name: "Phind", domains: ["phind.com"]),
@@ -42,7 +58,10 @@ enum RulePackData {
                 RuleService(name: "Genspark", domains: ["genspark.ai"]),
                 RuleService(name: "Andi", domains: ["andisearch.com"]),
                 RuleService(name: "iAsk", domains: ["iask.ai"]),
-                RuleService(name: "Komo", domains: ["komo.ai"])
+                RuleService(name: "Komo", domains: ["komo.ai"]),
+                RuleService(name: "Felo", domains: ["felo.ai"]),
+                RuleService(name: "Consensus", domains: ["consensus.app"]),
+                RuleService(name: "Elicit", domains: ["elicit.com"])
             ]
         ),
         RuleCategory(
@@ -62,7 +81,17 @@ enum RulePackData {
                 RuleService(name: "Devin", domains: ["devin.ai", "cognition.ai"]),
                 RuleService(name: "Tabnine", domains: ["tabnine.com", "api.tabnine.com"]),
                 RuleService(name: "Augment Code", domains: ["augmentcode.com"]),
-                RuleService(name: "Sourcegraph Cody", domains: ["sourcegraph.com"], strictOnly: true)
+                RuleService(name: "Sourcegraph Cody", domains: ["sourcegraph.com"], strictOnly: true),
+                RuleService(name: "Kiro", domains: ["kiro.dev"]),
+                RuleService(name: "Qodo", domains: ["qodo.ai"]),
+                RuleService(name: "Supermaven", domains: ["supermaven.com"]),
+                RuleService(name: "Continue", domains: ["continue.dev"]),
+                RuleService(name: "JetBrains AI", domains: ["api.jetbrains.ai"]),
+                RuleService(name: "Google Jules", domains: ["jules.google.com", "jules.google"]),
+                RuleService(name: "Firebase Studio", domains: ["firebase.studio", "studio.firebase.google.com"]),
+                RuleService(name: "Google Stitch", domains: ["stitch.withgoogle.com"]),
+                RuleService(name: "Base44", domains: ["base44.com"]),
+                RuleService(name: "Emergent", domains: ["emergent.sh"])
             ]
         ),
         RuleCategory(
@@ -90,7 +119,22 @@ enum RulePackData {
                 RuleService(name: "Google Labs", domains: ["labs.google"]),
                 RuleService(name: "Suno", domains: ["suno.com", "suno.ai"]),
                 RuleService(name: "Udio", domains: ["udio.com"]),
-                RuleService(name: "ElevenLabs", domains: ["elevenlabs.io", "api.elevenlabs.io"])
+                RuleService(name: "ElevenLabs", domains: ["elevenlabs.io", "api.elevenlabs.io"]),
+                RuleService(name: "Synthesia", domains: ["synthesia.io"]),
+                RuleService(name: "D-ID", domains: ["d-id.com"]),
+                RuleService(name: "Captions", domains: ["captions.ai"]),
+                RuleService(name: "Higgsfield", domains: ["higgsfield.ai"]),
+                RuleService(name: "PixVerse", domains: ["pixverse.ai"]),
+                RuleService(name: "Vidu", domains: ["vidu.com"]),
+                RuleService(name: "Dreamina", domains: ["dreamina.capcut.com"]),
+                RuleService(name: "Playground", domains: ["playground.com", "playgroundai.com"]),
+                RuleService(name: "NightCafe", domains: ["nightcafe.studio"]),
+                RuleService(name: "Craiyon", domains: ["craiyon.com"]),
+                RuleService(name: "Tensor.Art", domains: ["tensor.art"]),
+                RuleService(name: "SeaArt", domains: ["seaart.ai"]),
+                RuleService(name: "Lexica", domains: ["lexica.art"]),
+                RuleService(name: "Gamma", domains: ["gamma.app"]),
+                RuleService(name: "Murf", domains: ["murf.ai"])
             ]
         ),
         RuleCategory(
@@ -105,18 +149,34 @@ enum RulePackData {
                 RuleService(name: "Azure OpenAI", domains: ["openai.azure.com"]),
                 RuleService(name: "xAI API", domains: ["api.x.ai"]),
                 RuleService(name: "DeepSeek API", domains: ["api.deepseek.com", "platform.deepseek.com"]),
-                RuleService(name: "Mistral AI", domains: ["mistral.ai", "chat.mistral.ai", "api.mistral.ai", "console.mistral.ai"]),
+                RuleService(name: "Mistral AI", domains: ["mistral.ai", "api.mistral.ai", "console.mistral.ai"]),
                 RuleService(name: "Cohere", domains: ["cohere.com", "api.cohere.com"]),
                 RuleService(name: "Groq", domains: ["groq.com", "api.groq.com"]),
                 RuleService(name: "Together AI", domains: ["together.ai", "api.together.xyz"]),
                 RuleService(name: "Fireworks AI", domains: ["fireworks.ai", "api.fireworks.ai"]),
                 RuleService(name: "Cerebras", domains: ["cerebras.ai", "api.cerebras.ai"]),
                 RuleService(name: "OpenRouter", domains: ["openrouter.ai"]),
-                RuleService(name: "Replicate", domains: ["replicate.com", "api.replicate.com"]),
+                RuleService(name: "Replicate", domains: ["replicate.com", "api.replicate.com", "replicate.delivery"]),
                 RuleService(name: "Google Vertex AI", domains: ["aiplatform.googleapis.com"], strictOnly: true),
                 RuleService(name: "Hugging Face", domains: ["huggingface.co", "api-inference.huggingface.co"], strictOnly: true),
                 RuleService(name: "Ollama", domains: ["ollama.com"], strictOnly: true),
-                RuleService(name: "LM Studio", domains: ["lmstudio.ai"], strictOnly: true)
+                RuleService(name: "LM Studio", domains: ["lmstudio.ai"], strictOnly: true),
+                RuleService(name: "Microsoft Foundry", domains: ["ai.azure.com"]),
+                RuleService(name: "DeepInfra", domains: ["deepinfra.com", "api.deepinfra.com"]),
+                RuleService(name: "AI21", domains: ["ai21.com", "api.ai21.com"]),
+                RuleService(name: "Voyage AI", domains: ["voyageai.com", "api.voyageai.com"]),
+                RuleService(name: "Jina AI", domains: ["jina.ai"]),
+                RuleService(name: "fal", domains: ["fal.ai", "fal.run"]),
+                RuleService(name: "SambaNova", domains: ["sambanova.ai", "cloud.sambanova.ai"]),
+                RuleService(name: "Hyperbolic", domains: ["hyperbolic.xyz"]),
+                RuleService(name: "Zhipu BigModel", domains: ["bigmodel.cn", "open.bigmodel.cn"]),
+                RuleService(name: "Alibaba DashScope", domains: ["dashscope.aliyuncs.com", "dashscope-intl.aliyuncs.com"]),
+                RuleService(name: "Baidu Qianfan", domains: ["qianfan.baidubce.com"]),
+                RuleService(name: "Vercel AI Gateway", domains: ["ai-gateway.vercel.sh"]),
+                RuleService(name: "AssemblyAI", domains: ["assemblyai.com", "api.assemblyai.com"]),
+                RuleService(name: "Deepgram", domains: ["deepgram.com", "api.deepgram.com"]),
+                RuleService(name: "Exa", domains: ["exa.ai", "api.exa.ai"]),
+                RuleService(name: "Tavily", domains: ["tavily.com", "api.tavily.com"])
             ]
         )
     ]

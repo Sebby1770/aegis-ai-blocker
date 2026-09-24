@@ -46,6 +46,57 @@ Payments and entitlement audit (each fix landed with a test that failed first):
   their semver ranges (vitest to `^4.1.11`); `npm audit` reports 0 vulnerabilities. None of these
   packages ship in the production bundle or the serverless functions.
 
+### Fixed (blocking effectiveness)
+- **Trailing-dot bypass in the extension.** `https://chatgpt.com./` (the fully qualified form of
+  the same host) loaded straight through, because Chrome's `||domain^` URL filters don't match a
+  trailing root dot. Rules now match on `requestDomains`, which covers the domain, every
+  subdomain, and the FQDN form. Found and verified in a real Chromium.
+- **The Safari export never loaded.** Every rule used `(/|$)` after the domain, and WebKit's
+  content-blocker compiler rejects `|` alternation and a non-final `$`. One invalid rule rejects
+  the whole list. The new url-filters stay inside WebKit's regex subset and also catch `ws(s)://`,
+  `user@host`, and trailing-dot URLs.
+- **Parent-domain allow exceptions now agree across every format.** Allowing `openai.com` lifted
+  its listed subdomains (`api.openai.com`, …) in the dashboard, extension, AdGuard and Safari
+  exports, but the hosts, dnsmasq and plain exports still blocked them. Resolution now drops every
+  block an allow exception covers, in both the web app and the extension.
+
+### Rule pack 2026.09.24
+- **60 new services, 87 new domains** (now 133 services / 213 domains, up from 73 / 126; 205 in the default exports).
+  Every new domain was checked live on 2026-09-24 and carries a category, breakage-risk label, and
+  verified date:
+  - AI Chat: Mistral Le Chat, Microsoft 365 Copilot, Doubao, Zhipu ChatGLM / Z.ai, Baidu ERNIE
+    Bot, Monica, Merlin, Sider, TypingMind, Replika, Nomi, Talkie, Jasper, Copy.ai, Writesonic,
+    Rytr. Aliases and CDNs: `chat.com`, `claude.com` (now home to the old
+    `console.anthropic.com`), `claudeusercontent.com`, `gemini.google`, `notebook.google(.com)` and
+    `notebooklm.google` (NotebookLM's new hosts), `moonshot.cn`, `tongyi.aliyun.com`.
+  - AI Search: Felo, Consensus, Elicit, plus `perplexity.com` and `pplx.ai`.
+  - AI Coding: Kiro, Qodo, Supermaven, Continue, JetBrains AI, Google Jules, Firebase Studio,
+    Google Stitch, Base44, Emergent.
+  - Image/Video AI: Synthesia, D-ID, Captions, Higgsfield, PixVerse, Vidu, Dreamina, Playground,
+    NightCafe, Craiyon, Tensor.Art, SeaArt, Lexica, Gamma, Murf.
+  - AI APIs: Microsoft Foundry, DeepInfra, AI21, Voyage AI, Jina AI, fal, SambaNova, Hyperbolic,
+    Zhipu BigModel, Alibaba DashScope, Baidu Qianfan, Vercel AI Gateway, AssemblyAI, Deepgram,
+    Exa, Tavily, plus Replicate's `replicate.delivery` output CDN.
+- **Mistral's Le Chat moved from AI APIs to AI Chat.** `chat.mistral.ai` sat under AI APIs, so
+  Focus, Child-safe, Workplace and the research policy (none of which block APIs) let Mistral's
+  consumer chatbot through.
+
+### Tests (blocking)
+- **Real-browser extension tests** (`npm run test:e2e`, new CI job). Playwright loads the unpacked
+  extension into Chromium, maps every hostname to a local HTTPS server, and proves which requests
+  reach the network: every blocked domain as page and subresource, subdomains vs lookalikes,
+  iframes, all seven policies compiling to exactly the expected live rules, mode switching, pause,
+  always-allow / also-block (exact, parent, subdomain, conflict), agreement with the dashboard's
+  explanations, and the popup UI end to end.
+- **Independent parsers for every export format** (`src/test/format-parsers.ts`): hosts(5),
+  dnsmasq, AdGuard/uBlock, and Safari JSON, including a checker for WebKit's url-filter grammar.
+  Also: semantic tests of what each format blocks, byte-identity between `rules/generated/` and
+  the library, and cross-format agreement with the dashboard.
+- **Drift tests** that parse `RulePackData.generated.swift` and `extension/rules/pack.json`
+  independently of the generator and compare every service, domain and flag with the pack.
+- Rule-pack policy tests: no future verification dates, a note on every medium/high breakage
+  risk, and known consumer chatbots always in the chat category.
+
 ### Tooling
 - A `SessionStart` hook (`.claude/settings.json` → `.claude/hooks/session-start.sh`) runs `npm ci`
   in Claude Code cloud sessions so `npm run verify` works immediately.

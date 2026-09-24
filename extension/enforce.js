@@ -66,8 +66,13 @@ export function resolveBlockedDomains(pack, state = {}) {
     blocked.add(domain)
   }
 
-  for (const domain of allowSet) {
-    blocked.delete(domain)
+  // An allow exception covers its domain and every subdomain (the DNR allow
+  // rule does too), so drop any block it would override — same as the web
+  // app's resolveRules, which the exports are built from.
+  for (const domain of blocked) {
+    if (isCoveredBy(domain, allowSet)) {
+      blocked.delete(domain)
+    }
   }
 
   return {
@@ -78,6 +83,11 @@ export function resolveBlockedDomains(pack, state = {}) {
 
 // Compiles resolved domains into DNR rules. Block rules carry priority 1; allow
 // exceptions carry priority 2 so they override blocks (including subdomains).
+//
+// Rules match on `requestDomains` (the domain and all its subdomains), not a
+// `||domain^` urlFilter: Chrome's urlFilter does not match a fully-qualified
+// hostname with a trailing dot, so https://chatgpt.com./ used to load straight
+// through. requestDomains matches the canonical host either way.
 export function buildDnrRules({ blocked, allowed }) {
   const rules = []
   let id = 1
@@ -87,7 +97,7 @@ export function buildDnrRules({ blocked, allowed }) {
       id: id++,
       priority: 1,
       action: { type: 'block' },
-      condition: { urlFilter: `||${domain}^`, resourceTypes: RESOURCE_TYPES },
+      condition: { requestDomains: [domain], resourceTypes: RESOURCE_TYPES },
     })
   }
 
@@ -96,11 +106,21 @@ export function buildDnrRules({ blocked, allowed }) {
       id: id++,
       priority: 2,
       action: { type: 'allow' },
-      condition: { urlFilter: `||${domain}^`, resourceTypes: RESOURCE_TYPES },
+      condition: { requestDomains: [domain], resourceTypes: RESOURCE_TYPES },
     })
   }
 
   return rules
+}
+
+function isCoveredBy(domain, allowSet) {
+  const labels = domain.split('.')
+  for (let i = 0; i < labels.length - 1; i += 1) {
+    if (allowSet.has(labels.slice(i).join('.'))) {
+      return true
+    }
+  }
+  return false
 }
 
 function unique(value) {

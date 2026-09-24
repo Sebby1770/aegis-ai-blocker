@@ -1,7 +1,7 @@
 {
   "generated": "scripts/generate-blocklists.mjs — do not edit by hand",
-  "version": "2026.06.11",
-  "updatedAt": "2026-06-11",
+  "version": "2026.09.24",
+  "updatedAt": "2026-09-24",
   "disclaimer": "Aegis blocks known AI services from this curated rule set. It cannot guarantee future or embedded AI surfaces until rules are updated.",
   "policies": [
     {
@@ -107,7 +107,8 @@
         "chat.openai.com",
         "openai.com",
         "oaistatic.com",
-        "oaiusercontent.com"
+        "oaiusercontent.com",
+        "chat.com"
       ],
       "strictOnly": false
     },
@@ -117,7 +118,9 @@
       "domains": [
         "claude.ai",
         "console.anthropic.com",
-        "anthropic.com"
+        "anthropic.com",
+        "claude.com",
+        "claudeusercontent.com"
       ],
       "strictOnly": false
     },
@@ -128,7 +131,11 @@
         "gemini.google.com",
         "bard.google.com",
         "aistudio.google.com",
-        "notebooklm.google.com"
+        "notebooklm.google.com",
+        "gemini.google",
+        "notebook.google.com",
+        "notebook.google",
+        "notebooklm.google"
       ],
       "strictOnly": false
     },
@@ -155,7 +162,8 @@
       "category": "chat",
       "domains": [
         "qwen.ai",
-        "chat.qwen.ai"
+        "chat.qwen.ai",
+        "tongyi.aliyun.com"
       ],
       "strictOnly": false
     },
@@ -164,7 +172,8 @@
       "category": "chat",
       "domains": [
         "kimi.com",
-        "moonshot.ai"
+        "moonshot.ai",
+        "moonshot.cn"
       ],
       "strictOnly": false
     },
@@ -228,11 +237,143 @@
       "strictOnly": true
     },
     {
+      "name": "Mistral Le Chat",
+      "category": "chat",
+      "domains": [
+        "chat.mistral.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Microsoft 365 Copilot",
+      "category": "chat",
+      "domains": [
+        "copilot.cloud.microsoft"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Doubao",
+      "category": "chat",
+      "domains": [
+        "doubao.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Zhipu ChatGLM / Z.ai",
+      "category": "chat",
+      "domains": [
+        "chatglm.cn",
+        "z.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Baidu ERNIE Bot",
+      "category": "chat",
+      "domains": [
+        "yiyan.baidu.com",
+        "wenxin.baidu.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Monica",
+      "category": "chat",
+      "domains": [
+        "monica.im"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Merlin",
+      "category": "chat",
+      "domains": [
+        "getmerlin.in"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Sider",
+      "category": "chat",
+      "domains": [
+        "sider.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "TypingMind",
+      "category": "chat",
+      "domains": [
+        "typingmind.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Replika",
+      "category": "chat",
+      "domains": [
+        "replika.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Nomi",
+      "category": "chat",
+      "domains": [
+        "nomi.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Talkie",
+      "category": "chat",
+      "domains": [
+        "talkie-ai.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Jasper",
+      "category": "chat",
+      "domains": [
+        "jasper.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Copy.ai",
+      "category": "chat",
+      "domains": [
+        "copy.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Writesonic",
+      "category": "chat",
+      "domains": [
+        "writesonic.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Rytr",
+      "category": "chat",
+      "domains": [
+        "rytr.me"
+      ],
+      "strictOnly": false
+    },
+    {
       "name": "Perplexity",
       "category": "search",
       "domains": [
         "perplexity.ai",
-        "www.perplexity.ai"
+        "www.perplexity.ai",
+        "perplexity.com",
+        "pplx.ai"
       ],
       "strictOnly": false
     },
@@ -301,6 +442,30 @@
       "category": "search",
       "domains": [
         "komo.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Felo",
+      "category": "search",
+      "domains": [
+        "felo.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Consensus",
+      "category": "search",
+      "domains": [
+        "consensus.app"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Elicit",
+      "category": "search",
+      "domains": [
+        "elicit.com"
       ],
       "strictOnly": false
     },
@@ -410,6 +575,88 @@
         "sourcegraph.com"
       ],
       "strictOnly": true
+    },
+    {
+      "name": "Kiro",
+      "category": "coding",
+      "domains": [
+        "kiro.dev"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Qodo",
+      "category": "coding",
+      "domains": [
+        "qodo.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Supermaven",
+      "category": "coding",
+      "domains": [
+        "supermaven.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Continue",
+      "category": "coding",
+      "domains": [
+        "continue.dev"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "JetBrains AI",
+      "category": "coding",
+      "domains": [
+        "api.jetbrains.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Google Jules",
+      "category": "coding",
+      "domains": [
+        "jules.google.com",
+        "jules.google"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Firebase Studio",
+      "category": "coding",
+      "domains": [
+        "firebase.studio",
+        "studio.firebase.google.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Google Stitch",
+      "category": "coding",
+      "domains": [
+        "stitch.withgoogle.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Base44",
+      "category": "coding",
+      "domains": [
+        "base44.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Emergent",
+      "category": "coding",
+      "domains": [
+        "emergent.sh"
+      ],
+      "strictOnly": false
     },
     {
       "name": "Midjourney",
@@ -580,6 +827,127 @@
       "strictOnly": false
     },
     {
+      "name": "Synthesia",
+      "category": "creative",
+      "domains": [
+        "synthesia.io"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "D-ID",
+      "category": "creative",
+      "domains": [
+        "d-id.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Captions",
+      "category": "creative",
+      "domains": [
+        "captions.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Higgsfield",
+      "category": "creative",
+      "domains": [
+        "higgsfield.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "PixVerse",
+      "category": "creative",
+      "domains": [
+        "pixverse.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Vidu",
+      "category": "creative",
+      "domains": [
+        "vidu.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Dreamina",
+      "category": "creative",
+      "domains": [
+        "dreamina.capcut.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Playground",
+      "category": "creative",
+      "domains": [
+        "playground.com",
+        "playgroundai.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "NightCafe",
+      "category": "creative",
+      "domains": [
+        "nightcafe.studio"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Craiyon",
+      "category": "creative",
+      "domains": [
+        "craiyon.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Tensor.Art",
+      "category": "creative",
+      "domains": [
+        "tensor.art"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "SeaArt",
+      "category": "creative",
+      "domains": [
+        "seaart.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Lexica",
+      "category": "creative",
+      "domains": [
+        "lexica.art"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Gamma",
+      "category": "creative",
+      "domains": [
+        "gamma.app"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Murf",
+      "category": "creative",
+      "domains": [
+        "murf.ai"
+      ],
+      "strictOnly": false
+    },
+    {
       "name": "OpenAI API",
       "category": "api",
       "domains": [
@@ -635,7 +1003,6 @@
       "category": "api",
       "domains": [
         "mistral.ai",
-        "chat.mistral.ai",
         "api.mistral.ai",
         "console.mistral.ai"
       ],
@@ -699,7 +1066,8 @@
       "category": "api",
       "domains": [
         "replicate.com",
-        "api.replicate.com"
+        "api.replicate.com",
+        "replicate.delivery"
       ],
       "strictOnly": false
     },
@@ -735,6 +1103,145 @@
         "lmstudio.ai"
       ],
       "strictOnly": true
+    },
+    {
+      "name": "Microsoft Foundry",
+      "category": "api",
+      "domains": [
+        "ai.azure.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "DeepInfra",
+      "category": "api",
+      "domains": [
+        "deepinfra.com",
+        "api.deepinfra.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "AI21",
+      "category": "api",
+      "domains": [
+        "ai21.com",
+        "api.ai21.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Voyage AI",
+      "category": "api",
+      "domains": [
+        "voyageai.com",
+        "api.voyageai.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Jina AI",
+      "category": "api",
+      "domains": [
+        "jina.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "fal",
+      "category": "api",
+      "domains": [
+        "fal.ai",
+        "fal.run"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "SambaNova",
+      "category": "api",
+      "domains": [
+        "sambanova.ai",
+        "cloud.sambanova.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Hyperbolic",
+      "category": "api",
+      "domains": [
+        "hyperbolic.xyz"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Zhipu BigModel",
+      "category": "api",
+      "domains": [
+        "bigmodel.cn",
+        "open.bigmodel.cn"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Alibaba DashScope",
+      "category": "api",
+      "domains": [
+        "dashscope.aliyuncs.com",
+        "dashscope-intl.aliyuncs.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Baidu Qianfan",
+      "category": "api",
+      "domains": [
+        "qianfan.baidubce.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Vercel AI Gateway",
+      "category": "api",
+      "domains": [
+        "ai-gateway.vercel.sh"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "AssemblyAI",
+      "category": "api",
+      "domains": [
+        "assemblyai.com",
+        "api.assemblyai.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Deepgram",
+      "category": "api",
+      "domains": [
+        "deepgram.com",
+        "api.deepgram.com"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Exa",
+      "category": "api",
+      "domains": [
+        "exa.ai",
+        "api.exa.ai"
+      ],
+      "strictOnly": false
+    },
+    {
+      "name": "Tavily",
+      "category": "api",
+      "domains": [
+        "tavily.com",
+        "api.tavily.com"
+      ],
+      "strictOnly": false
     }
   ]
 }

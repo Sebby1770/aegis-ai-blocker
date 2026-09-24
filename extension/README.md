@@ -30,8 +30,11 @@ popup.js ──(policy/pause/exceptions via chrome.storage)─┤
 
 - **`enforce.js`** — the pure brain. `resolveBlockedDomains(pack, state)` mirrors
   the website's `resolveRules` (policy → categories, strict mode → strict-only
-  services, allow-exceptions win); `buildDnrRules` compiles the result into DNR
-  rules (block priority 1, allow priority 2). Unit-tested in `enforce.test.ts`.
+  services, allow-exceptions win, including over their subdomains);
+  `buildDnrRules` compiles the result into DNR rules (block priority 1, allow
+  priority 2) that match on `requestDomains`, so the domain, every subdomain, and
+  the trailing-dot FQDN form (`chatgpt.com.`) are all covered. A `||domain^`
+  URL filter would miss that last form. Unit-tested in `enforce.test.ts`.
 - **`pack-validate.js`** — the safety gate for the self-updating pack. Every
   remote (and stored) pack passes through `sanitizePack` before it can touch
   enforcement: malformed entries are dropped, domains are canonicalized with
@@ -55,6 +58,17 @@ popup.js ──(policy/pause/exceptions via chrome.storage)─┤
 - **`rules/pack.json`** — generated from the same rule pack as everything else,
   so enforcement can never drift from the dashboard. Never hand-edit it. It is
   both the bundled fallback and the file the self-update fetches.
+
+## Real-browser tests
+
+`npm run test:e2e` (Playwright, also a CI job) loads this folder unpacked into
+Chromium and resolves every hostname to a local HTTPS server. The server's request
+log then shows which requests got through, so the tests prove what the extension
+actually blocks: every pack domain as a page and as a subresource, subdomains
+vs. lookalikes, iframes, every policy compiling to exactly the expected live
+rules, mode switching, pause, both exception lists, agreement with the
+dashboard's explanations, and the popup UI end to end. See
+`e2e/extension-blocking.pw.ts`.
 
 ## Install (unpacked, for development)
 

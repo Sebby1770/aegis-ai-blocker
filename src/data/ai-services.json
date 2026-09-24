@@ -1,6 +1,6 @@
 {
-  "version": "2026.06.11",
-  "updatedAt": "2026-06-11",
+  "version": "2026.09.24",
+  "updatedAt": "2026-09-24",
   "disclaimer": "Aegis blocks known AI services from this curated rule set. It cannot guarantee future or embedded AI surfaces until rules are updated.",
   "categories": [
     {
@@ -16,20 +16,24 @@
             "chat.openai.com",
             "openai.com",
             "oaistatic.com",
-            "oaiusercontent.com"
+            "oaiusercontent.com",
+            "chat.com"
           ],
           "breakageRisk": "low",
-          "verified": "2026-06-11"
+          "verified": "2026-09-24"
         },
         {
           "name": "Anthropic Claude",
           "domains": [
             "claude.ai",
             "console.anthropic.com",
-            "anthropic.com"
+            "anthropic.com",
+            "claude.com",
+            "claudeusercontent.com"
           ],
           "breakageRisk": "low",
-          "verified": "2026-06-11"
+          "verified": "2026-09-24",
+          "note": "claude.com also hosts the developer platform (platform.claude.com, formerly console.anthropic.com); claudeusercontent.com serves artifacts and uploads."
         },
         {
           "name": "Google Gemini",
@@ -37,11 +41,15 @@
             "gemini.google.com",
             "bard.google.com",
             "aistudio.google.com",
-            "notebooklm.google.com"
+            "notebooklm.google.com",
+            "gemini.google",
+            "notebook.google.com",
+            "notebook.google",
+            "notebooklm.google"
           ],
           "breakageRisk": "low",
-          "verified": "2026-06-11",
-          "note": "Targets Gemini/AI Studio/NotebookLM subdomains, not Google Search or Gmail."
+          "verified": "2026-09-24",
+          "note": "Targets Gemini, AI Studio, and NotebookLM / Gemini Notebook hosts, not Google Search or Gmail."
         },
         {
           "name": "Meta AI",
@@ -66,19 +74,21 @@
           "name": "Qwen",
           "domains": [
             "qwen.ai",
-            "chat.qwen.ai"
+            "chat.qwen.ai",
+            "tongyi.aliyun.com"
           ],
           "breakageRisk": "low",
-          "verified": "2026-06-11"
+          "verified": "2026-09-24"
         },
         {
           "name": "Kimi",
           "domains": [
             "kimi.com",
-            "moonshot.ai"
+            "moonshot.ai",
+            "moonshot.cn"
           ],
           "breakageRisk": "low",
-          "verified": "2026-06-11"
+          "verified": "2026-09-24"
         },
         {
           "name": "Poe",
@@ -139,6 +149,138 @@
           "breakageRisk": "low",
           "verified": "2026-06-11",
           "strictOnly": true
+        },
+        {
+          "name": "Mistral Le Chat",
+          "domains": [
+            "chat.mistral.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Microsoft 365 Copilot",
+          "domains": [
+            "copilot.cloud.microsoft"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24",
+          "note": "Work Copilot chat only; Outlook, Teams, and Office keep working."
+        },
+        {
+          "name": "Doubao",
+          "domains": [
+            "doubao.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Zhipu ChatGLM / Z.ai",
+          "domains": [
+            "chatglm.cn",
+            "z.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Baidu ERNIE Bot",
+          "domains": [
+            "yiyan.baidu.com",
+            "wenxin.baidu.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24",
+          "note": "Dedicated ERNIE hosts; baidu.com search is not blocked."
+        },
+        {
+          "name": "Monica",
+          "domains": [
+            "monica.im"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Merlin",
+          "domains": [
+            "getmerlin.in"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Sider",
+          "domains": [
+            "sider.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "TypingMind",
+          "domains": [
+            "typingmind.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Replika",
+          "domains": [
+            "replika.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Nomi",
+          "domains": [
+            "nomi.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Talkie",
+          "domains": [
+            "talkie-ai.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Jasper",
+          "domains": [
+            "jasper.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Copy.ai",
+          "domains": [
+            "copy.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Writesonic",
+          "domains": [
+            "writesonic.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Rytr",
+          "domains": [
+            "rytr.me"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
         }
       ]
     },
@@ -152,10 +294,12 @@
           "name": "Perplexity",
           "domains": [
             "perplexity.ai",
-            "www.perplexity.ai"
+            "www.perplexity.ai",
+            "perplexity.com",
+            "pplx.ai"
           ],
           "breakageRisk": "low",
-          "verified": "2026-06-11"
+          "verified": "2026-09-24"
         },
         {
           "name": "Microsoft Copilot",
@@ -226,6 +370,30 @@
           ],
           "breakageRisk": "low",
           "verified": "2026-06-11"
+        },
+        {
+          "name": "Felo",
+          "domains": [
+            "felo.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Consensus",
+          "domains": [
+            "consensus.app"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Elicit",
+          "domains": [
+            "elicit.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
         }
       ]
     },
@@ -345,6 +513,90 @@
           "verified": "2026-06-11",
           "note": "sourcegraph.com is also a general code-search product, not only the Cody AI assistant.",
           "strictOnly": true
+        },
+        {
+          "name": "Kiro",
+          "domains": [
+            "kiro.dev"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Qodo",
+          "domains": [
+            "qodo.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Supermaven",
+          "domains": [
+            "supermaven.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Continue",
+          "domains": [
+            "continue.dev"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "JetBrains AI",
+          "domains": [
+            "api.jetbrains.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24",
+          "note": "AI Assistant backend only; JetBrains IDEs, licensing, and plugins keep working."
+        },
+        {
+          "name": "Google Jules",
+          "domains": [
+            "jules.google.com",
+            "jules.google"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Firebase Studio",
+          "domains": [
+            "firebase.studio",
+            "studio.firebase.google.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24",
+          "note": "The AI app builder only; the Firebase console and Firebase-hosted apps are not blocked."
+        },
+        {
+          "name": "Google Stitch",
+          "domains": [
+            "stitch.withgoogle.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Base44",
+          "domains": [
+            "base44.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Emergent",
+          "domains": [
+            "emergent.sh"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
         }
       ]
     },
@@ -521,6 +773,128 @@
           ],
           "breakageRisk": "low",
           "verified": "2026-06-11"
+        },
+        {
+          "name": "Synthesia",
+          "domains": [
+            "synthesia.io"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "D-ID",
+          "domains": [
+            "d-id.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Captions",
+          "domains": [
+            "captions.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Higgsfield",
+          "domains": [
+            "higgsfield.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "PixVerse",
+          "domains": [
+            "pixverse.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Vidu",
+          "domains": [
+            "vidu.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Dreamina",
+          "domains": [
+            "dreamina.capcut.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24",
+          "note": "The AI generator only; the CapCut editor is not blocked."
+        },
+        {
+          "name": "Playground",
+          "domains": [
+            "playground.com",
+            "playgroundai.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "NightCafe",
+          "domains": [
+            "nightcafe.studio"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Craiyon",
+          "domains": [
+            "craiyon.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Tensor.Art",
+          "domains": [
+            "tensor.art"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "SeaArt",
+          "domains": [
+            "seaart.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Lexica",
+          "domains": [
+            "lexica.art"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Gamma",
+          "domains": [
+            "gamma.app"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Murf",
+          "domains": [
+            "murf.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
         }
       ]
     },
@@ -586,12 +960,12 @@
           "name": "Mistral AI",
           "domains": [
             "mistral.ai",
-            "chat.mistral.ai",
             "api.mistral.ai",
             "console.mistral.ai"
           ],
           "breakageRisk": "low",
-          "verified": "2026-06-11"
+          "verified": "2026-09-24",
+          "note": "Covers the platform and API. Le Chat is listed under AI Chat so chat-blocking policies catch it."
         },
         {
           "name": "Cohere",
@@ -650,10 +1024,12 @@
           "name": "Replicate",
           "domains": [
             "replicate.com",
-            "api.replicate.com"
+            "api.replicate.com",
+            "replicate.delivery"
           ],
           "breakageRisk": "low",
-          "verified": "2026-06-11"
+          "verified": "2026-09-24",
+          "note": "replicate.delivery serves generated outputs; apps built on Replicate stop receiving results."
         },
         {
           "name": "Google Vertex AI",
@@ -695,6 +1071,147 @@
           "verified": "2026-06-11",
           "note": "Local model runner — blocking only affects lmstudio.ai downloads/updates.",
           "strictOnly": true
+        },
+        {
+          "name": "Microsoft Foundry",
+          "domains": [
+            "ai.azure.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24",
+          "note": "The Azure AI Foundry portal; other Azure services are not blocked."
+        },
+        {
+          "name": "DeepInfra",
+          "domains": [
+            "deepinfra.com",
+            "api.deepinfra.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "AI21",
+          "domains": [
+            "ai21.com",
+            "api.ai21.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Voyage AI",
+          "domains": [
+            "voyageai.com",
+            "api.voyageai.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Jina AI",
+          "domains": [
+            "jina.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "fal",
+          "domains": [
+            "fal.ai",
+            "fal.run"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "SambaNova",
+          "domains": [
+            "sambanova.ai",
+            "cloud.sambanova.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Hyperbolic",
+          "domains": [
+            "hyperbolic.xyz"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Zhipu BigModel",
+          "domains": [
+            "bigmodel.cn",
+            "open.bigmodel.cn"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Alibaba DashScope",
+          "domains": [
+            "dashscope.aliyuncs.com",
+            "dashscope-intl.aliyuncs.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24",
+          "note": "Dedicated Qwen/DashScope API hosts; other Alibaba Cloud services are not blocked."
+        },
+        {
+          "name": "Baidu Qianfan",
+          "domains": [
+            "qianfan.baidubce.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Vercel AI Gateway",
+          "domains": [
+            "ai-gateway.vercel.sh"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "AssemblyAI",
+          "domains": [
+            "assemblyai.com",
+            "api.assemblyai.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Deepgram",
+          "domains": [
+            "deepgram.com",
+            "api.deepgram.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Exa",
+          "domains": [
+            "exa.ai",
+            "api.exa.ai"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
+        },
+        {
+          "name": "Tavily",
+          "domains": [
+            "tavily.com",
+            "api.tavily.com"
+          ],
+          "breakageRisk": "low",
+          "verified": "2026-09-24"
         }
       ]
     }
