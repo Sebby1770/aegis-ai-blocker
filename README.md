@@ -86,6 +86,7 @@ Other scripts:
 | `npm run generate:rules` | Regenerate `rules/generated/` from the rule pack |
 | `npm run typecheck:api` | Typecheck the serverless API |
 | `npm run audit:deps` | Fail on high-severity dependency vulnerabilities |
+| `npm run check:bundle` | Build with canary secrets and fail if any server secret reaches the client bundle |
 
 CI runs all of the above plus a gitleaks secret scan on every push and pull request, and Dependabot
 keeps dependencies current.

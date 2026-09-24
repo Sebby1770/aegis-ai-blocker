@@ -14,7 +14,8 @@
     "generate:rules": "node scripts/generate-blocklists.mjs",
     "verify:buy-flow": "node scripts/verify-buy-flow.mjs",
     "audit:deps": "npm audit --audit-level=high",
-    "verify": "npm run generate:rules && npm run lint && npm run typecheck:api && npm run test && npm run build"
+    "check:bundle": "node scripts/check-bundle-secrets.mjs",
+    "verify": "npm run generate:rules && npm run lint && npm run typecheck:api && npm run test && npm run build && npm run check:bundle"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.108.1",
@@ -25,6 +26,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.8",
     "@eslint/js": "^10.0.1",
     "@types/node": "^24.12.3",
     "@types/react": "^19.2.14",

@@ -2,6 +2,7 @@ import { z } from 'zod'
 import { appOrigin, requireEnv } from './_lib/env.js'
 import { guardRequest, readJsonBody, requestId, sendError } from './_lib/http.js'
 import { logEvent } from './_lib/log.js'
+import { LIFETIME_PRODUCT } from './_lib/stripe-events.js'
 import { ensureProfile, authenticateBearer, supabaseAdmin } from './_lib/supabase.js'
 import { stripeClient } from './_lib/stripe.js'
 import type { ApiRequest, ApiResponse } from './_lib/types.js'
@@ -60,16 +61,18 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
         },
       ],
       allow_promotion_codes: true,
+      // The webhook fulfils only sessions carrying this server-set metadata
+      // (see assessCheckoutSession), never client_reference_id alone.
       metadata: {
         user_id: user.id,
-        product: 'aegis_ai_blocker_lifetime',
+        product: LIFETIME_PRODUCT,
       },
       // Mirror the user id onto the payment intent so refunds and disputes can
       // be mapped back to a license even without the session id.
       payment_intent_data: {
         metadata: {
           user_id: user.id,
-          product: 'aegis_ai_blocker_lifetime',
+          product: LIFETIME_PRODUCT,
         },
       },
       success_url: `${appOrigin()}${body.successPath}`,

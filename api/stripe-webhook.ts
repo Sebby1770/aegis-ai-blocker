@@ -2,7 +2,7 @@ import type Stripe from 'stripe'
 import { requireEnv } from './_lib/env.js'
 import { guardRequest, readRawBody, requestId, sendError } from './_lib/http.js'
 import { logEvent } from './_lib/log.js'
-import { assessCheckoutSession } from './_lib/stripe-events.js'
+import { assessCheckoutSession, revocationFromCharge } from './_lib/stripe-events.js'
 import { supabaseAdmin, writeAuditLog } from './_lib/supabase.js'
 import { stripeClient } from './_lib/stripe.js'
 import type { ApiRequest, ApiResponse } from './_lib/types.js'
@@ -15,10 +15,40 @@ function paymentIntentId(value: string | Stripe.PaymentIntent | null | undefined
   return typeof value === 'string' ? value : value.id
 }
 
+// Asks Stripe whether the payment behind a session has since been refunded or
+// disputed (see revocationFromCharge for why the event stream alone can't be
+// trusted to say so in order).
+async function chargeRevocation(intentId: string | null) {
+  if (!intentId) {
+    return null
+  }
+
+  const intent = await stripeClient().paymentIntents.retrieve(intentId, { expand: ['latest_charge'] })
+  const charge = typeof intent.latest_charge === 'object' ? intent.latest_charge : null
+  return revocationFromCharge(charge)
+}
+
 async function fulfillCheckoutSession(session: Stripe.Checkout.Session) {
   const decision = assessCheckoutSession(session)
 
   if (!decision.fulfill) {
+    if (decision.reason === 'wrong_product') {
+      // Another product or integration on the same Stripe account (e.g. a
+      // Payment Link): not ours to fulfil.
+      logEvent('info', 'stripe_webhook_foreign_session_ignored', { session: session.id })
+    }
+
+    if (decision.reason === 'user_mismatch') {
+      logEvent('warn', 'stripe_webhook_user_mismatch_rejected', { session: session.id })
+      await writeAuditLog({
+        actor: 'stripe_webhook',
+        action: 'license.rejected_user_mismatch',
+        subjectType: 'checkout_session',
+        subjectId: session.id,
+        userId: session.metadata?.user_id ?? null,
+      })
+    }
+
     // A zero-value "paid" session (100%-off promo code or price misconfig)
     // must never quietly become a lifetime license — record it for review.
     if (decision.reason === 'zero_amount') {
@@ -56,32 +86,54 @@ async function fulfillCheckoutSession(session: Stripe.Checkout.Session) {
     throw profileError
   }
 
-  const { error: licenseError } = await admin.from('lifetime_licenses').upsert(
-    {
-      user_id: userId,
-      provider: 'stripe',
-      provider_reference: session.id,
-      stripe_customer_id: customerId,
-      payment_intent: intentId,
-      status: 'active',
-      purchased_at: new Date((session.created ?? Math.floor(Date.now() / 1000)) * 1000).toISOString(),
-    },
-    { onConflict: 'provider,provider_reference' },
-  )
+  // If the money has already gone back (refund) or is contested (dispute),
+  // record the license in that state instead of granting it.
+  const revocation = await chargeRevocation(intentId)
+
+  // Insert-once: a license row for a session is created exactly one time and
+  // afterwards changes only through revocation. ignoreDuplicates (ON CONFLICT
+  // DO NOTHING) means a retried or concurrent fulfilment can never flip a
+  // refunded/revoked license back to 'active', and `.select()` returns only
+  // rows actually inserted, so the activation is audited exactly once.
+  const { data: inserted, error: licenseError } = await admin
+    .from('lifetime_licenses')
+    .upsert(
+      {
+        user_id: userId,
+        provider: 'stripe',
+        provider_reference: session.id,
+        stripe_customer_id: customerId,
+        payment_intent: intentId,
+        status: revocation?.status ?? 'active',
+        revoked_at: revocation ? new Date().toISOString() : null,
+        purchased_at: new Date((session.created ?? Math.floor(Date.now() / 1000)) * 1000).toISOString(),
+      },
+      { onConflict: 'provider,provider_reference', ignoreDuplicates: true },
+    )
+    .select('id')
 
   if (licenseError) {
     throw licenseError
   }
 
+  if (!inserted || inserted.length === 0) {
+    return
+  }
+
+  if (revocation) {
+    logEvent('warn', 'stripe_webhook_fulfilled_after_revocation', { session: session.id, status: revocation.status })
+  }
+
   await writeAuditLog({
     actor: 'stripe_webhook',
-    action: 'license.activated',
+    action: revocation ? `license.${revocation.status}_before_fulfilment` : 'license.activated',
     subjectType: 'lifetime_license',
     subjectId: session.id,
     userId,
     metadata: {
       amount_total: session.amount_total ?? null,
       currency: session.currency ?? null,
+      ...(revocation ? { reason: revocation.reason } : {}),
     },
   })
 }

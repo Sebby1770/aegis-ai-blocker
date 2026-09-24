@@ -38,10 +38,19 @@ every push; `.env*` files are gitignored with only `.env.example` tracked.
 
 **Payments and licensing**
 
-- Stripe Checkout sessions are created server-side; the client never sets prices or products.
-- Webhook fulfillment requires `Stripe-Signature` verification over the raw body.
-- Event processing is idempotent (`payment_events` primary key).
+- Stripe Checkout sessions are created server-side; the client never sets prices, products,
+  quantities, or the purchasing user (strict request schema; tested).
+- Webhook fulfillment requires `Stripe-Signature` verification over the raw body (5-minute replay
+  tolerance).
+- Fulfillment is bound to our own sessions: only `mode: payment` sessions stamped with the
+  server-set `metadata.product` are fulfilled, and the user comes from server-set metadata — never
+  from `client_reference_id` alone, which Payment Links accept from the URL.
+- Event processing is idempotent (`payment_events` ledger), and a license row is inserted exactly
+  once per session: retries and concurrent deliveries can never flip a refunded or revoked license
+  back to active.
 - Refunds (`charge.refunded`) and disputes (`charge.dispute.created`) automatically revoke licenses.
+  Because Stripe does not guarantee event order, fulfillment also asks Stripe for the charge's
+  current refund/dispute state, so a refund processed *before* a delayed fulfillment still wins.
 - License rows are written only with the server-side service role.
 
 **Authentication and authorization**
@@ -50,12 +59,18 @@ every push; `.env*` files are gitignored with only `.env.example` tracked.
   protected route; user IDs come from the token, never the request body.
 - RLS enabled on all tables; user-facing rows scoped by `auth.uid()`.
 - `payment_events`, `audit_logs`, and `rate_limits` have no client policies at all.
+- Clients can write only `profiles.email` and `profiles.display_name` (length-bounded) on their own
+  row. The future device-sync tables (`devices`, `rule_snapshots`) are read-only to clients until
+  that feature ships.
+- RLS and privileges are tested against real Postgres semantics (PGlite) for both setup paths —
+  the migrations and `supabase/schema.sql` — and a snapshot test fails if the two ever diverge.
 
 **API hardening**
 
-- Method gating, preflight handling, and same-origin checks on browser-facing routes.
+- Method gating, preflight handling, and same-origin checks on browser-facing routes; deployed
+  environments never trust `localhost` origins.
 - Durable Postgres-backed rate limiting across serverless instances (SHA-256-hashed keys, no raw
-  IPs stored) with in-memory fallback if the database is unreachable.
+  IPs stored) with a memory-bounded in-memory fallback if the database is unreachable.
 - Zod-validated request bodies with strict schemas and size limits.
 - Generic error codes with request IDs; no stack traces or internals in responses.
 - Structured JSON logging with automatic redaction of Stripe keys, JWTs, and email addresses.
@@ -65,6 +80,8 @@ every push; `.env*` files are gitignored with only `.env.example` tracked.
 - CSP, HSTS, `X-Content-Type-Options`, `X-Frame-Options`/`frame-ancestors`, referrer and
   permissions policies on both static pages and API responses.
 - Production source maps disabled; immutable caching only for hashed assets; `no-store` on APIs.
+- `npm run check:bundle` (CI) builds the SPA with canary values in every server-only variable and
+  fails if any of them — or any Stripe/Supabase secret-shaped string — appears in the output.
 
 **Supply chain**
 

@@ -104,36 +104,39 @@ on public.devices for select
 to authenticated
 using ((select auth.uid()) = user_id);
 
-drop policy if exists "Users can add own devices" on public.devices;
-create policy "Users can add own devices"
-on public.devices for insert
-to authenticated
-with check ((select auth.uid()) = user_id);
-
-drop policy if exists "Users can update own devices" on public.devices;
-create policy "Users can update own devices"
-on public.devices for update
-to authenticated
-using ((select auth.uid()) = user_id)
-with check ((select auth.uid()) = user_id);
-
-drop policy if exists "Users can delete own devices" on public.devices;
-create policy "Users can delete own devices"
-on public.devices for delete
-to authenticated
-using ((select auth.uid()) = user_id);
-
 drop policy if exists "Users can read own rule snapshots" on public.rule_snapshots;
 create policy "Users can read own rule snapshots"
 on public.rule_snapshots for select
 to authenticated
 using ((select auth.uid()) = user_id);
 
+-- devices / rule_snapshots back a future device-sync feature: owners can read
+-- their rows, but client writes stay closed until that feature ships with
+-- bounded policies (unbounded inserts from free accounts were a storage-DoS).
+drop policy if exists "Users can add own devices" on public.devices;
+drop policy if exists "Users can update own devices" on public.devices;
+drop policy if exists "Users can delete own devices" on public.devices;
 drop policy if exists "Users can add own rule snapshots" on public.rule_snapshots;
-create policy "Users can add own rule snapshots"
-on public.rule_snapshots for insert
-to authenticated
-with check ((select auth.uid()) = user_id);
+revoke insert, update, delete on table public.devices from anon, authenticated;
+revoke insert, update, delete on table public.rule_snapshots from anon, authenticated;
+
+-- Bound every free-text column a client can write.
+alter table public.profiles drop constraint if exists profiles_email_length;
+alter table public.profiles
+  add constraint profiles_email_length check (char_length(email) <= 320) not valid;
+alter table public.profiles drop constraint if exists profiles_display_name_length;
+alter table public.profiles
+  add constraint profiles_display_name_length check (char_length(display_name) <= 100) not valid;
+alter table public.devices drop constraint if exists devices_device_name_length;
+alter table public.devices
+  add constraint devices_device_name_length check (char_length(device_name) <= 100) not valid;
+alter table public.rule_snapshots drop constraint if exists rule_snapshots_bounded;
+alter table public.rule_snapshots
+  add constraint rule_snapshots_bounded check (
+    char_length(rule_version) <= 40
+    and cardinality(enabled_categories) <= 32
+    and domain_count <= 100000
+  ) not valid;
 
 create index if not exists lifetime_licenses_user_id_idx on public.lifetime_licenses(user_id);
 create index if not exists lifetime_licenses_stripe_customer_id_idx on public.lifetime_licenses(stripe_customer_id);

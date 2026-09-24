@@ -5,6 +5,41 @@ All notable changes to the product and the rule pack.
 ## Unreleased
 
 ### Security
+Payments and entitlement audit (each fix landed with a test that failed first):
+- **Refunds and disputes now win regardless of event order.** Stripe does not guarantee event
+  order and retries failed deliveries for up to three days. A refund or dispute processed before a
+  delayed fulfillment used to find nothing to revoke, and the late fulfillment then granted an
+  active license for money already returned. Fulfillment now reads the charge's refund/dispute
+  state from Stripe and records the license as `refunded`/`revoked` when the money is gone.
+- **A license can no longer be re-activated.** Fulfillment wrote `status: 'active'`
+  unconditionally, so a Stripe retry of a partly-failed fulfillment could resurrect a license a
+  refund had revoked in between. License rows are now inserted once per session (retries and
+  concurrent deliveries are no-ops) and the activation is audited exactly once.
+- **Fulfillment is bound to our own checkout.** Any paid Checkout Session in the Stripe account
+  that carried a user id minted a lifetime license, and Payment Links take `client_reference_id`
+  from the URL, so a cheap Payment Link for any other product could buy a lifetime license. Only
+  `mode: payment` sessions stamped with the server-set `metadata.product` are fulfilled now, and
+  the user id comes from server-set metadata.
+- **Client writes locked down in Postgres** (migration `20260924090000`, mirrored in
+  `schema.sql`). The unused device-sync tables (`devices`, `rule_snapshots`) accepted unbounded
+  inserts from any free signed-in account, a storage-exhaustion risk for the database that
+  fulfillment depends on. They are now client read-only, and the client-writable profile columns
+  are length-bounded.
+- **Deployed environments no longer trust `localhost` origins** in the CORS allow-list.
+- **The in-memory rate-limit fallback is memory-bounded** (it never evicted buckets).
+
+### Tests
+- Handler-level API tests (`api/_tests/`) run the real handlers against an in-memory Supabase
+  stand-in and real Stripe signature verification. They cover signature, tamper and replay
+  rejection, idempotency (sequential and concurrent), refund/dispute revocation in both orders,
+  product binding, checkout commercial-terms and open-redirect attempts, entitlement/export IDOR
+  probes, and error bodies never leaking internals.
+- SQL tests (`supabase/tests/`) apply the migrations and `schema.sql` to an in-process Postgres
+  (PGlite) with Supabase's roles and default grants. They prove what `anon` and `authenticated`
+  can and cannot read or write, and that `schema.sql` stays equivalent to the migrations.
+- `npm run check:bundle` (CI + `npm run verify`) builds with canary server secrets and fails if
+  any reach the client bundle.
+
 - **Dependency audit is green again.** New advisories against transitive dev/build dependencies
   (`brace-expansion`, `browserslist`, `nanoid`, `postcss`, `baseline-browser-mapping`,
   `@vitest/mocker`) had turned the CI `npm audit --audit-level=high` gate red. Updated them within

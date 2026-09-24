@@ -40,6 +40,9 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: No server secrets in the client bundle
+        run: npm run check:bundle
+
       - name: Audit dependencies
         run: npm audit --audit-level=high
 
