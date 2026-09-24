@@ -29,6 +29,7 @@ npx vitest run path/to/file.test.ts
 npm run generate:rules    # after editing src/data/ai-services.json — commit the generated files
 npm run typecheck:api     # api/ has its own tsconfig (tsconfig.api.json)
 npm run audit:deps        # npm audit --audit-level=high (CI gate)
+npm run check:bundle      # build with canary secrets; fails if a server secret reaches dist/
 npm run verify:buy-flow   # end-to-end buy flow against `npm run dev`; needs real keys in .env.local
 ```
 
@@ -57,6 +58,11 @@ runs gitleaks. Never hand-edit `rules/generated/`, `extension/rules/pack.json`, 
 ## Conventions
 
 - Tests sit next to code (`foo.ts` + `foo.test.ts`). Security fixes land with a test that fails first.
+- Handler-level API tests live in `api/_tests/` (the `_` prefix keeps Vercel from deploying them as
+  functions; never put a `*.test.ts` directly in `api/`). They run real handlers against
+  `fake-supabase.ts` and real Stripe signatures via `harness.ts`.
+- SQL/RLS tests live in `supabase/tests/` and run on PGlite (no Docker). Any schema change goes in
+  a new migration **and** `schema.sql`; the snapshot test fails if they diverge.
 - Use Stripe test-mode fixtures and mocks; never commit real keys (`.env*` is gitignored).
 - User-facing changes go in `CHANGELOG.md`; security controls in `SECURITY.md` and
   `docs/security-checklist.md`. Pricing and legal copy (`src/pages/Legal.tsx`, `Pricing.tsx`) need

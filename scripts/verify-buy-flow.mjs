@@ -147,10 +147,14 @@ try {
       object: {
         id: sessionId,
         object: 'checkout.session',
+        mode: 'payment',
         client_reference_id: userId,
         metadata: { user_id: userId, product: 'aegis_ai_blocker_lifetime' },
         payment_status: 'paid',
-        payment_intent: `pi_verify_${randomUUID().replace(/-/g, '')}`,
+        // No real charge exists for a synthetic session. With a payment
+        // intent id the webhook would (correctly) ask Stripe for its refund /
+        // dispute state and fail on the unknown id, so leave it null.
+        payment_intent: null,
         customer: null,
         customer_email: email,
         customer_details: { email },

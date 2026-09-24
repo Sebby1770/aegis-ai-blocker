@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest'
 import {
   enforceOrigin,
   guardRequest,
+  MAX_MEMORY_BUCKETS,
+  memoryBucketCount,
   rateLimit,
   readJsonBody,
   readRawBody,
@@ -153,6 +155,31 @@ describe('rateLimit (in-memory fallback)', () => {
     expect(await rateLimit(mockReq({ ip: '203.0.113.1' }), mockRes(), options)).toBe(true)
     expect(await rateLimit(mockReq({ ip: '203.0.113.2' }), mockRes(), options)).toBe(true)
     expect(await rateLimit(mockReq({ ip: '203.0.113.1' }), mockRes(), options)).toBe(false)
+  })
+
+  // FINDING: the fallback limiter never evicted buckets, so a client rotating
+  // source addresses (trivial across an IPv6 /64) grew a warm instance's
+  // memory without bound for as long as the database was unreachable.
+  it('keeps memory bounded when a client rotates source addresses', async () => {
+    const options = { name: `test-${Math.random()}`, limit: 5, windowMs: 60_000 }
+
+    for (let i = 0; i < MAX_MEMORY_BUCKETS + 2_000; i += 1) {
+      await rateLimit(mockReq({ ip: `2001:db8::${i.toString(16)}` }), mockRes(), options)
+    }
+
+    expect(memoryBucketCount()).toBeLessThanOrEqual(MAX_MEMORY_BUCKETS)
+  })
+
+  it('still limits a client whose bucket is live after eviction pressure', async () => {
+    const options = { name: `test-${Math.random()}`, limit: 2, windowMs: 60_000 }
+    const hot = mockReq({ ip: '198.51.100.77' })
+
+    expect(await rateLimit(hot, mockRes(), options)).toBe(true)
+    expect(await rateLimit(hot, mockRes(), options)).toBe(true)
+    for (let i = 0; i < 100; i += 1) {
+      await rateLimit(mockReq({ ip: `2001:db8::1:${i.toString(16)}` }), mockRes(), options)
+    }
+    expect(await rateLimit(hot, mockRes(), options)).toBe(false)
   })
 })
 

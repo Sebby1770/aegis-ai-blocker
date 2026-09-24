@@ -134,11 +134,40 @@ function clientIp(req: ApiRequest) {
   return resolveClientIp(req.headers, req.socket.remoteAddress ?? undefined)
 }
 
+// Upper bound on fallback buckets per instance. Each entry is ~150 bytes, so
+// this caps the fallback at a few MB however many addresses a client rotates.
+export const MAX_MEMORY_BUCKETS = 10_000
+
+export function memoryBucketCount() {
+  return rateLimitBuckets.size
+}
+
+// Drops expired buckets; if the map is still full (a flood of fresh keys
+// inside one window), evicts the oldest-inserted ones. Map iteration order is
+// insertion order, so eviction is O(evicted).
+function pruneBuckets(now: number) {
+  for (const [key, bucket] of rateLimitBuckets) {
+    if (bucket.resetAt <= now) {
+      rateLimitBuckets.delete(key)
+    }
+  }
+
+  for (const key of rateLimitBuckets.keys()) {
+    if (rateLimitBuckets.size < MAX_MEMORY_BUCKETS) {
+      break
+    }
+    rateLimitBuckets.delete(key)
+  }
+}
+
 function memoryRateLimit(key: string, options: RateLimitOptions) {
   const now = Date.now()
   const bucket = rateLimitBuckets.get(key)
 
   if (!bucket || bucket.resetAt <= now) {
+    if (!bucket && rateLimitBuckets.size >= MAX_MEMORY_BUCKETS) {
+      pruneBuckets(now)
+    }
     rateLimitBuckets.set(key, { count: 1, resetAt: now + options.windowMs })
     return true
   }
