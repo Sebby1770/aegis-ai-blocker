@@ -61,6 +61,19 @@ const header = (name: string) =>
 
 const escapeRegex = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 
+// Safari compiles url-filters with WebKit's restricted regex subset: no `|`
+// alternation, and `$` only as the final term — one invalid rule rejects the
+// whole list. Within that subset this matches the domain and every subdomain
+// over http(s)/ws(s), with or without credentials, a port, or the trailing-dot
+// FQDN form. WebKit normalizes URLs so a path `/` always follows the host.
+//   ^[htpsw]+://      http, https, ws, wss
+//   ([^/]*[.@])?      optional subdomain labels or user:pass@ (never past `/`)
+//   domain\.?         the domain, optionally with its trailing root dot
+//   [/:]              then the path or a port — never more hostname
+function safariUrlFilter(domain: string) {
+  return `^[htpsw]+://([^/]*[.@])?${escapeRegex(domain)}\\.?[/:]`
+}
+
 export function getActiveServices(enabledCategories: Record<string, boolean>, strictMode: boolean) {
   return rulePack.categories.flatMap((category) => {
     if (!enabledCategories[category.id]) {
@@ -87,7 +100,10 @@ export function getActiveDomains(enabledCategories: Record<string, boolean>, str
 export type ResolvedRules = { blocked: string[]; allowed: string[] }
 
 // Layers the user's exception lists on top of the active pack domains.
-//   blocked = active pack domains + user blockDomains, minus exact allowDomains
+//   blocked = active pack domains + user blockDomains, minus every domain an
+//             allow exception covers (the allowed domain itself or any
+//             subdomain of it — allow wins, exactly as the dashboard explains
+//             it and the extension enforces it)
 //   allowed = the allow exceptions, surfaced separately so export formats that
 //             support allow rules (AdGuard, dnsmasq, Safari) can override a
 //             broader parent-domain block from the pack.
@@ -106,8 +122,11 @@ export function resolveRules(settings: {
   const allow = normalize(settings.allowDomains)
   const allowSet = new Set(allow)
   const blockedSet = new Set([...base, ...normalize(settings.blockDomains)])
-  for (const domain of allowSet) {
-    blockedSet.delete(domain)
+  const allowTrie = trieFor(allow)
+  for (const domain of blockedSet) {
+    if (allowSet.has(domain) || matchDomainTrie(allowTrie, domain)) {
+      blockedSet.delete(domain)
+    }
   }
 
   return {
@@ -190,13 +209,13 @@ export function buildExport(format: ExportFormat, domains: string[], allowed: st
       return JSON.stringify(
         [
           ...domains.map((domain) => ({
-            trigger: { 'url-filter': `^https?://([^/]+\\.)?${escapeRegex(domain)}(/|$)` },
+            trigger: { 'url-filter': safariUrlFilter(domain) },
             action: { type: 'block' },
           })),
           // ignore-previous-rules must come last: Safari applies the final
           // matching rule, so this lifts the block for an allowed domain.
           ...allowed.map((domain) => ({
-            trigger: { 'url-filter': `^https?://([^/]+\\.)?${escapeRegex(domain)}(/|$)` },
+            trigger: { 'url-filter': safariUrlFilter(domain) },
             action: { type: 'ignore-previous-rules' },
           })),
         ],

@@ -63,13 +63,24 @@ describe('buildDnrRules', () => {
     const ids = rules.map((rule) => rule.id)
     expect(new Set(ids).size).toBe(ids.length)
 
-    const block = rules.find((rule) => rule.condition.urlFilter === '||chatgpt.com^')
+    const block = rules.find((rule) => rule.condition.requestDomains?.[0] === 'chatgpt.com')
     expect(block?.action.type).toBe('block')
     expect(block?.priority).toBe(1)
     expect(block?.condition.resourceTypes).toEqual(RESOURCE_TYPES)
 
     const allow = rules.find((rule) => rule.action.type === 'allow')
     expect(allow?.priority).toBe(2) // allow overrides block
-    expect(allow?.condition.urlFilter).toBe('||github.com^')
+    expect(allow?.condition.requestDomains).toEqual(['github.com'])
+  })
+
+  // requestDomains matches the host and its subdomains, including the
+  // trailing-dot FQDN form that `||domain^` urlFilters miss (verified in a real
+  // browser by e2e/extension-blocking.pw.ts).
+  it('matches on requestDomains, never on a urlFilter', () => {
+    const rules = buildDnrRules({ blocked: ['chatgpt.com'], allowed: ['github.com'] })
+    for (const rule of rules) {
+      expect(rule.condition.urlFilter).toBeUndefined()
+      expect(rule.condition.requestDomains).toHaveLength(1)
+    }
   })
 })

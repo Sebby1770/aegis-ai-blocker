@@ -96,3 +96,51 @@ describe('ai-services rule pack', () => {
     }
   })
 })
+
+describe('rule pack coverage policy', () => {
+  it('never claims a verification date in the future or before the pack existed', () => {
+    for (const category of rawPack.categories) {
+      for (const service of category.services) {
+        expect(service.verified >= '2026-01-01' && service.verified <= rawPack.updatedAt).toBe(true)
+      }
+    }
+  })
+
+  it('explains every medium or high breakage risk in a note', () => {
+    for (const category of rawPack.categories) {
+      for (const service of category.services) {
+        if (service.breakageRisk !== 'low') {
+          expect({ service: service.name, note: Boolean((service as { note?: string }).note) }).toEqual({
+            service: service.name,
+            note: true,
+          })
+        }
+      }
+    }
+  })
+
+  // Consumer chatbots must sit in the chat category so every policy that
+  // blocks chat — Focus, Child-safe, Workplace, research — actually catches
+  // them. (chat.mistral.ai used to live under AI APIs, so Child-safe let
+  // Mistral's Le Chat through.)
+  it.each([
+    'chatgpt.com',
+    'claude.ai',
+    'claude.com',
+    'gemini.google.com',
+    'chat.mistral.ai',
+    'chat.deepseek.com',
+    'meta.ai',
+    'copilot.cloud.microsoft',
+    'replika.com',
+    'character.ai',
+  ])('%s is blocked by every chat-blocking policy', (host) => {
+    const chatDomains = rawPack.categories.find((category) => category.id === 'chat')!.services.flatMap((service) =>
+      (service as { strictOnly?: boolean }).strictOnly ? [] : service.domains,
+    )
+    // Non-strict chat domains are blocked by every policy whose block list
+    // includes 'chat', strict or not.
+    const covered = chatDomains.some((domain) => host === domain || host.endsWith(`.${domain}`))
+    expect({ host, coveredByChatCategory: covered }).toEqual({ host, coveredByChatCategory: true })
+  })
+})

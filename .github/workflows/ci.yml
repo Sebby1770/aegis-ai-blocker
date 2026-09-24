@@ -46,6 +46,34 @@ jobs:
       - name: Audit dependencies
         run: npm audit --audit-level=high
 
+  extension-e2e:
+    name: Extension blocking in real Chromium (Playwright)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Load the unpacked extension and verify what it blocks
+        run: npm run test:e2e
+
+      - name: Upload traces on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-test-results
+          path: test-results
+          retention-days: 7
+
   secret-scan:
     name: Secret scan (gitleaks)
     runs-on: ubuntu-latest

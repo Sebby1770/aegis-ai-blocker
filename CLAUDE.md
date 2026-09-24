@@ -25,6 +25,7 @@ npm ci                    # exact install (the SessionStart hook does this in cl
 npm run dev               # SPA + /api/* on one Vite server; env from .env.local
 npm run verify            # generate:rules → lint → typecheck:api → test → build (run before pushing)
 npm test                  # Vitest (all *.test.ts, incl. api/ and extension/)
+npm run test:e2e          # Playwright: unpacked extension in real Chromium (e2e/*.pw.ts)
 npx vitest run path/to/file.test.ts
 npm run generate:rules    # after editing src/data/ai-services.json — commit the generated files
 npm run typecheck:api     # api/ has its own tsconfig (tsconfig.api.json)
@@ -61,6 +62,11 @@ runs gitleaks. Never hand-edit `rules/generated/`, `extension/rules/pack.json`, 
 - Handler-level API tests live in `api/_tests/` (the `_` prefix keeps Vercel from deploying them as
   functions; never put a `*.test.ts` directly in `api/`). They run real handlers against
   `fake-supabase.ts` and real Stripe signatures via `harness.ts`.
+- Extension e2e tests live in `e2e/` (`*.pw.ts`, so Vitest ignores them). The harness maps every
+  hostname to a local HTTPS server; `probe.reached(host)` is ground truth for "got through". In
+  cloud sessions it falls back to the preinstalled Chromium under `$PLAYWRIGHT_BROWSERS_PATH`.
+- Export formats are validated by independent parsers in `src/test/format-parsers.ts`; Safari
+  url-filters must stay inside WebKit's regex subset (no `|`, `$` only last).
 - SQL/RLS tests live in `supabase/tests/` and run on PGlite (no Docker). Any schema change goes in
   a new migration **and** `schema.sql`; the snapshot test fails if they diverge.
 - Use Stripe test-mode fixtures and mocks; never commit real keys (`.env*` is gitignored).
