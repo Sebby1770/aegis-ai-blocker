@@ -218,6 +218,24 @@ where stripe_customer_id is not null;
 create index if not exists devices_user_id_idx on public.devices(user_id);
 create index if not exists rule_snapshots_user_id_created_at_idx on public.rule_snapshots(user_id, created_at desc);
 
+-- Durable refund/dispute markers, keyed by Stripe payment intent.
+--
+-- A refund or dispute can be processed while no license exists yet for its
+-- payment (out-of-order delivery, or in the window between fulfilment's Stripe
+-- check and its insert). The webhook records the revocation here BEFORE
+-- touching licenses, and fulfilment checks here AFTER inserting a license, so
+-- whichever runs second always sees the other. Server-only: RLS with no
+-- policies and no client grants.
+create table if not exists public.payment_revocations (
+  payment_intent text primary key,
+  status text not null check (status in ('refunded', 'revoked')),
+  reason text not null,
+  created_at timestamptz not null default now()
+);
+
+alter table public.payment_revocations enable row level security;
+revoke all on table public.payment_revocations from anon, authenticated;
+
 -- No policies are created for payment_events. It is writable only from trusted
 -- server-side webhook code using the Supabase secret key after Stripe signature
 -- verification.

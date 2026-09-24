@@ -25,6 +25,11 @@ Payments and entitlement audit (each fix landed with a test that failed first):
   delayed fulfillment used to find nothing to revoke, and the late fulfillment then granted an
   active license for money already returned. Fulfillment now reads the charge's refund/dispute
   state from Stripe and records the license as `refunded`/`revoked` when the money is gone.
+- **No race window left between a refund and fulfillment.** A refund or dispute processed while
+  fulfillment was between its Stripe check and its insert used to be lost. Revocations now leave
+  a durable server-only marker (`payment_revocations`, migration `20260924120000`) before they
+  touch licenses, and fulfillment checks for it after inserting, so whichever runs second always
+  sees the other.
 - **A license can no longer be re-activated.** Fulfillment wrote `status: 'active'`
   unconditionally, so a Stripe retry of a partly-failed fulfillment could resurrect a license a
   refund had revoked in between. License rows are now inserted once per session (retries and
@@ -112,6 +117,9 @@ Payments and entitlement audit (each fix landed with a test that failed first):
   risk, and known consumer chatbots always in the chat category.
 
 ### Tooling
+- Dependencies upgraded (the Dependabot minor/patch group) and the Stripe API pinned to
+  `2026-08-26.dahlia`, matching `stripe@22.6`. Monthly versions within a named Stripe release are
+  additive only.
 - A `SessionStart` hook (`.claude/settings.json` → `.claude/hooks/session-start.sh`) runs `npm ci`
   in Claude Code cloud sessions so `npm run verify` works immediately.
 - `CLAUDE.md` documents the architecture, commands, and trust boundaries.
